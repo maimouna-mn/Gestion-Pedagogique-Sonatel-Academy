@@ -20,9 +20,8 @@ class sessionController extends Controller
                 "salle_id" => $request->salle_id,
                 "cours_id" => $request->cours_id,
             ]);
-
+         
             $session->sessionClasseCours()->attach($request->sessionClasseCours);
-
             return response($session, Response::HTTP_CREATED);
         });
     }

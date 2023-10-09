@@ -5,15 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Module extends Model
+class profModule extends Model
 {
     use HasFactory;
-    public function profModules()
+
+    public function modules()
     {
-        return $this->hasMany(profModule::class, 'professeur_id');
+        return $this->belongsTo(Module::class, 'module_id');
     }
+
     public function professeurs()
     {
-        return $this->belongsToMany(Professeur::class, 'prof_modules');
+        return $this->belongsTo(Professeur::class, 'professeur_id');
     }
 }
