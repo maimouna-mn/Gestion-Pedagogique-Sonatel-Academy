@@ -8,7 +8,7 @@ import { ModuleService } from './module.service';
 })
 export class ModuleComponent implements OnInit {
   ngOnInit(): void {
-  
+
   }
   constructor(private moduleService: ModuleService) {
   }

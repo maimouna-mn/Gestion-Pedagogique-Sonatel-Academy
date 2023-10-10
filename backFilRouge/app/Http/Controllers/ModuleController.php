@@ -2,12 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\coursResource;
+use App\Models\Cours;
 use App\Models\Module;
+use App\Models\Classe;
+use App\Models\Semestre;
 use Illuminate\Http\Request;
 
 class ModuleController extends Controller
 {
     public function all() {
-      return Module::with(('professeurs'))->get();
+
+      return [
+        "data1"=>Module::with(('professeurs'))->get(),
+        "data2"=>Classe::all(),
+        "data3"=>Semestre::all(),
+        // $cours = Cours::with('moduleProf')->orderBy('id', 'desc')->paginate(5);
+        "data4"=> coursResource::collection(Cours::with('moduleProf')->get())
+      ];
     }
 }

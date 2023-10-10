@@ -12,7 +12,7 @@ class Cours extends Model
     use HasFactory;
     public function classes():BelongsToMany{
         return $this->belongsToMany(Classe::class,'cours_classes','cours_id','classe_id')
-        ->withPivot("heures_global");
+        ->withPivot("annee_classe_id");
     }
 
     public function moduleProf()
@@ -23,5 +23,5 @@ class Cours extends Model
     {
         return $this->belongsTo(Semestre::class, 'semestre_id');
     }
-  
+
 }

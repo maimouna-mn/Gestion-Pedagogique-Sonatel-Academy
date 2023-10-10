@@ -13,8 +13,9 @@ class Session extends Model
     use HasFactory;
 
 
-    public function sessionClasseCours():BelongsToMany{
-        return $this->belongsToMany(coursClasse::class,'session_cours_classes');
-        // ->withPivot(")
-    }
+    public function sessionClasseCours(): BelongsToMany
+{
+    return $this->belongsToMany(coursClasse::class, 'session_cours_classes');
+}
+
 }

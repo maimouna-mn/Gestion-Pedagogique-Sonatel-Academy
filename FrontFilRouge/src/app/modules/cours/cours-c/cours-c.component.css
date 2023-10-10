@@ -1,0 +1,13 @@
+/* Apply these CSS styles to your existing CSS */
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card {
+  margin-bottom: 10px;
+  box-sizing: border-box;
+
+  /* Other card styles */
+}

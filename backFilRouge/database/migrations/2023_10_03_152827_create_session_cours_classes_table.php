@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(coursClasse::class)->constrained();
             $table->foreignIdFor(Session::class)->constrained();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
