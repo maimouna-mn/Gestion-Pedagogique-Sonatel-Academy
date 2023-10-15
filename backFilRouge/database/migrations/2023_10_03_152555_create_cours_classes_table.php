@@ -12,8 +12,9 @@ return new class extends Migration
     {
         Schema::create('cours_classes', function (Blueprint $table) {
             $table->id();
+            $table->integer('heures_global');
             $table->foreignIdFor(Cours::class)->constrained();
-            $table->foreignIdFor(Classe::class)->constrained();
+            // $table->foreignIdFor(Classe::class)->constrained();
             $table->timestamps();
         });
     }

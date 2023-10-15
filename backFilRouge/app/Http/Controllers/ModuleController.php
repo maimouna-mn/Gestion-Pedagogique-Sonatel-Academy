@@ -6,8 +6,8 @@ use App\Http\Resources\coursResource;
 use App\Models\Cours;
 use App\Models\Module;
 use App\Models\Classe;
+use App\Models\Salle;
 use App\Models\Semestre;
-use Illuminate\Http\Request;
 
 class ModuleController extends Controller
 {

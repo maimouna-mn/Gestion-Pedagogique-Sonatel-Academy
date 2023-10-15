@@ -12,7 +12,9 @@ class Session extends Model
 
     use HasFactory;
 
-
+    public function coursClasses() {
+        return $this->belongsToMany(coursClasse::class, 'session_cours_classes');
+    }
     public function sessionClasseCours(): BelongsToMany
 {
     return $this->belongsToMany(coursClasse::class, 'session_cours_classes');

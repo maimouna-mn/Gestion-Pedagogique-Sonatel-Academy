@@ -18,4 +18,12 @@ class profModule extends Model
     {
         return $this->belongsTo(Professeur::class, 'professeur_id');
     }
+    public function professeur()
+    {
+        return $this->belongsTo(Professeur::class);
+    }
+    public function module()
+    {
+        return $this->belongsTo(Module::class);
+    }
 }

@@ -17,4 +17,8 @@ class Module extends Model
         return $this->belongsToMany(Professeur::class, 'prof_modules','module_id','professeur_id')
         ->withPivot('id');
     }
+    public function courses()
+    {
+        return $this->hasMany(Cours::class);
+    }
 }

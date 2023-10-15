@@ -21,3 +21,12 @@ Route::post('/session',[sessionController::class,"store"]);
 Route::get('/session',[sessionController::class,"all"]);
 Route::get('/module',[ModuleController::class,"all"]);
 Route::get('/cours/classes',[coursController::class,"listeClasses"]);
+Route::get('/session/filtre/{classeId}',[sessionController::class,"sessionClasse"]);
+Route::get('/session/filtre1/{classeId}',[sessionController::class,"ModuleByClasse"]);
+Route::get('/cours/filtre1/{moduleId}',[coursController::class,"coursByClasse"]);
+// isSessionEnCours($session)annulerSession
+Route::get('/session/status/{session}',[sessionController::class,"isSessionEnCours"]);
+Route::get('/session/annuler/{id}',[sessionController::class,"annulerSession"]);
+Route::get('/session/valider/{id}',[sessionController::class,"validerSession"]);
+Route::get('/session/invalider/{id}',[sessionController::class,"invaliderSession"]);
+// invaliderSession

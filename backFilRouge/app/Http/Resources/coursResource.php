@@ -14,9 +14,12 @@ class coursResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $heuresGlobal = $this->coursClasses->map(function ($coursClass) {
+            return $coursClass->heures_global;
+        });
         return [
             'id' => $this->id,
-            'heures_global' => $this->heures_global,
+            'heures_global' =>$heuresGlobal,
             'semestre' => $this->semestre->libelle,
             'moduleProf' =>new profmoduleResource($this->moduleProf) ,
         ];

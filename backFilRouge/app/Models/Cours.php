@@ -11,10 +11,14 @@ class Cours extends Model
     protected $guarded=[];
     use HasFactory;
     public function classes():BelongsToMany{
-        return $this->belongsToMany(Classe::class,'cours_classes','cours_id','classe_id')
-        ->withPivot("annee_classe_id");
-    }
+        return $this->belongsToMany(Classe::class,'cours_classes','cours_id','annee_classe_id')
+        ->withPivot("heures_global");
 
+    }
+    public function modules()
+    {
+        return $this->belongsToMany(Module::class, 'prof_modules');
+    }
     public function moduleProf()
     {
         return $this->belongsTo(profModule::class, 'prof_module_id');
@@ -23,5 +27,21 @@ class Cours extends Model
     {
         return $this->belongsTo(Semestre::class, 'semestre_id');
     }
+    public function coursClasses() {
+        return $this->hasMany(coursClasse::class, 'cours_id', 'id');
 
+    }
+   
+    public function profModule()
+    {
+        return $this->belongsTo(profModule::class);
+    }
+    public function module()
+    {
+        return $this->belongsTo(Module::class);
+    }
+    // public function profModule()
+    // {
+    //     return $this->belongsTo(ProfModule::class);
+    // }
 }

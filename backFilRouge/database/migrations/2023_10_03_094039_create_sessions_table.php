@@ -15,10 +15,10 @@ return new class extends Migration
         Schema::create('sessions', function (Blueprint $table) {
             $table->id();
             $table->date("date");
-            $table->integer("heure_debut");
-            $table->integer("heure_fin");
+            $table->time("heure_debut");
+            $table->time("heure_fin");
             $table->enum("Type",["presentiel","enLigne"]);
-            $table->foreignIdFor(Salle::class)->constrained();
+            $table->foreignIdFor(Salle::class)->nullable()->constrained();
             $table->timestamps();
         });
     }

@@ -1,4 +1,4 @@
-<div class="w-full relative flex ct-docs-disable-sidebar-content overflow-x-hidden">
+<div class="w-full relative flex ct-docs-disable-sidebar-content overflow-x-hidden ">
 
   <nav
     class="block py-4 px-6 top-0 bottom-0 w-64 bg-white shadow-xl left-0 absolute flex-row flex-nowrap md:z-10 z-9999 transition-all duration-300 ease-in-out transform md:translate-x-0 -translate-x-full">
@@ -50,9 +50,7 @@
         <div
           class="items-center w-full lg:flex lg:w-auto flex-grow duration-300 transition-all ease-in-out lg:h-auto-important hidden">
           <div class="flex flex-row flex-wrap items-center ml-auto mr-3 mt-3">
-            <!-- <div class="mb-3 pt-0"><input placeholder="Search here" type="text"
-                class="border-transparent shadow px-3 py-2 text-sm  w-full placeholder-blueGray-200 text-blueGray-700 relative bg-white rounded-md outline-none focus:ring focus:ring-lightBlue-500 focus:ring-1 focus:border-lightBlue-500 border border-solid transition duration-200 ">
-            </div> -->
+
           </div>
           <a class="text-blueGray-500 block" href="javascript:;">
             <div class="items-center flex"><span
@@ -84,136 +82,45 @@
     <div class="relative pt-28 pb-14  h-14 bg-blue-500">
       <div class="px-4 w-full">
         <div class="flex justify-between mr-7" style="margin-top: -5rem;">
-          <div class="text-white font-bold mt-12 text-2xl">
-            <h1>Liste Cours</h1>
+          <div class="text-white font-bold mt-12 text-2xl w-[13%] ">
+            <h1>Liste Session</h1>
+          </div>
+          <div class="flex w-1/2">
+            <select class="block w-2/5  h-10 border rounded-md mt-10 mr-5" [(ngModel)]="classeSelectionne"
+              (change)="filtreCours()">
+              <option value="">Filtrer</option>
+              <option value="{{item.id}}" *ngFor="let item of classes">{{item.libelle}}</option>
+            </select>
+            <!-- </div> -->
+
+            <div class="flex items-center mt-10 ml-2">
+              <div class="flex-1 mr-2">
+                <input placeholder="Search here" type="text"
+                  class="border-transparent shadow px-3 py-2 text-sm w-full placeholder-blueGray-200 text-blueGray-700 relative bg-white rounded-md outline-none focus:ring-lightBlue-500 focus:ring-1 focus:border-lightBlue-500 border border-solid transition duration-200">
+              </div>
+              <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded">
+                Rechercher
+              </button>
+            </div>
+
           </div>
 
-
-          <!-- ... le reste du code -->
-
-
-
-
-
-
-
-
-
-
-          <!-- <div class="flex flex-wrap " style="margin-top: -5rem;"> -->
-          <!-- <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
-              <div class="relative flex flex-col min-w-0 break-words bg-white rounded-lg mb-6 xl:mb-0 shadow-lg">
-                <div class="flex-auto p-4">
-                  <div class="flex flex-wrap">
-                    <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-                      <h5 class="text-blueGray-400 uppercase font-bold text-xs">Traffic</h5>
-                      <span class="font-bold text-xl">350,897</span>
-                    </div>
-                    <div class="relative w-auto pl-4 flex-initial">
-                      <div
-                        class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-red-500">
-                        <i class="far fa-chart-bar"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <p class="text-sm text-blueGray-500 mt-4"><span class="text-emerald-500 mr-2"><i
-                        class="fas fa-arrow-up"></i> 3.48%</span><span class="whitespace-nowrap">Since last month</span>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
-              <div class="relative flex flex-col min-w-0 break-words bg-white rounded-lg mb-6 xl:mb-0 shadow-lg">
-                <div class="flex-auto p-4">
-                  <div class="flex flex-wrap">
-                    <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-                      <h5 class="text-blueGray-400 uppercase font-bold text-xs">NEW USERS</h5>
-                      <span class="font-bold text-xl">2,356</span>
-                    </div>
-                    <div class="relative w-auto pl-4 flex-initial">
-                      <div
-                        class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-orange-500">
-                        <i class="fas fa-chart-pie"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <p class="text-sm text-blueGray-500 mt-4"><span class="text-red-500 mr-2"><i
-                        class="fas fa-arrow-down"></i> 3.48%</span><span class="whitespace-nowrap">Since last
-                      week</span></p>
-                </div>
-              </div>
-            </div> -->
-          <!-- <div class="bg-white p-4 shadow-md rounded-lg"> -->
-
-
-
-
-          <!-- </div> -->
-
-
-
-          <!-- <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
-              <div class="relative flex flex-col min-w-0 break-words bg-white rounded-lg mb-6 xl:mb-0 shadow-lg">
-                <div class="flex-auto p-4">
-                  <div class="flex flex-wrap">
-                    <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-                      <h5 class="text-blueGray-400 uppercase font-bold text-xs">SALES</h5>
-                      <span class="font-bold text-xl">924</span>
-                    </div>
-                    <div class="relative w-auto pl-4 flex-initial">
-                      <div
-                        class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-pink-500">
-                        <i class="fas fa-users"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <p class="text-sm text-blueGray-500 mt-4"><span class="text-orange-500 mr-2"><i
-                        class="fas fa-arrow-down"></i> 1.10%</span><span class="whitespace-nowrap">Since
-                      yesterday</span></p>
-                </div>
-              </div>
-            </div>
-            <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
-              <div class="relative flex flex-col min-w-0 break-words bg-white rounded-lg mb-6 xl:mb-0 shadow-lg">
-                <div class="flex-auto p-4">
-                  <div class="flex flex-wrap">
-                    <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-                      <h5 class="text-blueGray-400 uppercase font-bold text-xs">PERFORMANCE</h5>
-                      <span class="font-bold text-xl">49,65%</span>
-                    </div>
-                    <div class="relative w-auto pl-4 flex-initial">
-                      <div
-                        class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-lightBlue-500">
-                        <i class="fas fa-percent"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <p class="text-sm text-blueGray-500 mt-4"><span class="text-emerald-500 mr-2"><i
-                        class="fas fa-arrow-up"></i> 12%</span><span class="whitespace-nowrap">Since last month</span>
-                  </p>
-                </div>
-              </div>
-            </div> -->
-          <!-- </div> -->
         </div>
       </div>
     </div>
-    <div class="px-4 md:px-6 mx-auto w-full  ">
+    <div class="px-4 md:px-6 mx-auto w-full">
       <div class="flex flex-wrap ">
 
-        <div class="w-full h-full px-4" style="height: 38.2rem;">
+        <div class="w-full h-full px-4" style="height: 58.2rem;">
 
           <div class="relative  flex flex-col min-w-0 break-words w-full mb-8 shadow-lg rounded-lg bg-blueGray-800"
-            style="height: 40rem;">
-
-
+            style="height: 59rem;">
 
             <div class="flex items-center justify-between py-2 px-6 " style="border-bottom: 1px solid;">
               <div class="bg-blue-500 h-10 font-bold px-4 pb-2 inline-flex text-center text-gray-800 rounded-lg">
                 <span style="padding-top: 0.5rem;">{{ MONTH_NAMES[month] }}</span>
                 <span class="ml-1" style="padding-top: 0.5rem;">{{ year }}</span>
               </div>
-
 
               <div class=" inline-flex">
                 <button type="button" class="bg-blue-500 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l"
@@ -231,9 +138,9 @@
               </div>
             </div>
 
-            <div class="flex flex-wrap border-t border-l">
+            <div class="flex flex-wrap  border-t border-l" style="height: 20rem;">
               <!-- Afficher les jours de la semaine -->
-              <div style="width: 14.28%" class="px-2 py-2">
+              <div style="width: 14.28%;" class="px-2   py-2">
                 <div class="text-gray-600 text-sm uppercase tracking-wide font-bold text-center">Lundi</div>
               </div>
               <div style="width: 14.28%" class="px-2 py-2">
@@ -258,34 +165,149 @@
               <!-- Jours vides (s'il y en a) -->
               <div *ngFor="let blankday of blankdays" style="width: 14.28%; height: 120px;"
                 class="text-center border-r border-b px-4"></div>
-
               <div *ngFor="let date of no_of_days; let dateIndex = index"
-                style="width: 14.28%; height: 110px;border: 0.2px solid rgb(134, 134, 239);"
-                class="px-4 pt-2 border-r rounded-sm border-b relative">
-                <!-- onclick="document.getElementById('extralarge-modal').classList.remove('hidden'); document.body.classList.add('overflow-hidden');"> -->
-                <div (click)="showModal(date)"   [textContent]="date"  onclick="document.getElementById('staticModal').classList.remove('hidden'); document.body.classList.add('overflow-hidden');"
-                  class="inline-flex w-6 h-6 items-center justify-center cursor-pointer text-center leading-none rounded-full transition ease-in-out duration-100"
-                  [ngClass]="{'bg-blue-500 text-white': isToday(date) == true, 'text-gray-700 hover:bg-blue-200': isToday(date) == false }">
+                style="width: 14.28%; height: 170px;border: 0.2px solid rgb(134, 134, 239);"
+                class="px-4 pt-2 border-r rounded-sm  border-b relative">
+                <div class="flex">
+
+                  <div (click)="showModal(date)" [textContent]="date"
+                    onclick="document.getElementById('staticModal').classList.remove('hidden'); document.body.classList.add('overflow-hidden');"
+                    class="inline-flex   w-6 h-6 items-center justify-center cursor-pointer text-center leading-none rounded-full transition ease-in-out duration-100">
+                  </div>
                 </div>
-                <!-- Afficher les événements pour ce jour -->
-                <div class="mt-1 bg-blue-500 shadow-lg rounded-lg text-center">
-                  <div *ngFor="let event of events" [ngClass]="event.event_theme">
-                    <p class="text-sm truncate leading-tight" *ngIf="isEventOnDate(event, year, month, date)">{{
-                      event.event_title }} 12h-14h</p>
+                <div class="shadow-lg  rounded-lg text-center" style="height: 80%; overflow-y: auto;">
+                  <div *ngFor="let event of heureSession(events, year, month, date)">
+
+                    <div style="position: absolute; top: 0; right: 0; cursor: pointer;">
+                      <svg class="h-6 w-6 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        (click)="showAllEvents(date)"
+                        onclick="document.getElementById('medium-modal').classList.remove('hidden'); document.body.classList.add('overflow-hidden');"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="12" y1="8" x2="12" y2="12" />
+                        <line x1="12" y1="16" x2="12.01" y2="16" />
+                      </svg>
+                    </div>
+                    <div class="text-xs h-14 relative mt-1 truncate   rounded shadow-lg text-center" [ngClass]="{
+                      'bg-blue-50': event.event_Type === 'presentiel',
+                      'bg-green-100': event.event_Type === 'enLigne',
+                  }">
+                      <div class="text-sm  font-bold" style="position: absolute; top: 0; left: 0;">
+                        {{ event.event_title }}
+                      </div>
+                      <div class="text-sm font-bold" style="position: absolute; bottom: 50%; right: 0;">
+                        {{ event.event_prof }}
+                      </div>
+                      <div class="text-sm font-bold" style="position: absolute; bottom: 0; left: 0;">
+                        {{ event.event_module }}
+                      </div>
+                      <div class="text-sm font-bold"
+                        style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                        {{ event.event_heure }}
+                      </div>
+
+                    </div>
                   </div>
                 </div>
               </div>
 
-
-
-
             </div>
-
-
             <!-- </div> -->
           </div>
         </div>
       </div>
+
+      <div id="medium-modal" tabindex="-1"
+        class="fixed top-0 left-10 right-10 hidden z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative   w-full max-w-lg max-h-full" style="margin-left: 32rem;margin-top: 11rem;">
+          <div class="relative bg-white  rounded-lg shadow " style="width: 65rem;">
+            <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
+              <h3 class="text-xl font-medium ">
+                Liste des Sessions
+              </h3>
+
+            </div>
+
+            <div class="p-6 space-y-6">
+              <div class="relative overflow-x-auto">
+                <table class="w-full text-sm text-left ">
+                  <thead class="text-xs  uppercase bg-gray-50 ">
+                    <tr>
+                      <th scope="col" class="px-6 py-3">
+                        Professeur
+                      </th>
+                      <th scope="col" class="px-6 py-3">
+                        Salle
+                      </th>
+                      <th scope="col" class="px-6 py-3">
+                        Module
+                      </th>
+                      <th scope="col" class="px-6 py-3">
+                        Heure
+                      </th>
+                      <th scope="col" class="px-6 py-3">
+                        Lieu
+                      </th>
+                      <th scope="col" class="px-6 py-3">
+                        Statut
+                      </th>
+                      <th scope="col" class="px-6 py-3">
+
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="bg-white border-b" *ngFor="let event of selectedEvents;let i=index">
+                      <ng-container>
+                        <th scope="row" class="px-6 py-4 font-medium  whitespace-nowrap">
+                          {{ event.event_prof }}
+                        </th>
+                        <td class="px-6 py-4">
+                          {{ event.event_title ? event.event_title : ""}}
+                        </td>
+                        <td class="px-6 py-4">
+                          {{ event.event_module }}
+                        </td>
+                        <td class="px-6 py-4">
+                          {{ event.event_heure }}
+                        </td>
+                        <td class="px-6 py-4">
+                          {{ event.event_Type }}
+                        </td>
+                        <td class="px-6 py-4">
+                          {{ eventStatuts[i] ? eventStatuts[i] : event.event_statut }}
+                        </td>
+                        <td class="flex items-center p-6 space-x-2 border-t">
+            
+                          <button type="button" (click)="validerSession(event.event_id,i)"
+                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            Valider</button>
+                          <button type="button" (click)="invaliderSession(event.event_id,i)"
+                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            Invalider</button>
+                          <button type="button" (click)="annulerSession(event.event_id,i)"
+                            class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-2 py-2 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Annuler</button>
+                        </td>
+                      </ng-container>
+                    </tr>
+                  </tbody>
+                </table>
+
+              </div>
+            </div>
+            <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+              <button data-modal-hide="medium-modal" type="button"
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">I
+                accept</button>
+              <button data-modal-hide="medium-modal" type="button"
+                onclick="document.getElementById('medium-modal').classList.add('hidden'); document.body.classList.remove('overflow-hidden');"
+                class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Decline</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
 
       <footer class="block py-4">
         <div class="container mx-auto px-4">
@@ -322,99 +344,106 @@
 
 
 
-<div id="staticModal"  data-modal-backdrop="static" tabindex="-1" aria-hidden="true"  class="fixed hidden top-0 left-0 right-0  w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
-  <div class="relative w-full max-w-xl "
-  class="fixed  z-50  w-2/4   p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
-  style="left: 30rem;top: 4rem;">
-  <form [formGroup]="form">
-    <div class="relative  rounded-lg shadow bg-blue-100 ">
-      <div class="flex items-center  justify-center  border-b rounded-t " >
-        <h3 class="text-xl font-medium text-gray-900 dark:text-white ">
-       Ajout Sesion
-        </h3>
+<div id="staticModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true"
+  class="fixed hidden   top-0 left-0 right-0  w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
 
-      </div>
-      <div class="p-6 space-y-6">
-        <div class=" p-2 flex items-center justify-center">
-          <div class="container max-w-screen-md mx-auto ">
-            <div class="bg-white rounded shadow-lg  p-4 px-4  mb-6">
+  <form [formGroup]="form">
+
+    <div class="p-6 space-y-6" style="margin-top: 2rem;margin-left: 5rem;">
+      <div class=" p-2 flex items-center justify-center">
+        <div class="container max-w-screen-md mx-auto ">
+          <div class="bg-white rounded shadow-lg  p-4 px-4  mb-6">
 
             <div class="p-6 space-y-6">
-
-              <div class="mb-4 ml-5 ">
-                <label for="date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Date</label>
-                <input formControlName="date" class="mt-1 h-10  w-[95%] rounded-md border  shadow-sm  px-4 bg-gray-50" hidden><div class="mt-1 h-10  w-[95%] rounded-md border  shadow-sm  px-4 bg-gray-50">
-                  {{event_date}}
-                </div>
+              <div class="mb-4 ml-5 " *ngIf="form.get('date')">
+                <label for="date" class="block ">Date</label>
+                <input formControlName="date" value="{{event_date}}"
+                  class="mt-1 h-10 w-[95%] rounded-md border shadow-sm px-4 bg-gray-50" readonly>
               </div>
 
               <!-- Date de début et date de fin inputs -->
-              <div class="flex justify-evenly">
-              <div class="mb-4">
-                <label for="startDate" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Heure de début</label>
-                <input type="number" id="startDate" formControlName="heure_debut" class="mt-1 h-10 border  rounded-md px-4 bg-gray-50">
+              <div class="flex justify-between   ml-5">
+                <div class="mb-4  w-[50%]">
+                  <label for="startDate" class="block ">Heure de
+                    début</label>
+                  <input type="time" id="startDate" formControlName="heure_debut"
+                    class="mt-1 h-10 border w-[90%] shadow-sm rounded-md px-4 bg-gray-50">
+                </div>
+
+                <div class="mb-4 w-[50%] ml-16">
+                  <label for="endDate" class="block ">Heure de
+                    fin</label>
+                  <input type="time" id="endDate" formControlName="heure_fin"
+                    class="mt-1 h-10  border shadow-sm w-[90%] rounded-md px-4 bg-gray-50">
+                </div>
               </div>
 
-              <div class="mb-4 ">
-                <label for="endDate" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Heure de fin</label>
-                <input type="number" id="endDate" formControlName="heure_fin" class="mt-1 h-10 border  rounded-md px-4 bg-gray-50">
-              </div>
-            </div>
               <!-- Type select -->
               <div class="mb-4 ml-5">
-                <label for="type" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Type</label>
-                <select id="type"  formControlName="Type" class="mt-1 h-10 border rounded-md px-4 w-[95%] bg-gray-50">
-                  <option value="type1">Type 1</option>
-                  <option value="type2">Type 2</option>
-                  <!-- Add more options as needed -->
+                <label for="type" class="block">Type</label>
+                <select id="type" formControlName="Type" [(ngModel)]="selectedOption"
+                  class="mt-1 h-10  shadow-sm border rounded-md px-4 w-[95%] bg-gray-50">
+                  <option value="presentiel">presentiel</option>
+                  <option value="enLigne">enLigne</option>
                 </select>
               </div>
-
-
-              <!-- Formulaire pour choisir des cours -->
-              <div class="mb-4 ml-5  ">
-                  <div class=" rounded-md mt-4 w-[96%] " id="classes-container">
-                    <button
-                      class="text-white-600 bg-blue-700 rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 hover:text-blue-800"
-                     (click)="ajouterLigne()" >Ajouter une classe</button>
-                    <div id="formArray-container" formArrayName="sessionClasseCours">
-                      <div class="flex items-center mt-2 " *ngFor="let classe of sessionClasseCours.controls; let i = index"
-                      [formGroupName]="i"   >
-                        <select formControlName="cours_classe_id"
-                          class="h-10 border rounded-md px-4 w-[80%] bg-gray-50 mr-2">
-                          <option value="" >iii</option>
-                        </select>
-                        <button class="ml-2 text-red-600 hover:text-red-800"
-                         >X</button>
-                      </div>
-                    </div>
+              <div class="ml-5">
+                <label for="classe" class="block">Module</label>
+                <select id="classe" formControlName="module" (change)="moduleClasse()"
+                  class=" border shadow-sm block w-[92%]  h-10 px-4 rounded-md bg-gray-50">
+                  <option *ngFor="let item of module" value="{{item.module.id}}">
+                    {{item.module.libelle}}
+                  </option>
+                </select>
+              </div>
+              <div class="ml-5">
+                <button
+                  class=" text-white-600 bg-blue-700 rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 hover:text-blue-800"
+                  (click)="ajouterLigne()">Ajouter une classe</button>
+                <div id="formArray-container" formArrayName="sessionClasseCours">
+                  <div class="flex" *ngFor="let produit of sessionClasseCours.controls; let i = index"
+                    [formGroupName]="i">
+                    <select id="classe" formControlName="cours_classe_id"
+                      class="mt-1 border shadow-sm block w-[95%] h-10 px-4 rounded-md bg-gray-50">
+                      <option *ngFor="let item of moduleclasses" value="{{item.cours_classe_id}}">
+                        {{ item.classe}}
+                      </option>
+                    </select>
+                    <button class="ml-2 text-red-600 hover:text-red-800">X</button>
                   </div>
+                </div>
               </div>
 
               <!-- Salle select -->
-              <div class=" ml-5">
-                <label for="salle" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Salle</label>
-                <select id="salle" formControlName="salle_id" class="mt-1  block w-[95%] h-10 px-4 rounded-md bg-gray-50">
-                  <option value="salle1">Salle 1</option>
-                  <option value="salle2">Salle 2</option>
+              <div class="ml-5" *ngIf="selectedOption === 'presentiel'">
+                <label for="salle" class="block  ">Salle</label>
+                <select id="salle" formControlName="salle_id" 
+                  class="mt-1 shadow-sm border block w-[95%] h-10 px-4 rounded-md bg-gray-50">
+                  <option value="{{item.id}}" *ngFor="let item of salles">{{item.libelle}}</option>
                   <!-- Add more options as needed -->
                 </select>
               </div>
 
             </div>
             <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-              <button data-modal-hide="staticModal" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onclick="document.getElementById('staticModal').classList.add('hidden'); document.body.classList.remove('overflow-hidden');" (click)="add()">I accept</button>
-              <button data-modal-hide="staticModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600" onclick="document.getElementById('staticModal').classList.add('hidden'); document.body.classList.remove('overflow-hidden');">Decline</button>
+              <button data-modal-hide="staticModal" type="button"
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                onclick="document.getElementById('staticModal').classList.add('hidden'); document.body.classList.remove('overflow-hidden');"
+                (click)="add()">I accept</button>
+              <button data-modal-hide="staticModal" type="button"
+                class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
+                onclick="document.getElementById('staticModal').classList.add('hidden'); document.body.classList.remove('overflow-hidden');">Decline</button>
             </div>
           </div>
         </div>
-        </div>
-
       </div>
 
-
     </div>
+    <!-- </div> -->
   </form>
 
 
-</div>
+  <!-- </div> -->
+
+
+  <!--  -->

@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string("nomComplet");
             $table->string('spécialité');
-            $table->string('grade');
             $table->timestamps();
         });
     }

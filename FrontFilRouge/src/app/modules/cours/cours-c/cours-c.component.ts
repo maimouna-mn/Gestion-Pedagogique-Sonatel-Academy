@@ -76,6 +76,7 @@ export class CoursCComponent implements OnInit {
     console.log(this.form.value);
     this.coursService.store(this.form.value).subscribe((result: any) => {
       this.listeCours.unshift(result.data)
+      this.form.reset()
     })
   }
 
