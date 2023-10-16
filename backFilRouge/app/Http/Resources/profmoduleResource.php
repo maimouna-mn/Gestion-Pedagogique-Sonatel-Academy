@@ -19,7 +19,7 @@ class profmoduleResource extends JsonResource
             // 'module_id'=>$this->modules->id,
             'module'=>$this->modules->libelle,
             // 'professeur_id'=>$this->professeurs->id,
-            'professeur'=>$this->professeurs->nomComplet,
+            'professeur'=>$this->professeurs->name,
         ];
     }
 }

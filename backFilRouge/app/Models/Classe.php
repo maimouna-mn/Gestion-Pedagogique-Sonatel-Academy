@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Classe extends Model
 {
     use HasFactory;
+    protected $guarded=[];
     public function coursClasses()
     {
         return $this->hasMany(coursClasse::class, 'annee_cours_id');

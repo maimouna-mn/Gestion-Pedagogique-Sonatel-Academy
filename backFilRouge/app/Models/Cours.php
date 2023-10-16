@@ -8,13 +8,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Cours extends Model
 {
-    protected $guarded=[];
+    protected $guarded = [];
     use HasFactory;
-    public function classes():BelongsToMany{
-        return $this->belongsToMany(Classe::class,'cours_classes','cours_id','annee_classe_id')
-        ->withPivot("heures_global");
-
+    public function classes(): BelongsToMany
+    {
+        return $this->belongsToMany(Classe::class, 'cours_classes', 'cours_id', 'annee_classe_id')
+            ->withPivot("heures_global");
     }
+    
+
     public function modules()
     {
         return $this->belongsToMany(Module::class, 'prof_modules');
@@ -27,11 +29,25 @@ class Cours extends Model
     {
         return $this->belongsTo(Semestre::class, 'semestre_id');
     }
-    public function coursClasses() {
+    public function coursClasses()
+    {
         return $this->hasMany(coursClasse::class, 'cours_id', 'id');
 
     }
-   
+
+    // public function classes()
+    // {
+    //     return $this->belongsToMany(anneeClasse::class, 'class_cours');
+    // }
+
+    public function session1()
+    {
+        return $this->belongsToMany(Session::class, 'session_cours_classe');
+    }
+
+    // Modèle Cours
+  
+
     public function profModule()
     {
         return $this->belongsTo(profModule::class);
@@ -40,8 +56,14 @@ class Cours extends Model
     {
         return $this->belongsTo(Module::class);
     }
-    // public function profModule()
+    public function sessions()
+    {
+        return $this->hasMany(Session::class);
+    }
+
+    // public function session1(): BelongsToMany
     // {
-    //     return $this->belongsTo(ProfModule::class);
+    //     return $this->belongsToMany(Session::class, 'session_cours_classes');
     // }
+
 }

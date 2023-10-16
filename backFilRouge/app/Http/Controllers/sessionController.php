@@ -12,6 +12,7 @@ use App\Models\Module;
 use App\Models\profModule;
 use App\Models\Salle;
 use App\Models\Session;
+use DateTime;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -32,7 +33,6 @@ class sessionController extends Controller
     }
 
 
-
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -42,106 +42,52 @@ class sessionController extends Controller
             'Type' => 'required|in:presentiel,enLigne',
             'salle_id' => $request->Type == 'presentiel' ? 'required|exists:salles,id' : 'nullable',
         ]);
-
+    
         if ($validatedData['Type'] == 'presentiel') {
             $existingSession = Session::where('date', $validatedData['date'])
                 ->where('salle_id', $validatedData['salle_id'])
                 ->where(function ($query) use ($validatedData) {
                     $query->whereBetween('heure_debut', [$validatedData['heure_debut'], $validatedData['heure_fin']])
-                        ->orWhereBetween('heure_debut', [$validatedData['heure_debut'], $validatedData['heure_fin']]);
+                        ->orWhereBetween('heure_fin', [$validatedData['heure_debut'], $validatedData['heure_fin']]);
                 })
                 ->first();
-
+    
             if ($existingSession) {
-                //session existe pour salle, date et heure
-                return response()->json(['error' => 'Une session existe déjà pour cette salle, cette date et cette heure .'], Response::HTTP_CONFLICT);
+                return response()->json(['error' => 'Une session existe déjà pour cette salle, cette date et cette heure.']);
             }
         }
-
-        // $nombrePlaceSalle = Salle::where("id", $validatedData['salle_id'])->first()->nombrePlaces;
-
-        // foreach ($request->sessionClasseCours as $value) {
-        //     $classe_id = coursClasse::where("id", $value['cours_classe_id'])->first()->classe_id;
-        //     $effectifClasse = Classe::where('id', $classe_id)->first()->effectif;
-        //     if ($nombrePlaceSalle < $effectifClasse) {
-        //         return response("nombre de place de la salle inferieur à l'effectif");
-        //     }
-
-        //     $value['cours_classe_id'] = $classe_id;
-        // }
-
+    
         return DB::transaction(function () use ($validatedData, $request) {
             $session = Session::create($validatedData);
+    
             $session->sessionClasseCours()->attach($request->sessionClasseCours);
-            // return $session->load("sessionClasseCours");
+            $heureDebut = $session->heure_debut;
+            $heureFin = $session->heure_fin;
+            $dateTimeDebut = DateTime::createFromFormat('H:i', $heureDebut);
+            $dateTimeFin = DateTime::createFromFormat('H:i', $heureFin);
+    
+            if ($dateTimeDebut && $dateTimeFin) {
+                $interval = $dateTimeDebut->diff($dateTimeFin);
+                $hours = $interval->h;
+                $minutes = $interval->i;
+                $totalDuration = $hours + ($minutes / 60);
+            }
+    
+            foreach ($request->sessionClasseCours as $value) {
+                $coursClasse = coursClasse::find($value['cours_classe_id']);
+                if ($coursClasse) {
+                    if($totalDuration>$coursClasse->heures_global){
+                            return "plus de duree";
+                    }
+                    $coursClasse->decrement('heures_global', $totalDuration);
+                }
+            }
+    
             event(new SessionEnCours($session));
+    
             return new sessionResource($session);
         });
     }
-
-
-
-
-    // public function store(Request $request)
-    // {
-    //     $validatedData = $request->validate([
-    //         'date' => 'required|date',
-    //         'heure_debut' => 'required',
-    //         'heure_fin' => 'required|after:heure_debut',
-    //         'Type' => 'required|in:presentiel,enLigne',
-    //         'salle_id' => $request->Type == 'presentiel' ? 'required|exists:salles,id' : 'nullable',
-    //     ]);
-    
-    //     if ($validatedData['Type'] == 'presentiel') {
-    //         $existingSession = Session::where('date', $validatedData['date'])
-    //             ->where('salle_id', $validatedData['salle_id'])
-    //             ->where(function ($query) use ($validatedData) {
-    //                 $query->whereBetween('heure_debut', [$validatedData['heure_debut'], $validatedData['heure_fin']])
-    //                     ->orWhereBetween('heure_debut', [$validatedData['heure_debut'], $validatedData['heure_fin']]);
-    //             })
-    //             ->first();
-    
-    //         if ($existingSession) {
-    //             //session existe pour salle, date et heure
-    //             return response()->json(['error' => 'Une session existe déjà pour cette salle, cette date et cette heure.'], Response::HTTP_CONFLICT);
-    //         }
-    //     }
-    
-    //     return DB::transaction(function () use ($validatedData, $request) {
-    //         // Créer la session
-    //         $session = Session::create($validatedData);
-    
-    //         // Attacher les cours aux classes
-    //         $session->sessionClasseCours()->attach($request->sessionClasseCours);
-    
-    //         // Mettre à jour les heures globales pour chaque année de classe
-    //         foreach ($request->sessionClasseCours as $value) {
-    //             $coursClasse = coursClasse::find($value['cours_classe_id']);
-    //             $anneeClasse = anneeClasse::where('classe_id', $coursClasse->classe_id)->where('anneescolaire_id', 1)->first();
-    //             if ($anneeClasse) {
-    //                 $anneeClasse->decrement('heures_global', $coursClasse->heures_global);
-    //             }
-    //         }
-    
-    //         // Émettre un événement
-    //         event(new SessionEnCours($session));
-    
-    //         return new sessionResource($session);
-    //     });
-    // }
-    
-
-
-
-
-
-
-
-
-
-
-
-
 
     public function sessionClasse($classeId)
     {
@@ -184,7 +130,7 @@ class sessionController extends Controller
                             'Type' => $sessionModel->Type,
                             'salle_id' => Salle::find($sessionModel->salle_id),
                             'module' => $module->libelle,
-                            'professeur' => $profModule->professeur->nomComplet,
+                            'professeur' => $profModule->professeurs->name,
                         ];
                     }
                 }

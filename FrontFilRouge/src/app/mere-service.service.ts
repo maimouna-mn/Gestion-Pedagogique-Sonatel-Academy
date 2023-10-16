@@ -17,6 +17,11 @@ export abstract class MereServiceService<T> {
     const uri = this.getUri()
     return this.http.get<U>(`${environment.apiUrl}/${uri}`)
   }
+
+  semestreAll<U>(): Observable<U> {
+    const uri = this.getUri()
+    return this.http.get<U>(`${environment.apiUrl}/${uri}/all`)
+  }
   all1(page: number): Observable<any> {
     const uri = this.getUri();
     return this.http.get<any>(`${environment.apiUrl}/${uri}?page=${page}`);
@@ -38,7 +43,12 @@ export abstract class MereServiceService<T> {
 
     return this.http.get<U>(`${environment.apiUrl}/${uri}/filtre1/${id}`)
   }
-
+  coursprof(page: number,id:number): Observable<any> {
+    const uri = this.getUri();
+    return this.http.get<any>(`${environment.apiUrl}/${uri}/coursprof/${id}?page=${page}`);
+  }
+ 
+  
 
   update<U>(article: T, id: number): Observable<U> {
     const uri = this.getUri()
@@ -52,9 +62,9 @@ export abstract class MereServiceService<T> {
   }
   annnuler<U>(id: number): Observable<U> {
     const uri = this.getUri()
-
     return this.http.get<U>(`${environment.apiUrl}/${uri}/annuler/${id}`)
   }
+
   valider<U>(id: number): Observable<U> {
     const uri = this.getUri()
 
@@ -65,4 +75,9 @@ export abstract class MereServiceService<T> {
 
     return this.http.get<U>(`${environment.apiUrl}/${uri}/invalider/${id}`)
   }
+// http://127.0.0.1:8000/api/cours/getCoursDetails/17
+detailCours<U>(id:number): Observable<U> {
+  const uri = this.getUri()
+  return this.http.get<U>(`${environment.apiUrl}/${uri}/getCoursDetails/${id}`)
+}
 }

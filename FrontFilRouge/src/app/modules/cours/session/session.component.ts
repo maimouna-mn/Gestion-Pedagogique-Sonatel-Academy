@@ -11,7 +11,7 @@ import { CoursServiceService } from '../cours-c/cours-service.service';
 export class SessionComponent implements OnInit {
   month!: number;
   year!: number;
-  no_of_days: number[] = [];    
+  no_of_days: number[] = [];
 
   blankdays: number[] = [];
   MONTH_NAMES = ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'];
@@ -45,7 +45,7 @@ export class SessionComponent implements OnInit {
   event_prof!: any
   event_module!: any
   date!: number;
-  selectedOption!: string; 
+  selectedOption!: string;
   ngOnInit(): void {
     this.index()
     this.initDate();
@@ -136,34 +136,34 @@ export class SessionComponent implements OnInit {
     const sessionClasseCours = this.form.get('sessionClasseCours') as FormArray;
     sessionClasseCours.push(newFormGroup);
 
-    console.log(this.form.value);
 
     this.sessionService.store(this.form.value).subscribe((result: any) => {
-      this.form.reset()
-      const session = result.data;
-      const heureDebutParts = session.heure_debut.split(':');
-      const heureFinParts = session.heure_fin.split(':');
-      const heureDebut = `${heureDebutParts[0]}:${heureDebutParts[1]}`;
-      const heureFin = `${heureFinParts[0]}:${heureFinParts[1]}`;
+  
+      console.log(result);
+      if (result.data){
 
-      // this.events.unshift({
-      //   event_date: new Date(session.date),
-      //   event_title: session.salle.libelle,
-      //   event_Type: session.Type,
-      //   event_heure: `${heureDebut}-${heureFin}`
-      // });
+        this.form.reset()
+        const session = result.data;
+        const heureDebutParts = session.heure_debut.split(':');
+        const heureFinParts = session.heure_fin.split(':');
+        const heureDebut = `${heureDebutParts[0]}:${heureDebutParts[1]}`;
+        const heureFin = `${heureFinParts[0]}:${heureFinParts[1]}`;
 
-      this.events.unshift({
-        event_date: new Date(session.date),
-        event_title: session.libelle,
-        event_Type: session.Type,
-        event_prof: session.professeur,
-        event_module: session.module,
-        event_heure: `${heureDebut}-${heureFin}`
-      });
+        this.events.unshift({
+          event_date: new Date(session.date),
+          event_title: session.libelle,
+          event_Type: session.Type,
+          event_prof: session.professeur,
+          event_module: session.module,
+          event_heure: `${heureDebut}-${heureFin}`
+        });
 
-      this.event_title = '';
-      this.event_date = '';
+        this.event_title = '';
+        this.event_date = '';
+      }else if(result.error){
+        alert("Une session existe déjà pour cette salle, cette date et cette heure.");
+
+      }
     });
   }
 
@@ -233,8 +233,8 @@ export class SessionComponent implements OnInit {
     this.sessionService.filtre(this.classeSelectionne).subscribe((result: any) => {
       this.filtreModuleByClasse()
       this.listeSessionClasse = result.data2
-      // console.log(result);
-      ;
+        // console.log(result);
+        ;
       this.events = [];
 
       this.events = this.listeSessionClasse.map(session => {
@@ -281,11 +281,11 @@ export class SessionComponent implements OnInit {
       }
     })
   }
-  
+
   eventStatuts: string[] = [];
 
-  annulerSession(id: number,i:number) {
-    this.sessionService.annnuler(id).subscribe((result:any) => {
+  annulerSession(id: number, i: number) {
+    this.sessionService.annnuler(id).subscribe((result: any) => {
       console.log(result);
       if (result.message) {
         // alert("Session annulée avec succès.'")
@@ -295,8 +295,8 @@ export class SessionComponent implements OnInit {
     })
   }
 
-  validerSession(id: number,i:number) {
-    this.sessionService.valider(id).subscribe((result:any) => {
+  validerSession(id: number, i: number) {
+    this.sessionService.valider(id).subscribe((result: any) => {
       console.log(result);
       if (result.message) {
         // alert("Session validée avec succès.")
@@ -305,8 +305,8 @@ export class SessionComponent implements OnInit {
 
     })
   }
-  invaliderSession(id: number,i:number) {
-    this.sessionService.invalider(id).subscribe((result:any) => {
+  invaliderSession(id: number, i: number) {
+    this.sessionService.invalider(id).subscribe((result: any) => {
       console.log(result);
       if (result.message) {
         // alert("Session invalidée avec succès.")

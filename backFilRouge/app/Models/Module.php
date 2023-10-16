@@ -10,11 +10,11 @@ class Module extends Model
     use HasFactory;
     public function profModules()
     {
-        return $this->hasMany(profModule::class, 'professeur_id');
+        return $this->hasMany(profModule::class, 'user_id');
     }
     public function professeurs()
     {
-        return $this->belongsToMany(Professeur::class, 'prof_modules','module_id','professeur_id')
+        return $this->belongsToMany(User::class, 'prof_modules','module_id','user_id')
         ->withPivot('id');
     }
     public function courses()

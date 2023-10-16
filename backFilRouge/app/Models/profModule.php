@@ -16,11 +16,11 @@ class profModule extends Model
 
     public function professeurs()
     {
-        return $this->belongsTo(Professeur::class, 'professeur_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
     public function professeur()
     {
-        return $this->belongsTo(Professeur::class);
+        return $this->belongsTo(User::class);
     }
     public function module()
     {

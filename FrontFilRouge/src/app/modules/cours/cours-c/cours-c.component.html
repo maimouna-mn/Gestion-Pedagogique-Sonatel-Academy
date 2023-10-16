@@ -19,12 +19,12 @@
           <hr class="my-4 md:min-w-full">
           <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">Section 3
           </h6>
-          <a href="#"  routerLink="/cours"
+          <a href="#" routerLink="/cours"
             class="text-xs uppercase py-3 font-bold block text-blueGray-800 hover:text-blueGray-500"><i
-              class="fas fa-newspaper mr-2 text-sm text-blueGray-400"></i>Cours</a><a href="#" routerLink="/cours/session"
+              class="fas fa-newspaper mr-2 text-sm text-blueGray-400"></i>Cours</a><a href="#"
+            routerLink="/cours/session"
             class="text-xs uppercase py-3 font-bold block text-blueGray-800 hover:text-blueGray-500"><i
-              class="fas fa-user-circle mr-2 text-sm text-blueGray-400"></i>Session</a><a
-            href="javascript:;"
+              class="fas fa-user-circle mr-2 text-sm text-blueGray-400"></i>Session</a><a href="javascript:;"
             class="text-xs uppercase py-3 font-bold block text-blueGray-800 hover:text-blueGray-500"><i
               class="fas fa-paint-brush mr-2 text-sm text-blueGray-400"></i>Page 3 for Section 3</a>
           <hr class="my-4 md:min-w-full">
@@ -40,7 +40,9 @@
         </div>
       </div>
     </div>
+
   </nav>
+
   <div class="relative md:ml-64  bg-blue-100 w-full">
     <nav
       class="absolute top-0 left-0 w-full z-10 bg-white lg:flex-row lg:flex-nowrap lg:justify-start flex items-center py-1 px-4 lg:bg-transparent">
@@ -49,9 +51,7 @@
         <div
           class="items-center w-full lg:flex lg:w-auto flex-grow duration-300 transition-all ease-in-out lg:h-auto-important hidden">
           <div class="flex flex-row flex-wrap items-center ml-auto mr-3 mt-3">
-            <!-- <div class="mb-3 pt-0"><input placeholder="Search here" type="text"
-                class="border-transparent shadow px-3 py-2 text-sm  w-full placeholder-blueGray-200 text-blueGray-700 relative bg-white rounded-md outline-none focus:ring focus:ring-lightBlue-500 focus:ring-1 focus:border-lightBlue-500 border border-solid transition duration-200 ">
-            </div> -->
+
           </div>
           <a class="text-blueGray-500 block" href="javascript:;">
             <div class="items-center flex"><span
@@ -79,138 +79,52 @@
         </div>
       </div>
     </nav>
-    <!-- pb-32 -->
     <div class="relative pt-28 pb-14  h-14 bg-blue-500">
       <div class="px-4 w-full">
-       <div class="flex justify-between mr-7" style="margin-top: -5rem;">
-        <div class="text-white font-bold mt-12 text-2xl">
-       <h1>Liste Cours</h1>
-      </div>
-          <!-- <div class="flex flex-wrap " style="margin-top: -5rem;"> -->
-            <!-- <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
-              <div class="relative flex flex-col min-w-0 break-words bg-white rounded-lg mb-6 xl:mb-0 shadow-lg">
-                <div class="flex-auto p-4">
-                  <div class="flex flex-wrap">
-                    <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-                      <h5 class="text-blueGray-400 uppercase font-bold text-xs">Traffic</h5>
-                      <span class="font-bold text-xl">350,897</span>
-                    </div>
-                    <div class="relative w-auto pl-4 flex-initial">
-                      <div
-                        class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-red-500">
-                        <i class="far fa-chart-bar"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <p class="text-sm text-blueGray-500 mt-4"><span class="text-emerald-500 mr-2"><i
-                        class="fas fa-arrow-up"></i> 3.48%</span><span class="whitespace-nowrap">Since last month</span>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
-              <div class="relative flex flex-col min-w-0 break-words bg-white rounded-lg mb-6 xl:mb-0 shadow-lg">
-                <div class="flex-auto p-4">
-                  <div class="flex flex-wrap">
-                    <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-                      <h5 class="text-blueGray-400 uppercase font-bold text-xs">NEW USERS</h5>
-                      <span class="font-bold text-xl">2,356</span>
-                    </div>
-                    <div class="relative w-auto pl-4 flex-initial">
-                      <div
-                        class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-orange-500">
-                        <i class="fas fa-chart-pie"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <p class="text-sm text-blueGray-500 mt-4"><span class="text-red-500 mr-2"><i
-                        class="fas fa-arrow-down"></i> 3.48%</span><span class="whitespace-nowrap">Since last
-                      week</span></p>
-                </div>
-              </div>
-            </div> -->
-            <!-- <div class="bg-white p-4 shadow-md rounded-lg"> -->
-
-              <div class="flex w-1/2">
-              <select class="block w-2/5  h-10 border rounded-md mt-10 mr-5" [(ngModel)]="semestreSelectionne" (click)="filtreCours()" >
-                  <option value="">Filtrer</option>
-                  <option value="{{item.id}}" *ngFor="let item of semestres" >{{item.libelle}}</option>
-              </select>
-
-
-          <!-- </div> -->
-
-            <div class="flex items-center mt-10 ml-2">
-              <div class="flex-1 mr-2">
-                  <input placeholder="Search here" type="text"
-                      class="border-transparent shadow px-3 py-2 text-sm w-full placeholder-blueGray-200 text-blueGray-700 relative bg-white rounded-md outline-none focus:ring focus:ring-lightBlue-500 focus:ring-1 focus:border-lightBlue-500 border border-solid transition duration-200"
-                  >
-              </div>
-              <button  class="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded" (click)="recherche()">
-                  Rechercher
-              </button>
+        <div class="flex justify-between mr-7" style="margin-top: -5rem;">
+          <div class="text-white font-bold mt-12 text-2xl">
+            <h1>Liste Cours</h1>
           </div>
 
-        </div>
-            <!-- <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
-              <div class="relative flex flex-col min-w-0 break-words bg-white rounded-lg mb-6 xl:mb-0 shadow-lg">
-                <div class="flex-auto p-4">
-                  <div class="flex flex-wrap">
-                    <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-                      <h5 class="text-blueGray-400 uppercase font-bold text-xs">SALES</h5>
-                      <span class="font-bold text-xl">924</span>
-                    </div>
-                    <div class="relative w-auto pl-4 flex-initial">
-                      <div
-                        class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-pink-500">
-                        <i class="fas fa-users"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <p class="text-sm text-blueGray-500 mt-4"><span class="text-orange-500 mr-2"><i
-                        class="fas fa-arrow-down"></i> 1.10%</span><span class="whitespace-nowrap">Since
-                      yesterday</span></p>
-                </div>
-              </div>
+          <div class="flex w-1/2">
+            <div class="py-2" (click)="logout()">
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700 bg-blue-500 ">Deconnexion
+              </a>
             </div>
-            <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
-              <div class="relative flex flex-col min-w-0 break-words bg-white rounded-lg mb-6 xl:mb-0 shadow-lg">
-                <div class="flex-auto p-4">
-                  <div class="flex flex-wrap">
-                    <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-                      <h5 class="text-blueGray-400 uppercase font-bold text-xs">PERFORMANCE</h5>
-                      <span class="font-bold text-xl">49,65%</span>
-                    </div>
-                    <div class="relative w-auto pl-4 flex-initial">
-                      <div
-                        class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-lightBlue-500">
-                        <i class="fas fa-percent"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <p class="text-sm text-blueGray-500 mt-4"><span class="text-emerald-500 mr-2"><i
-                        class="fas fa-arrow-up"></i> 12%</span><span class="whitespace-nowrap">Since last month</span>
-                  </p>
-                </div>
+            <select class="block w-2/5  h-10 border rounded-md mt-10 mr-5" [(ngModel)]="semestreSelectionne"
+              (click)="filtreCours()">
+              <option value="">Filtrer</option>
+              <option value="{{item.id}}" *ngFor="let item of semestres">{{item.libelle}}</option>
+            </select>
+            <div class="flex items-center mt-10 ml-2">
+              <div class="flex-1 mr-2">
+                <input placeholder="Search here" type="text"
+                  class="border-transparent shadow px-3 py-2 text-sm w-full placeholder-blueGray-200 text-blueGray-700 relative bg-white rounded-md outline-none focus:ring focus:ring-lightBlue-500 focus:ring-1 focus:border-lightBlue-500 border border-solid transition duration-200">
               </div>
-            </div> -->
-          <!-- </div> -->
+              <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded" (click)="recherche()">
+                Rechercher
+              </button>
+            </div>
+
+          </div>
+
         </div>
       </div>
     </div>
     <div class="px-4 md:px-6 mx-auto w-full  ">
       <div class="flex flex-wrap ">
 
-        <div class="w-full h-full px-4" style="height: 38.2rem;">
+        <div class="w-full  h-full px-4" style="height: 43.5rem;">
 
-          <div class="relative flex flex-col min-w-0 break-words w-full mb-8 shadow-lg rounded-lg bg-blueGray-800"
-            style="height: 35rem;">
+          <div class="relative  mt-3 flex flex-col min-w-0 break-words w-full mb-8 shadow-lg rounded-lg bg-blueGray-800"
+            style="height: 38rem;">
             <div class="flex justify-end  ">
 
               <button class=" z-50 w-16 h-16 my-1 mr-1 rounded-full bg-blue-500 flex items-center justify-center "
+                
                 onclick="document.getElementById('extralarge-modal').classList.remove('hidden'); document.body.classList.add('overflow-hidden');">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24"
-                  stroke="currentColor">
+                  stroke="currentColor" *ngIf="ajoutFonctionnalites">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
                   </path>
                 </svg></button>
@@ -219,8 +133,8 @@
             <div class="rounded-t bg-transparent " style="margin-top: -4rem;">
               <div class="flex flex-wrap  items-center">
                 <div class="relative w-full  max-w-full flex-grow flex-1">
-                  <div class="w-full h-full card-container px-4" style="height: 35rem;">
-                    <div class="relative flex flex-wrap card mb-1 " *ngFor="let item of listeCours">
+                  <div class="w-full h-full card-container px-4" style="height: 37rem;">
+                    <div class="relative flex flex-wrap card mb-1 mt-1" *ngFor="let item of listeCours">
                       <!-- ---------------------------------------------------------------------------- -->
                       <div class="w-full md:w-1/2 lg:w-1/3 px-4 mb-2">
                         <div
@@ -244,12 +158,14 @@
 
                               </div>
                               <div class="w-10 h-10 mx-2 rounded-full bg-red-600 flex items-center justify-center"
-                              style="margin-top: -0.5rem;margin-left: -9rem;" (click)="delete(item.id)">
+                                style="margin-top: -0.5rem;margin-left: -9rem;" (click)="delete(item.id)">
 
-                              <svg  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-white">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m6 4.125l2.25 2.25m0 0l2.25 2.25M12 13.875l2.25-2.25M12 13.875l-2.25 2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
-                              </svg>
-                            </div>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                  stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-white">
+                                  <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m6 4.125l2.25 2.25m0 0l2.25 2.25M12 13.875l2.25-2.25M12 13.875l-2.25 2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+                                </svg>
+                              </div>
                             </div>
                             <div class="professeur-list  " style="max-height: 60px;margin-top: -1rem; ">
                               <div class="flex items-center justify-center " style="flex-wrap:wrap">
@@ -260,8 +176,8 @@
 
                               </div>
                             </div>
-                            <div class=" " style=" overflow-y: auto;margin-top: 1rem;" >
-                              <div class="flex items-center justify-center " >
+                            <div class=" " style=" overflow-y: auto;margin-top: 1rem;">
+                              <div class="flex items-center justify-center ">
                                 <div
                                   class="block  font-sans font-bold text-xl content-center leading-relaxed text-inherit antialiased">
                                   {{item.moduleProf.professeur}}
@@ -271,29 +187,26 @@
 
                           </div>
                           <div class="p-6 pt-0 flex justify-between">
-                            <a class="!font-medium !text-blue-gray-900 !transition-colors  hover:!text-pink-500"
-                              href="#">
-                              <button
-                                class="flex select-none items-center gap-2 rounded-lg py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-pink-500 transition-all hover:bg-pink-500/10 active:bg-pink-500/30 bg-pink-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                                type="button" data-ripple-dark="true">
-                                Details
-                              </button>
-                            </a>
+                            <!-- <a class="!font-medium !text-blue-gray-900 !transition-colors  hover:!text-pink-500"
+                              href="#"> -->
+                            <button
+                              onclick="document.getElementById('defaultModal').classList.remove('hidden'); document.body.classList.add('overflow-hidden');" (click)="detailCours(item.id)"
+                              class="flex select-none items-center gap-2 rounded-lg py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-pink-500 transition-all hover:bg-pink-500/10 active:bg-pink-500/30 bg-pink-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                              type="submit" data-ripple-dark="true">
+                              Details
+                            </button>
+                            <!-- </a> -->
                             <p class="block font-sans font-bold leading-relaxed text-2xl  text-blue-500 antialiased">
                               {{item.heures_global}}h
                             </p>
                           </div>
                         </div>
-
                       </div>
-
                     </div>
                   </div>
                 </div>
-
               </div>
-
-              <div class="text-center mt-5">
+              <div class="text-center mt-10">
                 <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                   (click)="previousPage()" [disabled]="page === 1">Précédent</button>
                 <span class="mx-2">{{ page }}</span>
@@ -338,8 +251,14 @@
   </div>
 </div>
 
+
+
+
+
+
+
 <div id="extralarge-modal"
-  class="fixed  z-50  w-2/3 hidden  p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
+  class="fixed  z-50  w-2/3 hidden   p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
   style="left: 23rem;top: 8rem;">
   <form [formGroup]="form">
     <div class="relative  rounded-lg shadow bg-blue-100">
@@ -347,7 +266,6 @@
         <h3 class="text-xl font-medium text-gray-900 dark:text-white">
           Extra Large modal
         </h3>
-
       </div>
       <div class="p-6 space-y-6">
         <div class="min-h-1/2 p-2 flex items-center justify-center">
@@ -376,28 +294,45 @@
                                 {{professor.nomComplet}}</option>
                             </select>
                           </div>
+
                         </div>
 
-                        <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 justify-between md:grid-cols-2">
-                          <div class="border rounded-md mt-4" id="classes-container">
+
+                        <div class="flex items-center justify-between">
+                          <select class="block  h-10 border w-full bg-gray-50 rounded-md mt-10 mr-5"
+                            formControlName="semestre_id" (click)="allSemestre()">
+                            <option value="{{item.id}}" *ngFor="let item of semestres">{{item.libelle}}</option>
+                          </select>
+                          <div class="w-full flex justify-center">
                             <button
-                              class=" text-white-600 bg-blue-700 rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 hover:text-blue-800"
+                              class="text-white-600 bg-blue-700 rounded-lg  mt-10 mr-5 text-sm px-5 py-2.5 text-center dark:bg-blue-600 hover:text-blue-800"
                               (click)="ajouterLigne()">Ajouter une classe</button>
-                            <div id="formArray-container" formArrayName="classes">
-                              <div class="flex items-center mt-2" *ngFor="let classe of classes.controls; let i = index"
-                                [formGroupName]="i">
+                          </div>
+                        </div>
+
+                        <!-- Ajouter une classe en dessous -->
+                        <div class="border rounded-md mt-4" id="classes-container">
+
+                          <div id="formArray-container" formArrayName="classes">
+                            <div class="flex justify-between mt-2"
+                              *ngFor="let classe of classes.controls; let i = index" [formGroupName]="i">
+                              <!-- Move "heures_global" here, inside the FormArray -->
+                              <div class=" w-[45%]">
                                 <select formControlName="classe_id"
-                                  class="h-10 border rounded-md px-4 w-2/3 bg-gray-50">
+                                  class="h-10 border  rounded-md px-4 w-[95%] bg-gray-50">
                                   <option value="{{item.id}}" *ngFor="let item of Classes">{{item.libelle}}</option>
                                 </select>
                                 <button class="ml-2 text-red-600 hover:text-red-800"
                                   onclick="removeClassField(this)">X</button>
                               </div>
+                              <input type="number" formControlName="heures_global"
+                                class="h-10 border w-[48%] rounded-md px-4 bg-gray-50" value="" placeholder="0" />
                             </div>
+
                           </div>
-                          <input type="number" formControlName="heures_global"
-                            class="h-10 border mt-5 rounded-md px-4 bg-gray-50" value="" placeholder="0" />
                         </div>
+                        <!-- ... The rest of your code ... -->
+
                       </div>
                     </div>
                   </div>
@@ -414,8 +349,8 @@
           class="text-white  bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">I
           accept</button>
         <button data-modal-hide="extralarge-modal" type="button"
-    onclick="document.getElementById('extralarge-modal').classList.add('hidden'); document.body.classList.remove('overflow-hidden');"
-    class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600" >Decline</button>
+          onclick="document.getElementById('extralarge-modal').classList.add('hidden'); document.body.classList.remove('overflow-hidden');"
+          class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Decline</button>
       </div>
     </div>
   </form>
@@ -429,4 +364,52 @@
         d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
     </svg>
   </button>
+</div>
+
+
+<!-- Main modal -->
+<div id="defaultModal" tabindex="-1" aria-hidden="true" class="fixed hidden top-0 left-0 right-0 z-50  w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+  <div class="relative  max-w-7xl max-h-full">
+    <!-- Modal content -->
+    <div class="relative bg-white rounded-lg shadow-lg mt-56 " style="margin-left: 40rem;">
+      <!-- Modal header -->
+      <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+        <h3 class="text-2xl font-semibold text-gray-900 ">
+          Cours Details
+        </h3>
+        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="defaultModal">
+          <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+          </svg>
+          <span class="sr-only">Close modal</span>
+        </button>
+      </div>
+      <!-- Modal body -->
+      <div class="p-6 space-y-4" id="modal-content">
+        <div *ngFor="let item of detailcours1" class="text-lg leading-tight text-gray-900">
+          <p><span class="font-semibold">Module:</span> {{ item.Module }}</p>
+          <p><span class="font-semibold">Professeur:</span> {{ item.Professeur }}</p>
+        </div>
+        <div class="text-base leading-relaxed text-gray-900">
+          <p><span class="font-semibold">Classes:</span></p>
+          <ul *ngFor="let item of detailcours" class="list-disc list-inside">
+            <li >
+              <span class="font-semibold">{{ item.Classe }}:</span> {{ item.Heures }} Heures
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <!-- Modal footer -->
+      <div class="flex items-center p-4 space-x-4 border-t border-gray-200 rounded-b dark:border-gray-600">
+        <button data-modal-hide="defaultModal"
+        onclick="document.getElementById('defaultModal').classList.add('hidden'); document.body.classList.remove('overflow-hidden');"
+
+         type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-base px-6 py-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">I accept</button>
+        <button data-modal-hide="defaultModal" type="button" 
+        onclick="document.getElementById('defaultModal').classList.add('hidden'); document.body.classList.remove('overflow-hidden');"
+        class="text-gray-600 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-base px-6 py-3 hover:text-gray-900 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Decline</button>
+      </div>
+    </div>
+  </div>
 </div>

@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CoursServiceService } from './cours-service.service';
 import { ModuleService } from '../module/module.service';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
-
+import { AuthServiceService } from '../../auth/auth-service.service';
+// import {CourseDetail} from '../../../Interfaces/emploiDuTemps'
 @Component({
   selector: 'app-cours-c',
   templateUrl: './cours-c.component.html',
@@ -14,16 +15,17 @@ export class CoursCComponent implements OnInit {
     this.index()
     this.all()
   }
-
-  constructor(private coursService: CoursServiceService, private moduleService: ModuleService, private fb: FormBuilder) {
+  ajoutFonctionnalites!: boolean;
+  constructor(private coursService: CoursServiceService, private moduleService: ModuleService, private fb: FormBuilder,private authService:AuthServiceService) {
     this.form = this.fb.group({
       module: [null],
       prof_module_id: [''],
-      semestre_id: [1],
+      semestre_id: [''],
       annee_scolaire_id: [1],
-      heures_global: [''],
+      // heures_global: [''],
       classes: this.fb.array([]),
     });
+    this.ajoutFonctionnalites = this.authService.isRp(); 
   }
   // -----------------------------------------------------------------------------------------------------------------------------------
   form!: FormGroup
@@ -45,16 +47,26 @@ export class CoursCComponent implements OnInit {
   ajouterLigne() {
     this.classes.push(
       this.fb.group({
-        classe_id: ['']
+        classe_id: [''],
+        heures_global: ['']
       })
     );
   }
 
   index() {
-    this.coursService.all1(this.page).subscribe((result: any) => {
-      this.listeCours = result.data
-      this.totalPages = result.meta.last_page;
-    })
+    // if (!this.ajoutFonctionnalites) {
+      this.coursService.all1(this.page).subscribe((result: any) => {
+        this.listeCours = result.data
+        
+        this.totalPages = result.meta.last_page;
+      })
+    // }
+      // this.coursService.coursprof(this.page,4).subscribe((result: any) => {
+      //   console.log(result);
+        
+      //   this.listeCours = result.data
+      //   this.totalPages = result.meta.last_page;
+      // })
   }
 
   all() {
@@ -115,4 +127,25 @@ export class CoursCComponent implements OnInit {
     })
   }
 
+allSemestre(){
+  this.coursService.semestreAll().subscribe((result)=>{
+    console.log(result);
+    
+  })
+}
+
+logout() {
+  this.authService.logout();
+}
+detailcours!:any
+detailcours1!:any
+detailCours(id:number){
+  this.coursService.detailCours(id).subscribe((result:any)=>{
+    console.log(result);
+    this.detailcours=result.data1
+    this.detailcours1=result.data2
+   
+    
+  })
+}
 }

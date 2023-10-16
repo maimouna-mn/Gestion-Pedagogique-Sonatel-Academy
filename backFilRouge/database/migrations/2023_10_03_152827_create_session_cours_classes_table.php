@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('session_cours_classes', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(coursClasse::class)->constrained();
+            $table->foreignIdFor(coursClasse::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Session::class)->constrained();
             $table->softDeletes();
             $table->timestamps();
