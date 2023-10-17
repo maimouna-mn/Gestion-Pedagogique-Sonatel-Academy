@@ -38,7 +38,7 @@ export class CoursCComponent implements OnInit {
   prof!: any[]
   page = 1;
   totalPages = 1;
-  semestreSelectionne!: number
+  semestreSelectionne: number = 0
   // -----------------------------------------------------------------------------------------------------------------------------------
   get classes() {
     return this.form.get("classes") as FormArray

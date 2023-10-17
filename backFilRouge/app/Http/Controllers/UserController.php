@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\userRequest;
+use App\Imports\UserImport;
 use App\Models\anneeClasse;
 use App\Models\Classe;
 use App\Models\Inscriptions;
 use App\Models\User;
 use DB;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 use Cookie;
@@ -18,26 +20,23 @@ class UserController extends Controller
     public function all()
     {
         $etudiants = User::where('role', 'etudiant')->get();
-        return $etudiants;
+
+        $classes = Classe::all();
+        return [
+            "data" => $etudiants,
+            "data1" => $classes
+        ];
     }
+   
 
 
-
+    // public function store(Request $request)
     // {
-    //     "etudiants": [
-    //         {
-    //             "nom": "Étudiant 1",
-    //             "email": "etudiant1@example.com"
-    //         },
-    //         {
-    //             "nom": "Étudiant 2",
-    //             "email": "etudiant2@example.com"
-    //         },
-    //         {
-    //             "nom": "Étudiant 3",
-    //             "email": "etudiant3@example.com"
-    //         }
-    //     ]
+    
+    //     $file = $request->file('excel_file');
+    
+    //     $fileType = 'Csv';
+    //     Excel::import(new UserImport, $file, $fileType);
     // }
 
 
@@ -60,7 +59,7 @@ class UserController extends Controller
 
         try {
             User::insert($etudiantsData);
-          $classe = anneeClasse::where('classe_id', $request->classe_id)->first();
+            $classe = anneeClasse::where('classe_id', $request->classe_id)->first();
 
             foreach ($etudiantsData as $etudiantData) {
                 $inscriptionData = [
@@ -72,14 +71,25 @@ class UserController extends Controller
 
             DB::commit();
 
-            return response('Étudiants ajoutés avec succès');
+            return response()->json('etudiants ajoutés avec succes');
         } catch (\Exception $e) {
             DB::rollBack();
-            return response('Erreur lors de l\'ajout des étudiants', 500);
+            return response()->json('erreur lors de l\'ajout des etudiants');
         }
     }
 
 
+    public function classeEleves($id)
+    {
+        $annee = anneeClasse::where('classe_id', $id)
+            ->where("anneescolaire_id", 1)
+            ->first();
+        $eleves = Inscriptions::where("annee_classe_id", $annee->id)->get();
+        return [
+            "data1" => $annee,
+            "data2" => $eleves,
+        ];
+    }
 
 
 

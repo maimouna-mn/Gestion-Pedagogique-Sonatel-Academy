@@ -16,9 +16,9 @@ class coursClasse extends Model
         return $this->belongsToMany(Session::class, 'session_cours_classes', 'cours_classe_id', 'session_id');
     }
     public function sessionCoursClasses()
-{
-    return $this->hasMany(sessionCoursClasse::class, 'cours_classe_id')->onDelete('cascade');
-}
+    {
+        return $this->hasMany(sessionCoursClasse::class, 'cours_classe_id')->onDelete('cascade');
+    }
 
     public function classes()
     {

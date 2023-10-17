@@ -37,6 +37,7 @@ Route::get('/cours/coursprof/{id}',[coursController::class,"coursesByProfessor"]
 
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/store', [UserController::class, 'store']);
-Route::get('/all', [UserController::class, 'all']);
+Route::get('/user/classeEleves/{id}', [UserController::class,'classeEleves']);
+Route::get('/user', [UserController::class, 'all']);
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/logout', [UserController::class, 'logout']);

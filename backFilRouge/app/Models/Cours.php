@@ -40,12 +40,11 @@ class Cours extends Model
     //     return $this->belongsToMany(anneeClasse::class, 'class_cours');
     // }
 
-    public function session1()
+    public function anneeClasses()
     {
-        return $this->belongsToMany(Session::class, 'session_cours_classe');
+        return $this->belongsToMany(anneeClasse::class, 'annee_classes');
     }
 
-    // Modèle Cours
   
 
     public function profModule()

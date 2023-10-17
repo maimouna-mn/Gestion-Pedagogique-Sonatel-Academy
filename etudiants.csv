@@ -1,11 +1,5 @@
-name,email,password,telephone,role
-Alice Johnson,alice@example.com,123456,555-123-1001,etudiant
-Bob Smith,bob@example.com,123456,555-123-1002,etudiant
-Charlie Brown,charlie@example.com,123456,555-123-1003,etudiant
-David Lee,david@example.com,123456,555-123-1004,etudiant
-Eva Davis,eva@example.com,123456,555-123-1005,etudiant
-Frank Wilson,frank@example.com,123456,555-123-1006,etudiant
-Grace Miller,grace@example.com,123456,555-123-1007,etudiant
-Hannah Turner,hannah@example.com,123456,555-123-1008,etudiant
-Ian Adams,ian@example.com,123456,555-123-1009,etudiant
-Jessica Harris,jessica@example.com,123456,555-123-1010,etudiant
+name,email,password,role
+Alice Johnson,alice@example.com1,123456,etudiant
+Bob Smith,bob@example.com1,123456,etudiant
+Charlie Brown,charlie@example.com1,123456,etudiant
+David Lee,david@example.com1,123456,etudiant

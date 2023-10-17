@@ -23,32 +23,6 @@ class coursController extends Controller
         $semestre1 = Semestre::all();
         return $semestre1;
     }
-
-    // public function store(Request $request)
-    // {
-    //     return DB::transaction(function () use ($request) {
-    //         $cours = Cours::create([
-    //             "semestre_id" => $request->semestre_id,
-    //             "prof_module_id" => $request->prof_module_id
-    //         ]);
-
-    //         foreach ($request->classes as $class) {
-    //             $classe = Classe::find($class['classe_id']);
-
-    //             if ($classe) {
-    //                 $anneeClasse = AnneeClasse::where('classe_id', $class['classe_id'])->where('anneescolaire_id', 1)->first();
-
-    //                 if ($anneeClasse) {
-    //                     $cours->classes()->attach([$anneeClasse->id => ['heures_global' => $class['heures_global']]]);
-    //                 }
-    //             }
-    //         }
-    //         return new coursResource($cours);
-    //     });
-    // }
-
-
-
  public function store(Request $request)
 {
     return DB::transaction(function () use ($request) {
@@ -94,7 +68,7 @@ class coursController extends Controller
     {
         $cours = Cours::findOrFail($id);
         $cours->classes()->detach();
-        $cours->session1()->delete();
+        // $cours->sessionCoursClasses()->delete();
         $cours->delete();
 
         return response()->json(['message' => 'Cours supprimé avec succès'], 200);
