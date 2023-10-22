@@ -1,11 +1,14 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CoursEleve;
+use App\Http\Resources\coursEtat;
 use App\Http\Resources\coursResource;
 use App\Models\anneeClasse;
 use App\Models\Cours;
 use App\Models\Classe;
 use App\Models\coursClasse;
+use App\Models\Inscriptions;
 use App\Models\Module;
 use App\Models\Semestre;
 use Illuminate\Http\Request;
@@ -23,29 +26,40 @@ class coursController extends Controller
         $semestre1 = Semestre::all();
         return $semestre1;
     }
- public function store(Request $request)
-{
-    return DB::transaction(function () use ($request) {
-        $cours = Cours::create([
-            "semestre_id" => $request->semestre_id,
-            "prof_module_id" => $request->prof_module_id
-        ]);
+    public function store(Request $request)
+    {
+        return DB::transaction(function () use ($request) {
+            $cours = Cours::create([
+                "semestre_id" => $request->semestre_id,
+                "prof_module_id" => $request->prof_module_id
+            ]);
+            if (!$request->classes) {
+                return response()->json(['error' => 'choisissez une classe'], 200);
+            }
+            foreach ($request->classes as $class) {
+                $classe = Classe::find($class['classe_id']);
 
-        foreach ($request->classes as $class) {
-            $classe = Classe::find($class['classe_id']);
+                if ($classe) {
+                    // $anneeClasse = AnneeClasse::where('classe_id', $class['classe_id'])->where('anneescolaire_id', 1)->first();
+                    $anneeClasse = AnneeClasse::where('classe_id', $class['classe_id'])
+                        ->whereHas('anneeScolaire', function ($query) {
+                            $query->where('statut', 1);
+                        })
+                        ->first();
 
-            if ($classe) {
-                $anneeClasse = AnneeClasse::where('classe_id', $class['classe_id'])->where('anneescolaire_id', 1)->first();
-
-                if ($anneeClasse) {
-                    $cours->classes()->attach($anneeClasse->id, ['heures_global' => $class['heures_global']]);
+                    if ($anneeClasse) {
+                        $cours->classes()->attach($anneeClasse->id, [
+                            'heures_global' => $class['heures_global'],
+                            'nombreHeureR' => $class['heures_global']
+                        ]);
+                        // $cours->classes()->attach($anneeClasse->id, [['heures_global' => $class['heures_global']],['nombreHeureR' => $class['heures_global']]]);
+                    }
                 }
             }
-        }
 
-        return new coursResource($cours);
-    });
-}
+            return new coursResource($cours);
+        });
+    }
 
 
 
@@ -61,7 +75,7 @@ class coursController extends Controller
             $cours->classes()->sync($request->classes);
             // $cours->classes()->sync($request->input('classes'));
 
-            return new CoursResource($cours);
+            return new coursResource($cours);
         });
     }
     public function destroy($id)
@@ -79,8 +93,13 @@ class coursController extends Controller
     public function filtreCours(Request $request, $id)
     {
         $coursS = Cours::where("semestre_id", $id)->with('moduleProf')->get();
-
         return CoursResource::collection($coursS);
+    }
+
+    public function filtreEtatCours(Request $request, $etat)
+    {
+        $coursS = coursClasse::where("Termine", $etat)->with('cours')->get();
+        return coursEtat::collection($coursS);
     }
 
     public function recherche(Request $request, $code)
@@ -109,56 +128,65 @@ class coursController extends Controller
                 "classe_id" => $classe->id,
                 "classe" => $classe->libelle,
                 "cours_classe_id" => $coursClasse->id,
+                "heures_global" => $coursClasse->heures_global,
                 "module" => $module->id,
-
             ];
         }
-
         return $data;
     }
 
     public function getCoursDetails($id)
     {
         $cours = Cours::with(['profModule', 'profModule.professeur', 'classes'])->find($id);
-    
+
         if (!$cours) {
             return response()->json(['message' => 'Cours non trouvé'], 404);
         }
-    
+
         $coursDetails[] = [
             'Module' => $cours->profModule->module->libelle,
-            'Professeur' => $cours->profModule->professeurs->name, 
+            'Professeur' => $cours->profModule->professeurs->name,
         ];
-    
+
         $classesDetails = [];
-    
+
         foreach ($cours->classes as $classe) {
             $heures = $classe->pivot->heures_global;
-    
-               $classesDetails[] = [
-                'Classe' => $classe->libelle, 
+            $heuresR = $classe->pivot->nombreHeureR;
+
+            $classesDetails[] = [
+                'Classe' => $classe->libelle,
                 'Heures' => $heures,
+                'HeuresR' => $heuresR,
             ];
         }
-    
+
         // $coursDetails['Classes'] = $classesDetails;
-    
-        return response()->json(["data1"=>$classesDetails,"data2"=>$coursDetails]);
+
+        return response()->json(["data1" => $classesDetails, "data2" => $coursDetails]);
     }
-    
+
     public function coursesByProfessor($id)
     {
         $courses = Cours::with('moduleProf')
-            ->whereHas('moduleProf', function($query) use ($id) {
-                $query->where('user_id', $id);
+            ->whereHas('moduleProf', function ($query) use ($id) {
+                $query->where('user_id', $id)->where("role", "professeur");
             })
             ->orderBy('id', 'desc')
             ->paginate(5);
-    
+
         // return $courses;
         return coursResource::collection($courses);
     }
-    
-    
+
+    public function coursEtudiant($id)
+    {
+        $eleve = Inscriptions::where('user_id', $id)->first();
+        $cours = anneeClasse::where('id', $eleve->annee_classe_id)->first();
+        $cour1 = coursClasse::where('annee_classe_id', $cours->id)->get();
+        // return $cour1;
+        return CoursEleve::collection($cour1);
+    }
+
 
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { SessionService } from './session.service';
 import { CoursServiceService } from '../cours-c/cours-service.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-session',
@@ -138,10 +139,10 @@ export class SessionComponent implements OnInit {
 
 
     this.sessionService.store(this.form.value).subscribe((result: any) => {
-  
-      console.log(result);
-      if (result.data){
 
+      console.log(result);
+
+      if (result.data) {
         this.form.reset()
         const session = result.data;
         const heureDebutParts = session.heure_debut.split(':');
@@ -161,12 +162,16 @@ export class SessionComponent implements OnInit {
         this.event_title = '';
         this.event_date = '';
       }else if(result.error){
-        alert("Une session existe déjà pour cette salle, cette date et cette heure.");
-
+        Swal.fire({
+          title: 'Erreur',
+          text: "Une erreur s'est produite lors de l'insertion.",
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
       }
-    });
+    },
+    );
   }
-
 
   modalData!: any
   openModal(date: any) {
@@ -187,11 +192,9 @@ export class SessionComponent implements OnInit {
     const eventDate = new Date(event.event_date);
     return (
       eventDate.getFullYear() === year &&
-      eventDate.getMonth() + 1 === month &&
+      eventDate.getMonth() === month &&
       eventDate.getDate() === date
     );
-
-
   }
 
 
@@ -223,8 +226,6 @@ export class SessionComponent implements OnInit {
 
   selectedEvents!: any
   showAllEvents(date: any) {
-    console.log(this.events);
-
     const selectedEvents = this.getAllEvents(date);
     this.selectedEvents = selectedEvents;
   }
@@ -288,10 +289,15 @@ export class SessionComponent implements OnInit {
     this.sessionService.annnuler(id).subscribe((result: any) => {
       console.log(result);
       if (result.message) {
-        // alert("Session annulée avec succès.'")
         this.eventStatuts[i] = 'Annulée';
+      }else{
+           Swal.fire({
+      title: 'Erreur',
+      text: "impossible d'annuler une session en cours",
+      icon: 'error',
+      confirmButtonText: 'OK'
+    });
       }
-
     })
   }
 
@@ -299,17 +305,15 @@ export class SessionComponent implements OnInit {
     this.sessionService.valider(id).subscribe((result: any) => {
       console.log(result);
       if (result.message) {
-        // alert("Session validée avec succès.")
         this.eventStatuts[i] = 'validee';
       }
-
     })
   }
+
   invaliderSession(id: number, i: number) {
     this.sessionService.invalider(id).subscribe((result: any) => {
       console.log(result);
       if (result.message) {
-        // alert("Session invalidée avec succès.")
         this.eventStatuts[i] = 'invalidee';
       }
 

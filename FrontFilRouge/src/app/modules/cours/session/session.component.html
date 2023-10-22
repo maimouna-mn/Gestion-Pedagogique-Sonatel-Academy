@@ -49,16 +49,53 @@
 
         <div
           class="items-center w-full lg:flex lg:w-auto flex-grow duration-300 transition-all ease-in-out lg:h-auto-important hidden">
-          <div class="flex flex-row flex-wrap items-center ml-auto mr-3 mt-3">
+          <div class="ml-auto mt-2" style="margin-right: -1.5rem;">
+              <button id="dropdownUserAvatarButton" data-dropdown-toggle="dropdownAvatar"
+                class="flex mx-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                type="button"
+                onclick="document.getElementById('dropdownAvatar').classList.remove('hidden'); document.body.classList.add('overflow-hidden');">
+                <!-- <span class="sr-only">Open user menu</span> -->
+                <img class="w-12 h-12 rounded-full"
+                  src="https://demos.creative-tim.com/notus-pro-react/static/media/team-1-800x800.fa5a7ac2.jpg"
+                  alt="user photo">
+              </button>
 
+              <!-- Dropdown menu -->
+              <div id="dropdownAvatar"
+                class="z-10 hidden  bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+                <div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
+                  <div>Bonnie Green</div>
+                  <div class="font-medium truncate">name@flowbite.com</div>
+                </div>
+                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownUserAvatarButton">
+                  <li>
+                    <a href="#"
+                      class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</a>
+                  </li>
+                  <li>
+                    <a href="#"
+                      class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
+                  </li>
+                  <li>
+                    <a href="#"
+                      class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Earnings</a>
+                  </li>
+                </ul>
+                <div class="py-2">
+                  <a href="#"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Sign
+                    out</a>
+                </div>
+              </div>
           </div>
-          <a class="text-blueGray-500 block" href="javascript:;">
-            <div class="items-center flex"><span
+          <!-- <a class="text-blueGray-500 block" href="javascript:;">
+            <div class="items-center flex">
+              <span
                 class="w-12 h-12 text-sm text-white bg-blueGray-300 inline-flex items-center justify-center rounded-full"><img
                   alt="..." class="w-full rounded-full align-middle border-none shadow-lg"
                   src="https://demos.creative-tim.com/notus-pro-react/static/media/team-1-800x800.fa5a7ac2.jpg"></span>
             </div>
-          </a>
+          </a> -->
           <div class="block z-50">
             <div
               class="bg-white text-base float-left p-2 border list-none text-left rounded-lg shadow-lg min-w-48 transition-all duration-100 ease-in-out transform scale-95 opacity-0 absolute origin-top-right">
@@ -98,9 +135,7 @@
                 <input placeholder="Search here" type="text"
                   class="border-transparent shadow px-3 py-2 text-sm w-full placeholder-blueGray-200 text-blueGray-700 relative bg-white rounded-md outline-none focus:ring-lightBlue-500 focus:ring-1 focus:border-lightBlue-500 border border-solid transition duration-200">
               </div>
-              <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded">
-                Rechercher
-              </button>
+      
             </div>
 
           </div>
@@ -110,7 +145,6 @@
     </div>
     <div class="px-4 md:px-6 mx-auto w-full">
       <div class="flex flex-wrap ">
-
         <div class="w-full h-full px-4" style="height: 58.2rem;">
 
           <div class="relative  flex flex-col min-w-0 break-words w-full mb-8 shadow-lg rounded-lg bg-blueGray-800"
@@ -118,7 +152,7 @@
 
             <div class="flex items-center justify-between py-2 px-6 " style="border-bottom: 1px solid;">
               <div class="bg-blue-500 h-10 font-bold px-4 pb-2 inline-flex text-center text-gray-800 rounded-lg">
-                <span style="padding-top: 0.5rem;">{{ MONTH_NAMES[month] }}</span>
+                <span style="padding-top: 0.5rem;">{{ MONTH_NAMES[month]}}</span>
                 <span class="ml-1" style="padding-top: 0.5rem;">{{ year }}</span>
               </div>
 
@@ -195,7 +229,8 @@
                       <div class="text-sm  font-bold" style="position: absolute; top: 0; left: 0;">
                         {{ event.event_title }}
                       </div>
-                      <div class="text-sm font-bold " style="position: absolute; bottom: 50%; right: 0;margin-bottom: 0.5rem;">
+                      <div class="text-sm font-bold "
+                        style="position: absolute; bottom: 50%; right: 0;margin-bottom: 0.5rem;">
                         {{ event.event_prof }}
                       </div>
                       <div class="text-sm font-bold" style="position: absolute; bottom: 0; left: 0;">
@@ -278,7 +313,7 @@
                           {{ eventStatuts[i] ? eventStatuts[i] : event.event_statut }}
                         </td>
                         <td class="flex items-center p-6 space-x-2 border-t">
-            
+
                           <button type="button" (click)="validerSession(event.event_id,i)"
                             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                             Valider</button>
@@ -417,7 +452,7 @@
               <!-- Salle select -->
               <div class="ml-5" *ngIf="selectedOption === 'presentiel'">
                 <label for="salle" class="block  ">Salle</label>
-                <select id="salle" formControlName="salle_id" 
+                <select id="salle" formControlName="salle_id"
                   class="mt-1 shadow-sm border block w-[95%] h-10 px-4 rounded-md bg-gray-50">
                   <option value="{{item.id}}" *ngFor="let item of salles">{{item.libelle}}</option>
                   <!-- Add more options as needed -->

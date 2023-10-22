@@ -91,11 +91,17 @@
               <a href="#" class="block px-4 py-2 text-sm text-gray-700 bg-blue-500 ">Deconnexion
               </a>
             </div>
-            <select class="block w-2/5  h-10 border rounded-md mt-10 mr-5" [(ngModel)]="semestreSelectionne"
+            <!-- <select class="block w-2/5  h-10 border rounded-md mt-10 mr-5" [(ngModel)]="semestreSelectionne"
               (click)="filtreCours()">
               <option value="0">Filtrer</option>
               <option value="{{item.id}}" *ngFor="let item of semestres">{{item.libelle}}</option>
-            </select>
+            </select> -->
+            <select class="block w-2/5  h-10 border rounded-md mt-10 mr-5" [(ngModel)]="etat"
+            (click)="filtreCoursEtat()">
+            <option value="">Filtrer</option>
+            <option value="0" >Encours</option>
+            <option value="1" >Termine</option>
+          </select>
             <div class="flex items-center mt-10 ml-2">
               <div class="flex-1 mr-2">
                 <input placeholder="Search here" type="text"
@@ -120,11 +126,11 @@
             style="height: 38rem;">
             <div class="flex justify-end  ">
 
-              <button class=" z-50 w-16 h-16 my-1 mr-1 rounded-full bg-blue-500 flex items-center justify-center "
+              <button class="  z-50 w-16 h-16 my-1 mr-1 rounded-full bg-blue-500 flex items-center justify-center "
                 
                 onclick="document.getElementById('extralarge-modal').classList.remove('hidden'); document.body.classList.add('overflow-hidden');">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24"
-                  stroke="currentColor" *ngIf="ajoutFonctionnalites">
+                  stroke="currentColor" >
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
                   </path>
                 </svg></button>
@@ -138,16 +144,15 @@
                       <!-- ---------------------------------------------------------------------------- -->
                       <div class="w-full md:w-1/2 lg:w-1/3 px-4 mb-2">
                         <div
-                          class="hover:scale-105 hover:shadow-xl transition relative mt-6 flex w-96 flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
+                          class="hover:scale-105 hover:shadow-xl transition relative mt-6 flex w-96 flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md" >
                           <div class="p-6">
-
                             <div class="flex justify-between ">
                               <h5
                                 class="mb-2 block font-sans text-blue-500 text-xl font-semibold leading-snug tracking-normal  antialiased">
                                 {{item.semestre}}
                               </h5>
                               <div class="w-10 h-10 mx-2 rounded-full bg-blue-500 flex items-center justify-center"
-                                style="margin-top: -0.5rem;">
+                                style="margin-top: -0.5rem;margin-left: -1rem;">
 
                                 <svg class="h-4 w-4 text-white" fill="none" stroke="currentColor" stroke-width="1.5"
                                   viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -187,6 +192,7 @@
 
                           </div>
                           <div class="p-6 pt-0 flex justify-between">
+                            
                             <button
                               onclick="document.getElementById('defaultModal').classList.remove('hidden'); document.body.classList.add('overflow-hidden');" (click)="detailCours(item.id)"
                               class="flex select-none items-center gap-2 rounded-lg py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-pink-500 transition-all hover:bg-pink-500/10 active:bg-pink-500/30 bg-pink-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
@@ -289,13 +295,10 @@
                             <select formControlName="prof_module_id" id="professor"
                               class="h-10 border mt-1 rounded-md px-4 w-full bg-gray-50">
                               <option *ngFor="let professor of filterProf" value="{{professor.pivot.id}}">
-                                {{professor.nomComplet}}</option>
+                                {{professor.name}}</option>
                             </select>
                           </div>
-
                         </div>
-
-
                         <div class="flex items-center justify-between">
                           <select class="block  h-10 border w-full bg-gray-50 rounded-md mt-10 mr-5"
                             formControlName="semestre_id" (click)="allSemestre()">
@@ -321,7 +324,7 @@
                                   <option value="{{item.id}}" *ngFor="let item of Classes">{{item.libelle}}</option>
                                 </select>
                                 <button class="ml-2 text-red-600 hover:text-red-800"
-                                  onclick="removeClassField(this)">X</button>
+                                  (click)="removeClassField(i)">X</button>
                               </div>
                               <input type="number" formControlName="heures_global"
                                 class="h-10 border w-[48%] rounded-md px-4 bg-gray-50" value="" placeholder="0" />
@@ -392,7 +395,8 @@
           <p><span class="font-semibold">Classes:</span></p>
           <ul *ngFor="let item of detailcours" class="list-disc list-inside">
             <li >
-              <span class="font-semibold">{{ item.Classe }}:</span> {{ item.Heures }} Heures
+              <span class="font-semibold">{{ item.Classe }}:</span> 
+              <span>{{item.HeuresR}} heures/{{ item.Heures }}</span>
             </li>
           </ul>
         </div>

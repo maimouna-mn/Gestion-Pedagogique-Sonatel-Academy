@@ -1,26 +1,19 @@
 <ion-app>
   <ion-split-pane contentId="main-content">
     <ion-menu contentId="main-content" type="overlay">
-      <ion-content>
-        <ion-list id="inbox-list">
-          <ion-list-header>Inbox</ion-list-header>
-          <ion-note>hi@ionicframework.com</ion-note>
-
-          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
-            <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
-              <ion-icon aria-hidden="true" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
-              <ion-label>{{ p.title }}</ion-label>
-            </ion-item>
-          </ion-menu-toggle>
-        </ion-list>
-
-        <ion-list id="labels-list">
-          <ion-list-header>Labels</ion-list-header>
-
-          <ion-item *ngFor="let label of labels" lines="none">
-            <ion-icon aria-hidden="true" slot="start" ios="bookmark-outline" md="bookmark-sharp"></ion-icon>
-            <ion-label>{{ label }}</ion-label>
-          </ion-item>
+      <ion-content >
+        <ion-list id="labels-list"  class="bg-blue-400">
+          <ion-list-header class="ml-14 ">{{name}}</ion-list-header>
+          <div style="display: flex;align-items: center;justify-content: center;">
+            <div class="bg-slate-50 rounded-full border-8" style="width: 100px; height: 100px;margin-bottom: 10px;">
+              <img src="{{photo}}" class="h-20 w-20 rounded-full" alt="">
+            </div>
+          </div>
+          <ion-label class="ml-[40%] font-bold mb-4">maClasse</ion-label>
+          <div *ngFor="let page of appPages" lines="none" class="bg-white border text-black text-lg mt-1 shadow">
+            <ion-icon aria-hidden="true"  [name]="page.icon"></ion-icon>
+            <ion-label [routerLink]="page.url">{{ page.title }}</ion-label>
+          </div>
         </ion-list>
       </ion-content>
     </ion-menu>

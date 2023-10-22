@@ -9,9 +9,9 @@ import { environment } from 'src/environnement/environment';
 export abstract class MereServiceService<T> {
 
 
-  constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-  abstract getUri():string
+  abstract getUri(): string
 
   all<U>(): Observable<U> {
     const uri = this.getUri()
@@ -30,7 +30,7 @@ export abstract class MereServiceService<T> {
 
   store<U>(produit: T): Observable<U> {
     const uri = this.getUri()
-    return this.http.post<U>(`${environment.apiUrl}/${uri}`,produit);
+    return this.http.post<U>(`${environment.apiUrl}/${uri}`, produit);
   }
 
   filtre<U>(id: number): Observable<U> {
@@ -43,13 +43,18 @@ export abstract class MereServiceService<T> {
 
     return this.http.get<U>(`${environment.apiUrl}/${uri}/filtre1/${id}`)
   }
-  coursprof(page: number,id:number): Observable<any> {
+  coursprof(page: number, id: any): Observable<any> {
     const uri = this.getUri();
     return this.http.get<any>(`${environment.apiUrl}/${uri}/coursprof/${id}?page=${page}`);
   }
- 
-  
 
+  // Route::get('/cours/filtreEtat/{etat}',[coursController::class,"filtreEtatCours"]);
+
+  filtreEtatCours<U>(etat: number): Observable<U> {
+    const uri = this.getUri()
+
+    return this.http.get<U>(`${environment.apiUrl}/${uri}/filtreEtat/${etat}`)
+  }
   update<U>(article: T, id: number): Observable<U> {
     const uri = this.getUri()
     return this.http.put<U>(`${environment.apiUrl}/${uri}/${id}`, article)
@@ -75,9 +80,8 @@ export abstract class MereServiceService<T> {
 
     return this.http.get<U>(`${environment.apiUrl}/${uri}/invalider/${id}`)
   }
-// http://127.0.0.1:8000/api/cours/getCoursDetails/17
-detailCours<U>(id:number): Observable<U> {
-  const uri = this.getUri()
-  return this.http.get<U>(`${environment.apiUrl}/${uri}/getCoursDetails/${id}`)
-}
+  detailCours<U>(id: number): Observable<U> {
+    const uri = this.getUri()
+    return this.http.get<U>(`${environment.apiUrl}/${uri}/getCoursDetails/${id}`)
+  }
 }

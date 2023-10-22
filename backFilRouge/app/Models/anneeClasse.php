@@ -22,4 +22,7 @@ class anneeClasse extends Model
     {
         return $this->belongsToMany(User::class, 'inscriptions', 'annee_classe_id', 'user_id');
     }
+    public function anneeScolaire() {
+        return $this->belongsTo(Anneescolaire::class, 'anneescolaire_id');
+    }
 }

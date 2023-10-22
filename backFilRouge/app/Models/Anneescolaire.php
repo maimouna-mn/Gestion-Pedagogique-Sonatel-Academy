@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Anneescolaire extends Model
 {
     use HasFactory;
+    public function anneeClasses() {
+        return $this->hasMany(anneeClasse::class, 'anneescolaire_id');
+    }
 }

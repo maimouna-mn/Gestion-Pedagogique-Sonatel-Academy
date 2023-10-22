@@ -29,7 +29,6 @@ class sessionController extends Controller
             "data2" => coursClasse::all(),
             "data3" => Classe::all()
         ];
-
     }
 
 
@@ -42,7 +41,7 @@ class sessionController extends Controller
             'Type' => 'required|in:presentiel,enLigne',
             'salle_id' => $request->Type == 'presentiel' ? 'required|exists:salles,id' : 'nullable',
         ]);
-    
+
         if ($validatedData['Type'] == 'presentiel') {
             $existingSession = Session::where('date', $validatedData['date'])
                 ->where('salle_id', $validatedData['salle_id'])
@@ -51,40 +50,43 @@ class sessionController extends Controller
                         ->orWhereBetween('heure_fin', [$validatedData['heure_debut'], $validatedData['heure_fin']]);
                 })
                 ->first();
-    
+
             if ($existingSession) {
-                return response()->json(['error' => 'Une session existe déjà pour cette salle, cette date et cette heure.']);
+                return response()->json(['error' => 'Une session existe déjà pour cette salle, cette date et cette heure.'], 200);
             }
         }
-    
+
         return DB::transaction(function () use ($validatedData, $request) {
             $session = Session::create($validatedData);
-    
+
             $session->sessionClasseCours()->attach($request->sessionClasseCours);
             $heureDebut = $session->heure_debut;
             $heureFin = $session->heure_fin;
             $dateTimeDebut = DateTime::createFromFormat('H:i', $heureDebut);
             $dateTimeFin = DateTime::createFromFormat('H:i', $heureFin);
-    
+
             if ($dateTimeDebut && $dateTimeFin) {
                 $interval = $dateTimeDebut->diff($dateTimeFin);
                 $hours = $interval->h;
                 $minutes = $interval->i;
                 $totalDuration = $hours + ($minutes / 60);
             }
-    
+
             foreach ($request->sessionClasseCours as $value) {
                 $coursClasse = coursClasse::find($value['cours_classe_id']);
                 if ($coursClasse) {
-                    if($totalDuration>$coursClasse->heures_global){
-                            return "plus de duree";
+                    if ($totalDuration > $coursClasse->heures_global) {
+                        return response()->json(['error' => 'heure de cours termine.'], 200);
+
                     }
-                    $coursClasse->decrement('heures_global', $totalDuration);
+                    // $coursClasse->decrement('heures_global', $totalDuration);
+                    $coursClasse->decrement('nombreHeureR', $totalDuration);
+                    if ($coursClasse->nombreHeureR === 0) {
+                        $coursClasse->update(['Termine' => true]);
+                    }
                 }
             }
-    
             event(new SessionEnCours($session));
-    
             return new sessionResource($session);
         });
     }
@@ -100,11 +102,10 @@ class sessionController extends Controller
         $anneeClasse = anneeClasse::where("classe_id", $classeId)->first();
 
         if (!$anneeClasse) {
-            return response()->json(['message' => 'Année de classe non trouvée'], 404);
+            return response()->json(['error' => 'Année de classe non trouvée'], 404);
         }
 
         $cours = coursClasse::where("annee_classe_id", $anneeClasse->id)->get();
-        $sessionsDuCours = [];
 
         $formattedSessions = [];
         foreach ($cours as $coursClasse) {
@@ -150,10 +151,11 @@ class sessionController extends Controller
         $classe = Classe::find($classeId);
 
         if (!$classe) {
-            return response()->json(['message' => 'Classe non trouvée'], 404);
+            return response()->json(['error' => 'Classe non trouvée'], 404);
         }
 
-        $anneeClasse = AnneeClasse::where("classe_id", $classe->id)->where("anneescolaire_id", 1)->first();
+        // $anneeClasse = AnneeClasse::where("classe_id", $classe->id)->where("anneescolaire_id", 3)->first();
+        $anneeClasse = AnneeClasse::where("classe_id", $classe->id)->first();
         $coursClasse = CoursClasse::where('annee_classe_id', $anneeClasse->id)->get();
         $modules = [];
 
@@ -165,6 +167,7 @@ class sessionController extends Controller
             $modules[] = [
                 'module' => $module,
                 'cours_classe_id' => $coursClasseItem->id,
+                'heures_global' => $coursClasseItem->heures_global,
             ];
         }
 
@@ -210,7 +213,7 @@ class sessionController extends Controller
         }
 
         if ($this->isSessionEnCours($id)) {
-            return response()->json("impossible d'annuler");
+            return response()->json(["error" => "impossible d'annuler"], 200);
         }
 
         $session->status = 'annulee';
@@ -229,7 +232,7 @@ class sessionController extends Controller
 
 
         if ($this->isSessionEnCours($id)) {
-            return response()->json("impossible de valider");
+            return response()->json(["error" => "impossible de valider"]);
         }
         // if (!$this->isSessionEnCours($id)) {
         //     return response()->json(['error' => 'Impossible de valider cette session car elle n\'a jamais été encours.'], Response::HTTP_BAD_REQUEST);

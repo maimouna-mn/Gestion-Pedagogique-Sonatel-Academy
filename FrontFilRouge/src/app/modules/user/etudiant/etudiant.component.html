@@ -82,7 +82,11 @@
           <div class="text-white font-bold mt-12 text-2xl">
             <h1>Liste Classes</h1>
           </div>
-          <input type="file" class="mr-7 bg-blue-500 text-lg border shadow-lg" (change)="handleFileInput($event)" accept=".csv" style="margin-top: 3rem;">
+          <input type="file" id="fileInput" class="custom-file-input" (change)="handleFileInput($event)" accept=".csv" style="display: none;">
+          <label for="fileInput" class="custom-file-label flex items-center justify-center text-lg font-bold">
+            Sélectionnez un fichier CSV
+          </label>
+          
         </div>
       </div>
     </div>
@@ -98,7 +102,7 @@
                 <div class="rounded-t bg-transparent " >
                   <div class="flex flex-wrap  items-center">
                     <div class="relative w-full  max-w-full flex-grow flex-1">
-                      <div class="w-full  h-full  card-container px-4" style="height: 40rem;">
+                      <div class="w-full flex flex-wrap  h-full  card-container px-4" style="height: 35rem;">
                         <div class="relative flex flex-wrap card mb-1 mt-1" *ngFor="let item of classes">
                           <div class="w-full md:w-1/2  lg:w-1/3 px-8 mb-11" >
                             <div

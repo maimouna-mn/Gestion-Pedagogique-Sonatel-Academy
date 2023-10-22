@@ -2,7 +2,6 @@
 use App\Http\Controllers\coursController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\profmoduleController;
-use App\Http\Controllers\semestreController;
 use App\Http\Controllers\sessionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -33,6 +32,7 @@ Route::get('/session/valider/{id}',[sessionController::class,"validerSession"]);
 Route::get('/session/invalider/{id}',[sessionController::class,"invaliderSession"]);
 Route::get('/cours/getCoursDetails/{id}',[coursController::class,"getCoursDetails"]);
 Route::get('/cours/coursprof/{id}',[coursController::class,"coursesByProfessor"]);
+Route::get('/cours/filtreEtat/{etat}',[coursController::class,"filtreEtatCours"]);
 
 
 Route::post('/login', [UserController::class, 'login']);
@@ -41,3 +41,4 @@ Route::get('/user/classeEleves/{id}', [UserController::class,'classeEleves']);
 Route::get('/user', [UserController::class, 'all']);
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/logout', [UserController::class, 'logout']);
+Route::get('/cours/coursEtu/{id}',[coursController::class,"coursEtudiant"]);

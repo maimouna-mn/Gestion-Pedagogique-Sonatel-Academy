@@ -17,9 +17,13 @@ class coursResource extends JsonResource
         $heuresGlobal = $this->coursClasses->map(function ($coursClass) {
             return $coursClass->heures_global;
         });
+        $nombreHeureR = $this->coursClasses->map(function ($coursClass) {
+            return $coursClass->nombreHeureR;
+        });
         return [
             'id' => $this->id,
             'heures_global' =>$heuresGlobal,
+            'nombreHeureR' =>$nombreHeureR,
             'semestre' => $this->semestre->libelle,
             'moduleProf' =>new profmoduleResource($this->moduleProf) ,
         ];

@@ -17,12 +17,15 @@ export abstract class AuthServiceService {
   public isLoggedIn(): boolean {
     return this.isAuthenticated;
   }
-  // this.user.user.role === 'responsable_rp'
+  
   isRp(): boolean {
-    return this.isAuthenticated  && localStorage.getItem("role") === "responsable_rp";
+    return  localStorage.getItem("role") === "responsable_rp";
   }
   isProf(): boolean {
-    return this.isAuthenticated  && localStorage.getItem("role") === "professeur";
+    return localStorage.getItem("role") === "professeur";
+  }
+  isAttache(): boolean {
+    return  localStorage.getItem("role") === "attache";
   }
   
   login(identifiant: any): Observable<any> {
@@ -34,6 +37,7 @@ export abstract class AuthServiceService {
           console.log(result);
           this.user=result
           localStorage.setItem('role', this.user.user.role);
+          localStorage.setItem('id', this.user.user.id);
           return result;
         })
       );

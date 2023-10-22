@@ -21,5 +21,8 @@ class profmoduleResource extends JsonResource
             // 'professeur_id'=>$this->professeurs->id,
             'professeur'=>$this->professeurs->name,
         ];
+        
+
+        
     }
 }

@@ -1,0 +1,57 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon name="wifi"></ion-icon>
+      </ion-button>
+      <ion-label>4G</ion-label>
+      <ion-button>
+        <ion-icon name="battery-full"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="folder/Inbox"></ion-back-button>
+    </ion-buttons>
+    <ion-col size="8">
+      <ion-text class="ion-text-center ion-text-bold">
+        10:30 AM
+      </ion-text>
+    </ion-col>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">liste cours</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-card color="primary" *ngFor="let cours of cours">
+    <div class="flex">
+      <div class="bg-slate-50 text-black w-48 shadow-lg rounded-br-xl">
+        <ion-card-header>
+          <ion-card-title>
+            <span class=" text-lg block">Professeur:</span>
+            <span class="block text-base font-medium"> {{cours.module.professeur}}</span>
+          </ion-card-title>
+          <ion-card-subtitle class="text-2xl ">{{cours.module.module }}</ion-card-subtitle>
+        </ion-card-header>
+      </div>
+      <div class="">
+        <ion-card-content class="text-lg p-2">
+          <span class="block text-lg font-bold">Quota Horaire:</span>
+          <span>{{cours.heures_global }}heures</span>
+        </ion-card-content>
+          <ion-card-content class="text-lg p-2 ">
+            <span class="block text-lg font-bold">Restant:</span>
+            <span>{{cours.nombreHeureR }}heures</span>
+          </ion-card-content>
+      </div>
+    </div>
+    <div class="flex justify-between">
+      <ion-card-content>{{cours.Termine==0 ? "En cours...":"Terminé"}}</ion-card-content>
+    </div>
+  </ion-card>
+</ion-content>

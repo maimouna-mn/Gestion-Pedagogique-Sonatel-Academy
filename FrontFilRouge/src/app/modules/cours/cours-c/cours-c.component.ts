@@ -3,7 +3,7 @@ import { CoursServiceService } from './cours-service.service';
 import { ModuleService } from '../module/module.service';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { AuthServiceService } from '../../auth/auth-service.service';
-// import {CourseDetail} from '../../../Interfaces/emploiDuTemps'
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-cours-c',
   templateUrl: './cours-c.component.html',
@@ -15,17 +15,21 @@ export class CoursCComponent implements OnInit {
     this.index()
     this.all()
   }
-  ajoutFonctionnalites!: boolean;
-  constructor(private coursService: CoursServiceService, private moduleService: ModuleService, private fb: FormBuilder,private authService:AuthServiceService) {
+  
+  fonctionnalitesRp!: boolean;
+  fonctionnalitesProf!: boolean;
+  fonctionnalitesAttache!: boolean;
+  constructor(private coursService: CoursServiceService, private moduleService: ModuleService, private fb: FormBuilder, private authService: AuthServiceService) {
     this.form = this.fb.group({
       module: [null],
       prof_module_id: [''],
       semestre_id: [''],
       annee_scolaire_id: [1],
-      // heures_global: [''],
       classes: this.fb.array([]),
     });
-    this.ajoutFonctionnalites = this.authService.isRp(); 
+    this.fonctionnalitesRp = this.authService.isRp();
+    this.fonctionnalitesProf = this.authService.isProf();
+    this.fonctionnalitesAttache = this.authService.isAttache();
   }
   // -----------------------------------------------------------------------------------------------------------------------------------
   form!: FormGroup
@@ -39,6 +43,7 @@ export class CoursCComponent implements OnInit {
   page = 1;
   totalPages = 1;
   semestreSelectionne: number = 0
+  etat!: number
   // -----------------------------------------------------------------------------------------------------------------------------------
   get classes() {
     return this.form.get("classes") as FormArray
@@ -53,20 +58,25 @@ export class CoursCComponent implements OnInit {
     );
   }
 
+  removeClassField(index: number) {
+    this.classes.removeAt(index);
+  }
+
   index() {
-    // if (!this.ajoutFonctionnalites) {
+    if (this.fonctionnalitesRp) {
       this.coursService.all1(this.page).subscribe((result: any) => {
         this.listeCours = result.data
-        
         this.totalPages = result.meta.last_page;
       })
-    // }
-      // this.coursService.coursprof(this.page,4).subscribe((result: any) => {
-      //   console.log(result);
-        
-      //   this.listeCours = result.data
-      //   this.totalPages = result.meta.last_page;
-      // })
+    } else if (this.fonctionnalitesProf) {
+      const id = localStorage.getItem("id");
+      this.coursService.coursprof(this.page,id).subscribe((result: any) => {
+
+        console.log(result);
+        this.listeCours = result.data
+        this.totalPages = result.meta.last_page;
+      })
+    }
   }
 
   all() {
@@ -75,6 +85,7 @@ export class CoursCComponent implements OnInit {
       this.prof = result.data1[0].professeurs
       this.Classes = result.data2
       this.semestres = result.data3
+
     })
   }
 
@@ -84,19 +95,45 @@ export class CoursCComponent implements OnInit {
     this.filterProf = selectedModuleData ? selectedModuleData.professeurs : [];
   }
 
+
   add() {
     console.log(this.form.value);
     this.coursService.store(this.form.value).subscribe((result: any) => {
-      this.listeCours.unshift(result.data)
-      this.form.reset()
-    })
+      Swal.fire({
+        title: 'Succès',
+        text: 'Les données ont été insérées avec succès.',
+        icon: 'success',
+        confirmButtonText: 'OK'
+      })
+
+      this.listeCours.unshift(result.data);
+      this.form.reset();
+    },
+      (error) => {
+        Swal.fire({
+          title: 'Erreur',
+          text: "Une erreur s'est produite lors de l'insertion.",
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+      }
+    );
   }
 
+
   delete(id: number) {
-    this.coursService.delete(id).subscribe((result) => {
-      console.log(result);
-      this.listeCours = this.listeCours.filter(cours => cours.id !== id);
-    })
+    this.coursService.delete(id).subscribe(
+      (result: any) => {
+        Swal.fire({
+          title: 'Succès',
+          text: 'Les données ont été supprimes avec succès.',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        })
+        this.listeCours = this.listeCours.filter(cours => cours.id !== id);
+      },
+
+    )
   }
 
   previousPage() {
@@ -113,39 +150,43 @@ export class CoursCComponent implements OnInit {
     }
   }
 
-  recherche(){
-    this.listeCours.filter((item=>item.libelle))
-    console.log(this.listeCours);
-
-    console.log(this.listeCours.filter((item=>item.moduleProf.module === "Laravel")));
+  recherche() {
+    this.listeCours.filter((item => item.libelle))
+    console.log(this.listeCours.filter((item => item.moduleProf.module === "Laravel")));
 
   }
 
-  filtreCours() {
-    this.coursService.filtre(this.semestreSelectionne).subscribe((result: any) => {
-      this.listeCours = result.data
+  // filtreCoursSemestre() {
+  //   this.coursService.filtre(this.semestreSelectionne).subscribe((result: any) => {
+  //     this.listeCours = result.data
+  //   })
+  // }
+  filtreCoursEtat() {
+    if ((this.fonctionnalitesRp)) {
+
+      this.coursService.filtreEtatCours(this.etat).subscribe((result: any) => {
+        this.listeCours = result.data
+      })
+    }
+  }
+  allSemestre() {
+    this.coursService.semestreAll().subscribe((result) => {
+      console.log(result);
+
     })
   }
 
-allSemestre(){
-  this.coursService.semestreAll().subscribe((result)=>{
-    console.log(result);
-    
-  })
-}
+  logout() {
+    this.authService.logout();
+  }
+  detailcours!: any
+  detailcours1!: any
 
-logout() {
-  this.authService.logout();
-}
-detailcours!:any
-detailcours1!:any
-detailCours(id:number){
-  this.coursService.detailCours(id).subscribe((result:any)=>{
-    console.log(result);
-    this.detailcours=result.data1
-    this.detailcours1=result.data2
-   
-    
-  })
-}
+  detailCours(id: number) {
+    this.coursService.detailCours(id).subscribe((result: any) => {
+      console.log(result);
+      this.detailcours = result.data1
+      this.detailcours1 = result.data2
+    })
+  }
 }

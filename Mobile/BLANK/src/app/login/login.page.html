@@ -1,0 +1,23 @@
+<ion-content class="ion-padding ">
+  <div class="flex flex-col h-full items-center px-2 py-11 justify-center mx-auto md:h-screen lg:py-0" >
+   
+    <div class="w-full bg-white rounded-lg shadow  dark:border md:mt-0 xl:p-0 ">
+      <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+        <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl ">
+          Sign in to your account
+        </h1>
+        <form class="space-y-4 md:space-y-6" [formGroup]="form">
+          <ion-item class="custom-background">
+            <ion-input  label="email" formControlName="email" placeholder="name@company.com" required="true"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input label="password" formControlName="password" placeholder="••••••••" required="true"></ion-input>
+          </ion-item>
+        
+          <ion-button label="submit" expand="full" color="primary" (click)="login()">Sign in</ion-button>
+        
+        </form>
+      </div>
+    </div>
+  </div>
+</ion-content>

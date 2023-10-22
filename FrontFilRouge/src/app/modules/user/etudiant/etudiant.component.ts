@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserServiceService } from './user-service.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-etudiant',
@@ -72,13 +73,33 @@ export class EtudiantComponent implements OnInit {
       // this.index();
     }
   }
-  
+
 
 
   addStudents(id: number) {
-    this.userService.store(this.json, id).subscribe((result) => {
-      console.log(result);
-    })
+    this.userService.store(this.json, id).subscribe((result: any) => {
+      if (result.message) {
+        console.log(result);
+        const selectedClasse = this.classes.find(classe => classe.id === +id);
+        selectedClasse.effectif = selectedClasse.effectif + +this.json.length
+        Swal.fire({
+          title: 'Succès',
+          text: 'Les données ont été insérées avec succès.',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        })
+      }else if(result.error){
+          Swal.fire({
+            title: 'Erreur',
+            text: "Eleve(s) deja inséré(s).",
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
+      }
+
+    });
+    
   }
+
 
 }

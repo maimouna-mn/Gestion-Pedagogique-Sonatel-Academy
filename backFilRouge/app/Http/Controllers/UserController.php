@@ -3,14 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\userRequest;
-use App\Imports\UserImport;
 use App\Models\anneeClasse;
 use App\Models\Classe;
 use App\Models\Inscriptions;
 use App\Models\User;
 use DB;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 use Cookie;
@@ -27,19 +25,6 @@ class UserController extends Controller
             "data1" => $classes
         ];
     }
-   
-
-
-    // public function store(Request $request)
-    // {
-    
-    //     $file = $request->file('excel_file');
-    
-    //     $fileType = 'Csv';
-    //     Excel::import(new UserImport, $file, $fileType);
-    // }
-
-
     public function store(Request $request)
     {
         $etudiants = $request->etudiants;
@@ -47,14 +32,16 @@ class UserController extends Controller
         $etudiantsData = [];
 
         foreach ($etudiants as $etudiant) {
+            $hashedPassword = password_hash($etudiant['password'], PASSWORD_BCRYPT);
+        
             $etudiantsData[] = [
                 'name' => $etudiant['name'],
                 'email' => $etudiant['email'],
-                'password' => $etudiant['password'],
+                'password' => $hashedPassword, 
                 'role' => $etudiant['role']
             ];
         }
-
+        
         DB::beginTransaction();
 
         try {
@@ -68,13 +55,19 @@ class UserController extends Controller
                 ];
                 Inscriptions::create($inscriptionData);
             }
+            $classeEf=Classe::find($request->classe_id);
+            $nouvelEffectif = $classeEf->effectif + count($etudiantsData);
+            $classeEf->update(['effectif' => $nouvelEffectif]);
 
             DB::commit();
 
-            return response()->json('etudiants ajoutés avec succes');
+            return response()->json([
+                "message"=>'etudiants ajoutés avec succes',
+                "data"=>$classe
+            ]);
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json('erreur lors de l\'ajout des etudiants');
+            return response()->json(["error"=>'erreur lors de l\'ajout des etudiants']);
         }
     }
 
@@ -129,7 +122,6 @@ class UserController extends Controller
 
     public function logout()
     {
-
         Auth::guard('sanctum')->user()->tokens()->delete();
         Cookie::forget("token");
 

@@ -13,7 +13,7 @@ class Cours extends Model
     public function classes(): BelongsToMany
     {
         return $this->belongsToMany(Classe::class, 'cours_classes', 'cours_id', 'annee_classe_id')
-            ->withPivot("heures_global");
+            ->withPivot("heures_global","nombreHeureR");
     }
     
 
