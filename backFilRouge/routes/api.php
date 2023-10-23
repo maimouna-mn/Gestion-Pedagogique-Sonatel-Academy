@@ -42,3 +42,11 @@ Route::get('/user', [UserController::class, 'all']);
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/logout', [UserController::class, 'logout']);
 Route::get('/cours/coursEtu/{id}',[coursController::class,"coursEtudiant"]);
+// sessionProfesseur($professeurId)
+Route::get('/session/profSessions/{professeurId}',[sessionController::class,"sessionProfesseur"]);
+
+Route::post('session/demandeAnnulation/{session_cours_classe_id}', [sessionController::class,"demandeAnnulation"]);
+// SupprimerSession(Request $request,$session_cours_classe_id)
+Route::delete('/session/supprimer/{session_cours_classe_id}',[sessionController::class,"SupprimerSession"]);
+
+Route::get('/cours/demandesEnAttente',[coursController::class,"demandesEnAttente"]);

@@ -38,6 +38,11 @@ export abstract class MereServiceService<T> {
 
     return this.http.get<U>(`${environment.apiUrl}/${uri}/filtre/${id}`)
   }
+  profSessions<U>(professeurId: any): Observable<U> {
+    const uri = this.getUri()
+
+    return this.http.get<U>(`${environment.apiUrl}/${uri}/profSessions/${professeurId}`)
+  }
   filtre1<U>(id: number): Observable<U> {
     const uri = this.getUri()
 
@@ -83,5 +88,20 @@ export abstract class MereServiceService<T> {
   detailCours<U>(id: number): Observable<U> {
     const uri = this.getUri()
     return this.http.get<U>(`${environment.apiUrl}/${uri}/getCoursDetails/${id}`)
+  }
+
+  DemandeAnnulation<U>(session_cours_classe_id: number,motif:string): Observable<U> {
+    const uri = this.getUri()
+    return this.http.post<U>(`${environment.apiUrl}/${uri}/demandeAnnulation/${session_cours_classe_id}`,{motif})
+  }
+  listeDemandeAnnulation<U>(): Observable<U> {
+    const uri = this.getUri()
+    return this.http.get<U>(`${environment.apiUrl}/${uri}/demandesEnAttente`)
+  }
+
+  // SupprimerSession(Request $request, $session_cours_classe_id)
+  SupprimerSession<U>(session_cours_classe_id: number): Observable<U> {
+    const uri = this.getUri()
+    return this.http.delete<U>(`${environment.apiUrl}/${uri}/supprimer/${session_cours_classe_id}`)
   }
 }

@@ -1,5 +1,5 @@
 name,email,password,role
-Alice Johnson,alice5@example.com,123456,etudiant
-Alice Johnson,alice6@example.com,123456,etudiant
-Alice Johnson,alice7@example.com,123456,etudiant
-Alice Johnson,alice8@example.com,123456,etudiant
+Alice Johnson,alice5@example.com,motdepasse,etudiant
+Alice Johnson,alice6@example.com,motdepasse,etudiant
+Alice Johnson,alice7@example.com,motdepasse,etudiant
+Alice Johnson,alice8@example.com,motdepasse,etudiant

@@ -15,7 +15,7 @@ export class CoursCComponent implements OnInit {
     this.index()
     this.all()
   }
-  
+
   fonctionnalitesRp!: boolean;
   fonctionnalitesProf!: boolean;
   fonctionnalitesAttache!: boolean;
@@ -62,6 +62,11 @@ export class CoursCComponent implements OnInit {
     this.classes.removeAt(index);
   }
 
+  formaterHeures(heures_global: string): string {
+    const heures = parseInt(heures_global, 10);
+    return `${heures}h`;
+  }
+
   index() {
     if (this.fonctionnalitesRp) {
       this.coursService.all1(this.page).subscribe((result: any) => {
@@ -70,7 +75,7 @@ export class CoursCComponent implements OnInit {
       })
     } else if (this.fonctionnalitesProf) {
       const id = localStorage.getItem("id");
-      this.coursService.coursprof(this.page,id).subscribe((result: any) => {
+      this.coursService.coursprof(this.page, id).subscribe((result: any) => {
 
         console.log(result);
         this.listeCours = result.data
@@ -85,7 +90,6 @@ export class CoursCComponent implements OnInit {
       this.prof = result.data1[0].professeurs
       this.Classes = result.data2
       this.semestres = result.data3
-
     })
   }
 
@@ -161,6 +165,32 @@ export class CoursCComponent implements OnInit {
   //     this.listeCours = result.data
   //   })
   // }
+  listeCours1: any[] = []; // Variable pour stocker les résultats de la recherche
+
+
+  noResults: boolean = false;
+
+  filtreCoursModule(e: Event) {
+    const input = e.target as HTMLInputElement;
+    const searchTerm = input.value;
+
+    if (searchTerm) {
+      const filteredCourses = this.listeCours.filter(course => course.moduleProf.module === searchTerm);
+      if (filteredCourses.length > 0) {
+        this.listeCours1 = filteredCourses;
+        this.noResults = false;
+      } else {
+        this.listeCours1 = [];
+        this.noResults = true;
+      }
+    } else {
+      this.listeCours1 = [];
+      this.noResults = false;
+    }
+  }
+
+
+
   filtreCoursEtat() {
     if ((this.fonctionnalitesRp)) {
 

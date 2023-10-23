@@ -21,6 +21,7 @@ class Cours extends Model
     {
         return $this->belongsToMany(Module::class, 'prof_modules');
     }
+    
     public function moduleProf()
     {
         return $this->belongsTo(profModule::class, 'prof_module_id');

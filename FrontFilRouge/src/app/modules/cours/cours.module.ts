@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SessionComponent } from './session/session.component';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { NotificationComponent } from './notification/notification.component';
 // import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -17,6 +18,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
     CoursComponent,
     CoursCComponent,
     SessionComponent,
+    NotificationComponent,
     // NgbCalendarModule
     // ModuleComponent
   ],

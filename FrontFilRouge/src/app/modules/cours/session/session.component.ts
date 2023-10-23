@@ -3,6 +3,7 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { SessionService } from './session.service';
 import { CoursServiceService } from '../cours-c/cours-service.service';
 import Swal from 'sweetalert2';
+import { AuthServiceService } from '../../auth/auth-service.service';
 
 @Component({
   selector: 'app-session',
@@ -27,7 +28,8 @@ export class SessionComponent implements OnInit {
         event_Type: '',
         event_heure: '',
         event_prof: '',
-        event_module: ''
+        event_module: '',
+        event_session_cours_classe_id: ''
       }]
 
   moduleSelectionnee!: number
@@ -51,8 +53,12 @@ export class SessionComponent implements OnInit {
     this.index()
     this.initDate();
     this.getNoOfDays();
+    this.profSessions()
   }
-  constructor(private sessionService: SessionService, private fb: FormBuilder, private coursService: CoursServiceService) {
+  fonctionnalitesRp!: boolean;
+  fonctionnalitesProf!: boolean;
+  fonctionnalitesAttache!: boolean;
+  constructor(private sessionService: SessionService, private coursService: CoursServiceService, private fb: FormBuilder, private authService: AuthServiceService) {
     this.form = this.fb.group({
       date: [''],
       heure_debut: [''],
@@ -64,6 +70,9 @@ export class SessionComponent implements OnInit {
         this.fb.array([
         ]),
     });
+    this.fonctionnalitesRp = this.authService.isRp();
+    this.fonctionnalitesProf = this.authService.isProf();
+    this.fonctionnalitesAttache = this.authService.isAttache();
   }
   classes!: any[]
   salles!: any[]
@@ -161,7 +170,7 @@ export class SessionComponent implements OnInit {
 
         this.event_title = '';
         this.event_date = '';
-      }else if(result.error){
+      } else if (result.error) {
         Swal.fire({
           title: 'Erreur',
           text: "Une erreur s'est produite lors de l'insertion.",
@@ -228,13 +237,14 @@ export class SessionComponent implements OnInit {
   showAllEvents(date: any) {
     const selectedEvents = this.getAllEvents(date);
     this.selectedEvents = selectedEvents;
-  }
+    console.log(selectedEvents);
 
+  }
+  // liste Sessions
   filtreCours() {
     this.sessionService.filtre(this.classeSelectionne).subscribe((result: any) => {
       this.filtreModuleByClasse()
       this.listeSessionClasse = result.data2
-        // console.log(result);
         ;
       this.events = [];
 
@@ -247,6 +257,7 @@ export class SessionComponent implements OnInit {
 
         return {
           event_id: session.id,
+          event_session_cours_classe_id: session.session_cours_classe_id,
           event_date: new Date(session.date),
           event_title: session.salle_id ? session.salle_id.libelle : null,
           event_Type: session.Type,
@@ -290,13 +301,13 @@ export class SessionComponent implements OnInit {
       console.log(result);
       if (result.message) {
         this.eventStatuts[i] = 'Annulée';
-      }else{
-           Swal.fire({
-      title: 'Erreur',
-      text: "impossible d'annuler une session en cours",
-      icon: 'error',
-      confirmButtonText: 'OK'
-    });
+      } else {
+        Swal.fire({
+          title: 'Erreur',
+          text: "impossible d'annuler une session en cours",
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
       }
     })
   }
@@ -316,6 +327,41 @@ export class SessionComponent implements OnInit {
       if (result.message) {
         this.eventStatuts[i] = 'invalidee';
       }
+
+    })
+  }
+
+  profSessions() {
+    this.sessionService.profSessions(localStorage.getItem('id')).subscribe((result: any) => {
+      console.log(result);
+      this.events = result.sessions.map((session: any) => {
+
+        const heureDebutParts = session.heure_debut.split(':');
+        const heureFinParts = session.heure_fin.split(':');
+        const heureDebut = `${heureDebutParts[0]}:${heureDebutParts[1]}`;
+        const heureFin = `${heureFinParts[0]}:${heureFinParts[1]}`;
+
+        return {
+          event_id: session.id,
+          event_session_cours_classe_id: session.session_cours_classe_id,
+          event_date: new Date(session.date),
+          event_title: session.salle_id ? session.salle_id.libelle : null,
+          event_Type: session.Type,
+          event_prof: session.professeur,
+          event_statut: session.statut,
+          event_module: session.module,
+          event_heure: `${heureDebut}-${heureFin}`
+        };
+      });
+
+    })
+  }
+  
+  motifAnnulation: string = '';
+  demandeAnnulation(id: number) {
+   
+    this.sessionService.DemandeAnnulation(id, this.motifAnnulation).subscribe((result) => {
+      console.log(result);
 
     })
   }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\SessionEnCours;
 use App\Http\Resources\sessionResource;
 use App\Models\anneeClasse;
+use App\Models\Annulation;
 use App\Models\Classe;
 use App\Models\Cours;
 use App\Models\coursClasse;
@@ -12,6 +13,8 @@ use App\Models\Module;
 use App\Models\profModule;
 use App\Models\Salle;
 use App\Models\Session;
+use App\Models\sessionCoursClasse;
+use App\Models\User;
 use DateTime;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -23,9 +26,7 @@ class sessionController extends Controller
     public function all()
     {
         return [
-            // "data" => Session::all()->load('sessionClasseCours'),
             "data1" => Salle::all(),
-            // "data2" => coursClasseResource::collection(coursClasse::all()),
             "data2" => coursClasse::all(),
             "data3" => Classe::all()
         ];
@@ -79,7 +80,6 @@ class sessionController extends Controller
                         return response()->json(['error' => 'heure de cours termine.'], 200);
 
                     }
-                    // $coursClasse->decrement('heures_global', $totalDuration);
                     $coursClasse->decrement('nombreHeureR', $totalDuration);
                     if ($coursClasse->nombreHeureR === 0) {
                         $coursClasse->update(['Termine' => true]);
@@ -145,6 +145,103 @@ class sessionController extends Controller
         ];
     }
 
+    // public function sessionProfesseur($professeurId)
+    // {
+    //     $professeur = User::find($professeurId);
+
+    //     if (!$professeur) {
+    //         return response()->json(['message' => 'Professeur non trouvé'], 404);
+    //     }
+
+    //     $sessions = Session::whereHas('coursClasses', function ($query) use ($professeurId) {
+    //         $query->whereHas('cours.profModule.professeurs', function ($q) use ($professeurId) {
+    //             $q->where('id', $professeurId);
+    //         });
+    //     })->get();
+
+    //     $formattedSessions = [];
+
+    //     foreach ($sessions as $session) {
+    //         $coursClasse = $session->coursClasses->first();
+
+    //         $profModule = $coursClasse->cours->profModule;
+    //         $module = $profModule->module;
+
+    //         $formattedSessions[] = [
+    //             'id' => $session->id,
+    //             'date' => $session->date,
+    //             'heure_debut' => $session->heure_debut,
+    //             'statut' => $session->status,
+    //             'heure_fin' => $session->heure_fin,
+    //             'Type' => $session->Type,
+    //             'salle_id' => Salle::find($session->salle_id),
+    //             'module' => $module->libelle,
+    //             'professeur' => $professeur->name,
+    //         ];
+    //     }
+
+    //     return [
+    //         "professeur" => $professeur,
+    //         "sessions" => $formattedSessions,
+    //     ];
+    // }
+    public function sessionProfesseur($professeurId)
+    {
+        $professeur = User::find($professeurId);
+
+        if (!$professeur) {
+            return response()->json(['message' => 'Professeur non trouvé'], 404);
+        }
+
+        $sessions = Session::whereHas('coursClasses', function ($query) use ($professeurId) {
+            $query->whereHas('cours.profModule.professeurs', function ($q) use ($professeurId) {
+                $q->where('id', $professeurId);
+            });
+        })->get();
+
+        $formattedSessions = [];
+        $classes = [];
+
+        foreach ($sessions as $session) {
+            $coursClasse = $session->coursClasses->first();
+
+            if ($coursClasse) {
+                $pivotData = $coursClasse->pivot;
+
+                $id = sessionCoursClasse::where('session_id', $pivotData->session_id)->where("cours_classe_id", $pivotData->cours_classe_id)->first()->id;
+            }
+
+
+            $classe = $coursClasse->classe;
+
+            $profModule = $coursClasse->cours->profModule;
+            $module = $profModule->module;
+
+            $formattedSessions[] = [
+                'id' => $session->id,
+                'session_cours_classe_id' => $id,
+                'date' => $session->date,
+                'heure_debut' => $session->heure_debut,
+                'statut' => $session->status,
+                'heure_fin' => $session->heure_fin,
+                'Type' => $session->Type,
+                'salle_id' => Salle::find($session->salle_id),
+                'module' => $module->libelle,
+                'professeur' => $professeur->name,
+            ];
+
+            if (!in_array($classe, $classes)) {
+                $classes[] = $classe;
+            }
+        }
+
+        return [
+            "professeur" => $professeur,
+            "sessions" => $formattedSessions,
+            "classes" => $classes,
+        ];
+    }
+
 
     public function ModuleByClasse(Request $request, $classeId)
     {
@@ -201,6 +298,19 @@ class sessionController extends Controller
             return false; // La session pas en cours
 
         }
+    }
+    public function SupprimerSession(Request $request, $session_cours_classe_id)
+    {
+    $session = sessionCoursClasse::where('id', $session_cours_classe_id)->first();
+
+        Annulation::where('session_cours_classe_id', $session_cours_classe_id)->delete();
+        // if ($session) {
+            $session->delete();
+
+            return response()->json(['message' => 'Session et enregistrements associés supprimés avec succès']);
+        // } else {
+        //     return response()->json(['message' => 'Session non trouvée'], 404);
+        // }
     }
 
 
@@ -266,6 +376,20 @@ class sessionController extends Controller
     }
 
 
+
+    public function demandeAnnulation(Request $request, $session_cours_classe_id)
+    {
+        $request->validate([
+            'motif' => 'required',
+        ]);
+
+        $annulation = Annulation::create([
+            'motif' => $request->motif,
+            'session_cours_classe_id' => $session_cours_classe_id,
+        ]);
+
+        return response()->json(['message' => 'Demande d\'annulation enregistrée avec succès', "data" => $annulation]);
+    }
 
 
 

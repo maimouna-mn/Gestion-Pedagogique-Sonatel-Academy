@@ -17,7 +17,7 @@ class sessionCoursClasse extends Model
     }
     public function cours()
     {
-        return $this->belongsTo(CoursClasse::class, 'cours_classe_id', 'id');
+        return $this->belongsTo(coursClasse::class, 'cours_classe_id', 'id');
     }
     public function session()
     {

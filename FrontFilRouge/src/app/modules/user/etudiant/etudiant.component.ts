@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserServiceService } from './user-service.service';
 import Swal from 'sweetalert2';
+import { AuthServiceService } from '../../auth/auth-service.service';
 
 @Component({
   selector: 'app-etudiant',
@@ -8,13 +9,23 @@ import Swal from 'sweetalert2';
   styleUrls: ['./etudiant.component.css']
 })
 export class EtudiantComponent implements OnInit {
-  constructor(private userService: UserServiceService) { }
+  fonctionnalitesRp!: boolean;
+  fonctionnalitesProf!: boolean;
+  fonctionnalitesAttache!: boolean;
+  constructor(private userService: UserServiceService,private authService: AuthServiceService) {
+    this.fonctionnalitesRp = this.authService.isRp();
+    this.fonctionnalitesProf = this.authService.isProf();
+    this.fonctionnalitesAttache = this.authService.isAttache();
+   }
   ngOnInit(): void {
     this.all()
+    
   }
+
   classes!: any[]
   fileToUpload: File | null = null;
   json!: any
+
   all() {
     this.userService.all().subscribe((result: any) => {
       console.log(result);

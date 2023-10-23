@@ -25,6 +25,7 @@ class UserController extends Controller
             "data1" => $classes
         ];
     }
+
     public function store(Request $request)
     {
         $etudiants = $request->etudiants;

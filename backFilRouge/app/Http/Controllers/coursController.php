@@ -5,12 +5,14 @@ use App\Http\Resources\CoursEleve;
 use App\Http\Resources\coursEtat;
 use App\Http\Resources\coursResource;
 use App\Models\anneeClasse;
+use App\Models\Annulation;
 use App\Models\Cours;
 use App\Models\Classe;
 use App\Models\coursClasse;
 use App\Models\Inscriptions;
 use App\Models\Module;
 use App\Models\Semestre;
+use App\Models\sessionCoursClasse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -102,10 +104,21 @@ class coursController extends Controller
         return coursEtat::collection($coursS);
     }
 
+    // public function recherche(Request $request, $code)
+    // {
+    //     $cours = Cours::where("libelle", $code)->get();
+    //     return coursResource::collection($cours);
+    // }
     public function recherche(Request $request, $code)
     {
-        $cours = Cours::where("libelle", $code)->get();
-        return coursResource::collection($cours);
+        $courses = Cours::whereHas('module', function ($query) use ($code) {
+            $query->where('libelle', $code);
+        })
+            ->orderBy('id', 'desc')
+            ->paginate(5);
+
+        return coursResource::collection($courses);
+        // return coursResource::collection($cours);
     }
 
     public function coursByClasse($moduleId)
@@ -146,6 +159,7 @@ class coursController extends Controller
         $coursDetails[] = [
             'Module' => $cours->profModule->module->libelle,
             'Professeur' => $cours->profModule->professeurs->name,
+            'photo' => $cours->profModule->professeurs->photo,
         ];
 
         $classesDetails = [];
@@ -170,7 +184,8 @@ class coursController extends Controller
     {
         $courses = Cours::with('moduleProf')
             ->whereHas('moduleProf', function ($query) use ($id) {
-                $query->where('user_id', $id)->where("role", "professeur");
+                // $query->where('user_id', $id)->where("role", "professeur");
+                $query->where('user_id', $id);
             })
             ->orderBy('id', 'desc')
             ->paginate(5);
@@ -188,5 +203,28 @@ class coursController extends Controller
         return CoursEleve::collection($cour1);
     }
 
+    public function demandesEnAttente()
+    {
+        $demandesEnAttente = Annulation::where('statut', 'En attente')->paginate(8);
+        $result = [];
+
+        foreach ($demandesEnAttente as $demande) {
+            $sessionCoursClasse = SessionCoursClasse::find($demande->session_cours_classe_id);
+            $cours = $sessionCoursClasse->cours;
+
+            $coursDetailsResponse = $this->getCoursDetails($cours->cours_id);
+            $coursDetails = json_decode($coursDetailsResponse->getContent(), true);
+
+            $result[] = [
+                'module' => $coursDetails['data2'],
+                'classe' => $coursDetails['data1'],
+                'motif' => $demande->motif,
+                'session_cours_classe_id' => $demande->session_cours_classe_id,
+            ];
+        }
+
+        return response()->json(['data' => $result]);
+    }
+ 
 
 }
