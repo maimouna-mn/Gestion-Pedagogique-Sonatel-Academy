@@ -49,12 +49,15 @@ export class SessionComponent implements OnInit {
   event_module!: any
   date!: number;
   selectedOption!: string;
+  eventStatuts: string[] = [];
+
   ngOnInit(): void {
     this.index()
     this.initDate();
     this.getNoOfDays();
     this.profSessions()
   }
+
   fonctionnalitesRp!: boolean;
   fonctionnalitesProf!: boolean;
   fonctionnalitesAttache!: boolean;
@@ -102,17 +105,15 @@ export class SessionComponent implements OnInit {
     this.year = today.getFullYear();
     this.event_date = new Date(this.year, this.month, today.getDate()).toDateString();
 
-    // Ajouter cet appel pour générer les numéros de jour
     this.getNoOfDays();
   }
 
 
 
   showModal(date: number) {
-    //moins un car les mois sont indexés à partir de zéro
     const formattedDate = new Date(this.year, this.month - 1, date);
     const year = formattedDate.getFullYear();
-    const month = (formattedDate.getMonth() + 1).toString(); // +1 car les mois vont de 0 à 11
+    const month = (formattedDate.getMonth() +2).toString(); 
     const day = formattedDate.getDate().toString();
 
     this.event_date = `${year}-${month}-${day}`;
@@ -123,7 +124,6 @@ export class SessionComponent implements OnInit {
 
   getNoOfDays() {
     let daysInMonth = new Date(this.year, this.month + 1, 0).getDate();
-
     this.no_of_days = [];
     for (let i = 1; i <= daysInMonth; i++) {
       this.no_of_days.push(i);
@@ -173,7 +173,7 @@ export class SessionComponent implements OnInit {
       } else if (result.error) {
         Swal.fire({
           title: 'Erreur',
-          text: "Une erreur s'est produite lors de l'insertion.",
+          text: "Une erreur s'est produite lors de l'ajout.",
           icon: 'error',
           confirmButtonText: 'OK'
         });
@@ -231,7 +231,9 @@ export class SessionComponent implements OnInit {
       );
     });
   }
-
+  logout() {
+    this.authService.logout();
+  }
 
   selectedEvents!: any
   showAllEvents(date: any) {
@@ -240,16 +242,13 @@ export class SessionComponent implements OnInit {
     console.log(selectedEvents);
 
   }
-  // liste Sessions
+
   filtreCours() {
     this.sessionService.filtre(this.classeSelectionne).subscribe((result: any) => {
       this.filtreModuleByClasse()
-      this.listeSessionClasse = result.data2
-        ;
+      this.listeSessionClasse = result.data2;
       this.events = [];
-
       this.events = this.listeSessionClasse.map(session => {
-
         const heureDebutParts = session.heure_debut.split(':');
         const heureFinParts = session.heure_fin.split(':');
         const heureDebut = `${heureDebutParts[0]}:${heureDebutParts[1]}`;
@@ -267,9 +266,7 @@ export class SessionComponent implements OnInit {
           event_heure: `${heureDebut}-${heureFin}`
         };
       });
-
     });
-
   }
 
   filtreModuleByClasse() {
@@ -294,7 +291,6 @@ export class SessionComponent implements OnInit {
     })
   }
 
-  eventStatuts: string[] = [];
 
   annulerSession(id: number, i: number) {
     this.sessionService.annnuler(id).subscribe((result: any) => {
@@ -356,12 +352,18 @@ export class SessionComponent implements OnInit {
 
     })
   }
-  
+
   motifAnnulation: string = '';
+
   demandeAnnulation(id: number) {
-   
     this.sessionService.DemandeAnnulation(id, this.motifAnnulation).subscribe((result) => {
       console.log(result);
+      Swal.fire({
+        title: 'Succès',
+        text: 'Demande annulation envoyé avec succes avec succès.',
+        icon: 'success',
+        confirmButtonText: 'OK'
+      })
 
     })
   }

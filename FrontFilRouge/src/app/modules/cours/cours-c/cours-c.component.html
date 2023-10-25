@@ -61,13 +61,16 @@
           <div class="flex flex-row flex-wrap items-center ml-auto mr-3 mt-3">
 
           </div>
-          <a class="text-blueGray-500 block" href="javascript:;">
-            <div class="items-center flex"><span
-                class="w-12 h-12 text-sm text-white bg-blueGray-300 inline-flex items-center justify-center rounded-full"><img
-                  alt="..." class="w-full rounded-full align-middle border-none shadow-lg"
-                  src="https://demos.creative-tim.com/notus-pro-react/static/media/team-1-800x800.fa5a7ac2.jpg"></span>
-            </div>
-          </a>
+          <div class="py-2" (click)="logout()">
+            <svg class="h-8 w-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
+        
+          </div>
+     
 
         </div>
       </div>
@@ -80,41 +83,17 @@
           </div>
 
           <div class="flex w-1/2">
-            <div class="py-2" (click)="logout()">
-              <svg class="h-8 w-8 text-red-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                <polyline points="16 17 21 12 16 7" />
-                <line x1="21" y1="12" x2="9" y2="12" />
-              </svg>
-              <!-- <button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
-                Button
-              </button> -->
-              <!-- <a href="#" class="block px-4 py-2 text-sm text-gray-700 bg-blue-500 ">Deconnexion
-              </a> -->
-            </div>
+        
             <input class="block w-2/5  h-10 border rounded-md mt-10 mr-5" placeholder="Search here"
               (change)="filtreCoursModule($event)" *ngIf="fonctionnalitesProf">
-            <!-- <select class="block w-2/5  h-10 border rounded-md mt-10 mr-5" [(ngModel)]="semestreSelectionne"
-            (click)="filtreCoursModule($event)" *ngIf="fonctionnalitesProf">
-            <option value="0">Filtrer</option>
-            <option value="{{item.id}}" *ngFor="let item of semestres">{{item.libelle}}</option>
-          </select> -->
+       
             <select class="block w-2/5  h-10 border rounded-md mt-10 mr-5" [(ngModel)]="etat"
-              (click)="filtreCoursEtat()" *ngIf="fonctionnalitesRp">
+              (click)="filtreCoursEtat()" *ngIf="fonctionnalitesRp || fonctionnalitesAttache">
               <option value="">Filtrer</option>
               <option value="0">Encours</option>
               <option value="1">Termine</option>
             </select>
-            <!-- <div class="flex items-center mt-10 ml-2">
-              <div class="flex-1 mr-2">
-                <input placeholder="Search here" type="text"
-                  class="border-transparent shadow px-3 py-2 text-sm w-full placeholder-blueGray-200 text-blueGray-700 relative bg-white rounded-md outline-none focus:ring focus:ring-lightBlue-500 focus:ring-1 focus:border-lightBlue-500 border border-solid transition duration-200">
-              </div>
-              <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded" (click)="recherche()">
-                Rechercher
-              </button>
-            </div> -->
+         
 
           </div>
 
@@ -127,7 +106,7 @@
         <div class="w-full  h-full px-4" style="height: 43.5rem;">
 
           <div class="relative  mt-3 flex flex-col min-w-0 break-words w-full mb-8 shadow-lg rounded-lg bg-blueGray-800"
-            style="height: 38rem;">
+            style="height: 42rem;">
             <div class="flex justify-end  ">
 
               <button class="z-50 w-16 h-16 my-1 mr-1 rounded-full bg-blue-500 flex items-center justify-center "
@@ -210,7 +189,6 @@
                                 type="submit" data-ripple-dark="true">
                                 Details
                               </button>
-                              <!-- </a> -->
                               <p class="block font-sans font-bold leading-relaxed text-2xl  text-blue-500 antialiased">
                                 <!-- {{item.heures_global}}h -->
                                 {{ formaterHeures(item.heures_global) }}
@@ -414,7 +392,7 @@
             <li class="flex justify-between text-lg">
               <span class="font-semibold">{{ item.Classe }}</span>
               <span>Quota Horaire:{{item.Heures}} h</span>
-              <span>Heures Restantes:{{ item.Heures }}h</span>
+              <span>Heures Restantes:{{ item.HeuresR }}h</span>
             </li>
           </ul>
         </div>

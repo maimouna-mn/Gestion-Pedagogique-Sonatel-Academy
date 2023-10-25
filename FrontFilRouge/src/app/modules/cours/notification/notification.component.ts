@@ -15,14 +15,15 @@ export class NotificationComponent implements OnInit {
   fonctionnalitesAttache!: boolean;
   constructor(private coursService: CoursServiceService, private sessionService: SessionService, private authService: AuthServiceService) { }
 
+  bool:boolean=false
+  listeNotifs!: any
   ngOnInit(): void {
     this.listeNotif()
     this.fonctionnalitesRp = this.authService.isRp();
     this.fonctionnalitesProf = this.authService.isProf();
     this.fonctionnalitesAttache = this.authService.isAttache();
   }
-  bool:boolean=true
-  listeNotifs!: any
+
   listeNotif() {
     this.coursService.listeDemandeAnnulation().subscribe((result: any) => {
       this.listeNotifs = result.data;
@@ -39,8 +40,11 @@ export class NotificationComponent implements OnInit {
         icon: 'success',
         confirmButtonText: 'OK'
       })
-      this.bool=false
+      this.bool=true
 
     })
+  }
+  logout() {
+    this.authService.logout();
   }
 }

@@ -59,13 +59,22 @@
             <div class="flex flex-row flex-wrap items-center ml-auto mr-3 mt-3">
   
             </div>
-            <a class="text-blueGray-500 block" href="javascript:;">
+            <div class="py-2" (click)="logout()">
+              <svg class="h-8 w-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                <polyline points="16 17 21 12 16 7" />
+                <line x1="21" y1="12" x2="9" y2="12" />
+              </svg>
+          
+            </div>
+            <!-- <a class="text-blueGray-500 block" href="javascript:;">
               <div class="items-center flex"><span
                   class="w-12 h-12 text-sm text-white bg-blueGray-300 inline-flex items-center justify-center rounded-full"><img
                     alt="..." class="w-full rounded-full align-middle border-none shadow-lg"
                     src="https://demos.creative-tim.com/notus-pro-react/static/media/team-1-800x800.fa5a7ac2.jpg"></span>
               </div>
-            </a>
+            </a> -->
             <div class="block z-50">
               <div
                 class="bg-white text-base float-left p-2 border list-none text-left rounded-lg shadow-lg min-w-48 transition-all duration-100 ease-in-out transform scale-95 opacity-0 absolute origin-top-right">
@@ -93,10 +102,10 @@
             </div>
   
             <div class="flex w-1/2">
-              <div class="py-2" >
+              <!-- <div class="py-2" >
                 <a href="#" class="block px-4 py-2 text-sm text-gray-700 bg-blue-500 ">Deconnexion
                 </a>
-              </div>
+              </div> -->
            
 
             

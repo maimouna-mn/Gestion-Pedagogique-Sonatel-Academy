@@ -68,7 +68,7 @@ export class CoursCComponent implements OnInit {
   }
 
   index() {
-    if (this.fonctionnalitesRp) {
+    if (this.fonctionnalitesRp || this.fonctionnalitesAttache) {
       this.coursService.all1(this.page).subscribe((result: any) => {
         this.listeCours = result.data
         this.totalPages = result.meta.last_page;
@@ -193,12 +193,12 @@ export class CoursCComponent implements OnInit {
 
   filtreCoursEtat() {
     if ((this.fonctionnalitesRp)) {
-
       this.coursService.filtreEtatCours(this.etat).subscribe((result: any) => {
         this.listeCours = result.data
       })
     }
   }
+
   allSemestre() {
     this.coursService.semestreAll().subscribe((result) => {
       console.log(result);

@@ -33,6 +33,63 @@ class sessionController extends Controller
     }
 
 
+    // public function store(Request $request)
+    // {
+    //     $validatedData = $request->validate([
+    //         'date' => 'required|date|after_or_equal:today',
+    //         'heure_debut' => 'required',
+    //         'heure_fin' => 'required|after:heure_debut',
+    //         'Type' => 'required|in:presentiel,enLigne',
+    //         'salle_id' => $request->Type == 'presentiel' ? 'required|exists:salles,id' : 'nullable',
+    //     ]);
+
+    //     if ($validatedData['Type'] == 'presentiel') {
+    //         $existingSession = Session::where('date', $validatedData['date'])
+    //             ->where('salle_id', $validatedData['salle_id'])
+    //             ->where(function ($query) use ($validatedData) {
+    //                 $query->whereBetween('heure_debut', [$validatedData['heure_debut'], $validatedData['heure_fin']])
+    //                     ->orWhereBetween('heure_fin', [$validatedData['heure_debut'], $validatedData['heure_fin']]);
+    //             })
+    //             ->first();
+
+    //         if ($existingSession) {
+    //             return response()->json(['error' => 'Une session existe déjà pour cette salle, cette date et cette heure.'], 200);
+    //         }
+    //     }
+
+    //     return DB::transaction(function () use ($validatedData, $request) {
+    //         $session = Session::create($validatedData);
+
+    //         $session->sessionClasseCours()->attach($request->sessionClasseCours);
+    //         $heureDebut = $session->heure_debut;
+    //         $heureFin = $session->heure_fin;
+    //         $dateTimeDebut = DateTime::createFromFormat('H:i', $heureDebut);
+    //         $dateTimeFin = DateTime::createFromFormat('H:i', $heureFin);
+
+    //         if ($dateTimeDebut && $dateTimeFin) {
+    //             $interval = $dateTimeDebut->diff($dateTimeFin);
+    //             $hours = $interval->h;
+    //             $minutes = $interval->i;
+    //             $totalDuration = $hours + ($minutes / 60);
+    //         }
+
+    //         foreach ($request->sessionClasseCours as $value) {
+    //             $coursClasse = coursClasse::find($value['cours_classe_id']);
+    //             if ($coursClasse) {
+    //                 if ($totalDuration > $coursClasse->heures_global) {
+    //                     return response()->json(['error' => 'heure de cours termine.'], 200);
+
+    //                 }
+    //                 $coursClasse->decrement('nombreHeureR', $totalDuration);
+    //                 if ($coursClasse->nombreHeureR === 0) {
+    //                     $coursClasse->update(['Termine' => true]);
+    //                 }
+    //             }
+    //         }
+    //         event(new SessionEnCours($session));
+    //         return new sessionResource($session);
+    //     });
+    // }
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -74,11 +131,10 @@ class sessionController extends Controller
             }
 
             foreach ($request->sessionClasseCours as $value) {
-                $coursClasse = coursClasse::find($value['cours_classe_id']);
+               $coursClasse = coursClasse::find($value['cours_classe_id']);
                 if ($coursClasse) {
-                    if ($totalDuration > $coursClasse->heures_global) {
+                    if ($totalDuration > $coursClasse->nombreHeureR) {
                         return response()->json(['error' => 'heure de cours termine.'], 200);
-
                     }
                     $coursClasse->decrement('nombreHeureR', $totalDuration);
                     if ($coursClasse->nombreHeureR === 0) {
@@ -90,7 +146,6 @@ class sessionController extends Controller
             return new sessionResource($session);
         });
     }
-
     public function sessionClasse($classeId)
     {
         $classe = Classe::find($classeId);

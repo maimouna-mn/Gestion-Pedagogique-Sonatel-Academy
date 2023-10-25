@@ -63,15 +63,24 @@
         <div
           class="items-center w-full lg:flex lg:w-auto flex-grow duration-300 transition-all ease-in-out lg:h-auto-important hidden">
           <div class="ml-auto mt-2" style="margin-right: -1.5rem;">
-            <button id="dropdownUserAvatarButton" data-dropdown-toggle="dropdownAvatar"
+            <!-- <button id="dropdownUserAvatarButton" data-dropdown-toggle="dropdownAvatar"
               class="flex mx-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
               type="button"
               onclick="document.getElementById('dropdownAvatar').classList.remove('hidden'); document.body.classList.add('overflow-hidden');">
-              <!-- <span class="sr-only">Open user menu</span> -->
+           
               <img class="w-12 h-12 rounded-full"
                 src="https://demos.creative-tim.com/notus-pro-react/static/media/team-1-800x800.fa5a7ac2.jpg"
                 alt="user photo">
-            </button>
+            </button> -->
+            <div class="py-2" (click)="logout()">
+              <svg class="h-8 w-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                <polyline points="16 17 21 12 16 7" />
+                <line x1="21" y1="12" x2="9" y2="12" />
+              </svg>
+          
+            </div>
 
             <!-- Dropdown menu -->
             <div id="dropdownAvatar"
@@ -137,19 +146,19 @@
           </div>
           <div class="flex w-1/2">
             <select class="block w-2/5  h-10 border rounded-md mt-10 mr-5" [(ngModel)]="classeSelectionne"
-              (change)="filtreCours()" *ngIf="fonctionnalitesRp">
+              (change)="filtreCours()" *ngIf="fonctionnalitesRp || fonctionnalitesAttache">
               <option value="">Filtrer</option>
               <option value="{{item.id}}" *ngFor="let item of classes">{{item.libelle}}</option>
             </select>
             <!-- </div> -->
 
-            <div class="flex items-center mt-10 ml-2">
+            <!-- <div class="flex items-center mt-10 ml-2">
               <div class="flex-1 mr-2">
                 <input placeholder="Search here" type="text"
                   class="border-transparent shadow px-3 py-2 text-sm w-full placeholder-blueGray-200 text-blueGray-700 relative bg-white rounded-md outline-none focus:ring-lightBlue-500 focus:ring-1 focus:border-lightBlue-500 border border-solid transition duration-200">
               </div>
 
-            </div>
+            </div> -->
 
           </div>
 
@@ -219,7 +228,7 @@
 
                   <div (click)="showModal(date)" [textContent]="date"
                     onclick="document.getElementById('staticModal').classList.remove('hidden'); document.body.classList.add('overflow-hidden');"
-                    class="inline-flex   w-6 h-6 items-center justify-center cursor-pointer text-center leading-none rounded-full transition ease-in-out duration-100">
+                    class="inline-flex   w-6 h-6 items-center justify-center cursor-pointer text-center leading-none rounded-full transition ease-in-out duration-100" *ngIf="fonctionnalitesRp">
                   </div>
                 </div>
                 <div class="shadow-lg  rounded-lg text-center" style="height: 80%; overflow-y: auto;">
@@ -235,7 +244,7 @@
                         <line x1="12" y1="16" x2="12.01" y2="16" />
                       </svg>
                     </div>
-                    <div class="text-xs h-14 relative mt-1 truncate   rounded shadow-lg text-center" [ngClass]="{
+                    <div class="text-xs h-14 relative mt-2 truncate   rounded shadow-lg text-center" [ngClass]="{
                       'bg-blue-50': event.event_Type === 'presentiel',
                       'bg-green-100': event.event_Type === 'enLigne',
                   }">
@@ -360,11 +369,11 @@
                             Demande Annulation</button>
                           <button type="button" (click)="validerSession(event.event_id,i)"
                             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                            *ngIf="fonctionnalitesRp">
+                            *ngIf="fonctionnalitesAttache">
                             Valider</button>
                           <button type="button" (click)="invaliderSession(event.event_id,i)"
                             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                            *ngIf="fonctionnalitesRp">
+                            *ngIf="fonctionnalitesAttache">
                             Invalider</button>
                           <button type="button" (click)="annulerSession(event.event_id,i)"
                             class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-2 py-2 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"

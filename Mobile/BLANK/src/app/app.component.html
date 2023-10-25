@@ -1,7 +1,7 @@
 <ion-app>
   <ion-split-pane contentId="main-content">
     <ion-menu contentId="main-content" type="overlay">
-      <ion-content >
+      <ion-content>
         <ion-list id="labels-list"  class="bg-blue-400">
           <ion-list-header class="ml-14 ">{{name}}</ion-list-header>
           <div style="display: flex;align-items: center;justify-content: center;">
@@ -10,7 +10,7 @@
             </div>
           </div>
           <ion-label class="ml-[40%] font-bold mb-4">maClasse</ion-label>
-          <div *ngFor="let page of appPages" lines="none" class="bg-white border text-black text-lg mt-1 shadow">
+          <div *ngFor="let page of appPages" lines="none" class="bg-blue-400  text-black text-lg mt-1 shadow">
             <ion-icon aria-hidden="true"  [name]="page.icon"></ion-icon>
             <ion-label [routerLink]="page.url">{{ page.title }}</ion-label>
           </div>
