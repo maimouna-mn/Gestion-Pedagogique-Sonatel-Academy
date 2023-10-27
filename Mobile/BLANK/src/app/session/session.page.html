@@ -1,13 +1,56 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>session</ion-title>
+    <div class="flex justify-between">
+      <ion-title>
+        {{getMonthName(currentMonth)}} {{currentYear}}
+      </ion-title>
+      <ion-button (click)="previousMonth()">
+        <ion-icon name="arrow-back"></ion-icon>
+
+      </ion-button>
+      <ion-button (click)="nextMonth()">
+        <ion-icon name="arrow-forward"></ion-icon>
+      </ion-button>
+
+    </div>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">session</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <ion-grid class="shadow-lg rounded-lg p-10">
+    <ion-row class="border-b-4">
+      <ion-col class="day-header">Lun</ion-col>
+      <ion-col class="day-header">Mar</ion-col>
+      <ion-col class="day-header">Mer</ion-col>
+      <ion-col class="day-header">Jeu</ion-col>
+      <ion-col class="day-header">Ven</ion-col>
+      <ion-col class="day-header">Sam</ion-col>
+      <ion-col class="day-header">Dim</ion-col>
+    </ion-row>
+
+    <ion-row *ngFor="let week of calendar">
+      <ion-col class="border-t-2 day-cell" *ngFor="let cell of week"
+        [ngClass]="{'has-event': hasEvent(cell.event?.date)}" (click)="selectEvent(cell.event)">
+        {{ cell.day ? cell.day : "" }}
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <div *ngIf="selectedEvent">
+          <div *ngFor="let item of heureSession(selectedEvent.date)">
+            <div class="bg-white rounded-lg text-black font-semibold flex shadow-lg p-2 mt-1">
+              <ion-input [(ngModel)]="item.details.professeur" disabled></ion-input>
+              <ion-input [(ngModel)]="item.details.module" disabled></ion-input>
+              <ion-input [(ngModel)]="item.details.salle"
+                [value]="item.details.salle === null ? 'EnLigne' : item.details.salle" disabled></ion-input>
+              <ion-input [(ngModel)]="item.details.heure" disabled></ion-input>
+              <ion-checkbox style="margin-top:-0.5rem;" *ngIf="isCheckboxVisible(item)"></ion-checkbox>
+            </div>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

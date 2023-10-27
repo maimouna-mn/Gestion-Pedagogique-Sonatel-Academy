@@ -13,7 +13,6 @@
 @import "@ionic/angular/css/core.css";
 
 
-
 ion-app {
     --ion-background-color: #8ba9ee;
     /* Couleur de fond blanche */
@@ -44,3 +43,25 @@ ion-app {
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.day-header {
+    font-weight: bold;
+    text-align: center;
+    background-color: #4f4fb4;
+    color: white;
+  }
+  
+  .day-cell {
+    text-align: center;
+    border: 1px solid #dcdcdc;
+    padding: 5px;
+  }
+  .has-event{
+    background-color: #f5b6a3; /* Couleur de fond pour les cellules avec un événement */
+    border-radius: 80%; /* Rendre le cercle */
+    color: rgb(24, 22, 22); /* Couleur du texte */
+  }
+
+  
+  /* Ajoutez d'autres styles selon vos besoins */
+  

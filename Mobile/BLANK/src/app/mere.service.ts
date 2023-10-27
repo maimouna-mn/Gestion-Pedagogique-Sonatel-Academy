@@ -45,4 +45,8 @@ export class MereService {
   coursEtu(id: any): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/cours/coursEtu/${id}`);
   }
+  // http://127.0.0.1:8000/api/session/sessionsEleve/6
+  sessionsEleve(eleveId: any): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/session/sessionsEleve/${eleveId}`);
+  }
 }

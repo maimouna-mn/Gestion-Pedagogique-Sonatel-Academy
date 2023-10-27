@@ -33,8 +33,8 @@ Route::get('/session/invalider/{id}',[sessionController::class,"invaliderSession
 Route::get('/cours/getCoursDetails/{id}',[coursController::class,"getCoursDetails"]);
 Route::get('/cours/coursprof/{id}',[coursController::class,"coursesByProfessor"]);
 Route::get('/cours/filtreEtat/{etat}',[coursController::class,"filtreEtatCours"]);
-
-
+//sessionsEleve($eleveId)
+Route::get('/session/sessionsEleve/{eleveId}',[sessionController::class,"sessionsEleve"]);
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/store', [UserController::class, 'store']);
 Route::get('/user/classeEleves/{id}', [UserController::class,'classeEleves']);
@@ -44,9 +44,7 @@ Route::post('/logout', [UserController::class, 'logout']);
 Route::get('/cours/coursEtu/{id}',[coursController::class,"coursEtudiant"]);
 // sessionProfesseur($professeurId)
 Route::get('/session/profSessions/{professeurId}',[sessionController::class,"sessionProfesseur"]);
-
 Route::post('session/demandeAnnulation/{session_cours_classe_id}', [sessionController::class,"demandeAnnulation"]);
 // SupprimerSession(Request $request,$session_cours_classe_id)
 Route::delete('/session/supprimer/{session_cours_classe_id}',[sessionController::class,"SupprimerSession"]);
-
 Route::get('/cours/demandesEnAttente',[coursController::class,"demandesEnAttente"]);

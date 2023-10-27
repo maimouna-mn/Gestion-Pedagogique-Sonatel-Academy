@@ -7,13 +7,12 @@ import { IonicModule } from '@ionic/angular';
 import { SessionPageRoutingModule } from './session-routing.module';
 
 import { SessionPage } from './session.page';
-
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    SessionPageRoutingModule
+    SessionPageRoutingModule,
   ],
   declarations: [SessionPage]
 })

@@ -149,7 +149,7 @@ export class SessionComponent implements OnInit {
 
     this.sessionService.store(this.form.value).subscribe((result: any) => {
 
-      console.log(result);
+      // console.log(result);
 
       if (result.data) {
         this.form.reset()

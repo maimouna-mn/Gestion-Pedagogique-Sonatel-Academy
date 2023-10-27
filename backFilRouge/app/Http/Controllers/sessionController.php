@@ -9,6 +9,7 @@ use App\Models\Annulation;
 use App\Models\Classe;
 use App\Models\Cours;
 use App\Models\coursClasse;
+use App\Models\Inscriptions;
 use App\Models\Module;
 use App\Models\profModule;
 use App\Models\Salle;
@@ -33,63 +34,7 @@ class sessionController extends Controller
     }
 
 
-    // public function store(Request $request)
-    // {
-    //     $validatedData = $request->validate([
-    //         'date' => 'required|date|after_or_equal:today',
-    //         'heure_debut' => 'required',
-    //         'heure_fin' => 'required|after:heure_debut',
-    //         'Type' => 'required|in:presentiel,enLigne',
-    //         'salle_id' => $request->Type == 'presentiel' ? 'required|exists:salles,id' : 'nullable',
-    //     ]);
 
-    //     if ($validatedData['Type'] == 'presentiel') {
-    //         $existingSession = Session::where('date', $validatedData['date'])
-    //             ->where('salle_id', $validatedData['salle_id'])
-    //             ->where(function ($query) use ($validatedData) {
-    //                 $query->whereBetween('heure_debut', [$validatedData['heure_debut'], $validatedData['heure_fin']])
-    //                     ->orWhereBetween('heure_fin', [$validatedData['heure_debut'], $validatedData['heure_fin']]);
-    //             })
-    //             ->first();
-
-    //         if ($existingSession) {
-    //             return response()->json(['error' => 'Une session existe déjà pour cette salle, cette date et cette heure.'], 200);
-    //         }
-    //     }
-
-    //     return DB::transaction(function () use ($validatedData, $request) {
-    //         $session = Session::create($validatedData);
-
-    //         $session->sessionClasseCours()->attach($request->sessionClasseCours);
-    //         $heureDebut = $session->heure_debut;
-    //         $heureFin = $session->heure_fin;
-    //         $dateTimeDebut = DateTime::createFromFormat('H:i', $heureDebut);
-    //         $dateTimeFin = DateTime::createFromFormat('H:i', $heureFin);
-
-    //         if ($dateTimeDebut && $dateTimeFin) {
-    //             $interval = $dateTimeDebut->diff($dateTimeFin);
-    //             $hours = $interval->h;
-    //             $minutes = $interval->i;
-    //             $totalDuration = $hours + ($minutes / 60);
-    //         }
-
-    //         foreach ($request->sessionClasseCours as $value) {
-    //             $coursClasse = coursClasse::find($value['cours_classe_id']);
-    //             if ($coursClasse) {
-    //                 if ($totalDuration > $coursClasse->heures_global) {
-    //                     return response()->json(['error' => 'heure de cours termine.'], 200);
-
-    //                 }
-    //                 $coursClasse->decrement('nombreHeureR', $totalDuration);
-    //                 if ($coursClasse->nombreHeureR === 0) {
-    //                     $coursClasse->update(['Termine' => true]);
-    //                 }
-    //             }
-    //         }
-    //         event(new SessionEnCours($session));
-    //         return new sessionResource($session);
-    //     });
-    // }
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -131,7 +76,7 @@ class sessionController extends Controller
             }
 
             foreach ($request->sessionClasseCours as $value) {
-               $coursClasse = coursClasse::find($value['cours_classe_id']);
+                $coursClasse = coursClasse::find($value['cours_classe_id']);
                 if ($coursClasse) {
                     if ($totalDuration > $coursClasse->nombreHeureR) {
                         return response()->json(['error' => 'heure de cours termine.'], 200);
@@ -142,6 +87,10 @@ class sessionController extends Controller
                     }
                 }
             }
+            // return [
+            //     "s" => Carbon::now()->format('Y-m-d H:i'),
+            //     "d" => $sessionStart = $session->date . ' ' . $session->heure_debut
+            // ];
             event(new SessionEnCours($session));
             return new sessionResource($session);
         });
@@ -356,16 +305,14 @@ class sessionController extends Controller
     }
     public function SupprimerSession(Request $request, $session_cours_classe_id)
     {
-    $session = sessionCoursClasse::where('id', $session_cours_classe_id)->first();
+        $session = sessionCoursClasse::where('id', $session_cours_classe_id)->first();
 
         Annulation::where('session_cours_classe_id', $session_cours_classe_id)->delete();
         // if ($session) {
-            $session->delete();
+        $session->delete();
 
-            return response()->json(['message' => 'Session et enregistrements associés supprimés avec succès']);
-        // } else {
-        //     return response()->json(['message' => 'Session non trouvée'], 404);
-        // }
+        return response()->json(['message' => 'Session et enregistrements associés supprimés avec succès']);
+
     }
 
 
@@ -399,9 +346,6 @@ class sessionController extends Controller
         if ($this->isSessionEnCours($id)) {
             return response()->json(["error" => "impossible de valider"]);
         }
-        // if (!$this->isSessionEnCours($id)) {
-        //     return response()->json(['error' => 'Impossible de valider cette session car elle n\'a jamais été encours.'], Response::HTTP_BAD_REQUEST);
-        // }
 
         $session->status = 'validee';
         $session->save();
@@ -446,6 +390,28 @@ class sessionController extends Controller
         return response()->json(['message' => 'Demande d\'annulation enregistrée avec succès', "data" => $annulation]);
     }
 
+    public function sessionsEleve($eleveId)
+    {
+        $eleve = User::find($eleveId);
+
+        if (!$eleve) {
+            return response()->json(['message' => 'Élève non trouvé'], 404);
+        }
+
+        $inscriptions = Inscriptions::where('user_id', $eleveId)->get();
+
+
+        foreach ($inscriptions as $inscription) {
+
+            $classe = anneeClasse::where("id", $inscription->annee_classe_id)->first();
+            $session = $this->sessionClasse($classe->classe_id);
+        }
+
+        return [
+            "eleve" => $eleve,
+            "sessions" => $session,
+        ];
+    }
 
 
 
