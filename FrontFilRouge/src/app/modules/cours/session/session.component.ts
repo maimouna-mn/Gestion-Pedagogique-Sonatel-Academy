@@ -101,29 +101,27 @@ export class SessionComponent implements OnInit {
 
   initDate() {
     let today = new Date();
-    this.month = today.getMonth();
+    this.month = today.getMonth() + 1; 
     this.year = today.getFullYear();
-    this.event_date = new Date(this.year, this.month, today.getDate()).toDateString();
-
+    this.event_date = new Date(this.year, this.month - 1, today.getDate()).toDateString();
+    console.log(this.event_date);
     this.getNoOfDays();
   }
 
-
-
   showModal(date: number) {
-    const formattedDate = new Date(this.year, this.month - 1, date);
+    const formattedDate = new Date(this.year, this.month, date);
     const year = formattedDate.getFullYear();
-    const month = (formattedDate.getMonth() +2).toString(); 
+    const month = (formattedDate.getMonth() + 1).toString();
     const day = formattedDate.getDate().toString();
-
     this.event_date = `${year}-${month}-${day}`;
     console.log(this.event_date);
-
-
   }
+  
 
   getNoOfDays() {
-    let daysInMonth = new Date(this.year, this.month + 1, 0).getDate();
+    let daysInMonth = new Date(this.year, this.month - 1, 0).getDate();
+    // console.log(daysInMonth);
+
     this.no_of_days = [];
     for (let i = 1; i <= daysInMonth; i++) {
       this.no_of_days.push(i);
@@ -149,7 +147,6 @@ export class SessionComponent implements OnInit {
 
     this.sessionService.store(this.form.value).subscribe((result: any) => {
 
-      // console.log(result);
 
       if (result.data) {
         this.form.reset()
@@ -173,7 +170,8 @@ export class SessionComponent implements OnInit {
       } else if (result.error) {
         Swal.fire({
           title: 'Erreur',
-          text: "Une erreur s'est produite lors de l'ajout.",
+          text: result.error,
+          // text: "Une erreur s'est produite lors de l'ajout.",
           icon: 'error',
           confirmButtonText: 'OK'
         });
@@ -197,25 +195,18 @@ export class SessionComponent implements OnInit {
   }
 
 
-  heureSession1(event: any, year: any, month: any, date: any) {
-    const eventDate = new Date(event.event_date);
-    return (
-      eventDate.getFullYear() === year &&
-      eventDate.getMonth() === month &&
-      eventDate.getDate() === date
-    );
-  }
 
 
   heureSession(events: any[], year: any, month: any, date: any) {
+    
     const filteredEvents = events.filter((event) => {
       const eventDate = new Date(event.event_date);
       return (
         eventDate.getFullYear() === year &&
-        eventDate.getMonth() + 1 === month &&
+        eventDate.getMonth()  === month &&
         eventDate.getDate() === date
-      );
-    });
+        );
+      });
 
     return filteredEvents.slice(0, 2);
 
@@ -226,11 +217,12 @@ export class SessionComponent implements OnInit {
       const eventDate = new Date(event.event_date);
       return (
         eventDate.getFullYear() === this.year &&
-        eventDate.getMonth() + 1 === this.month &&
+        eventDate.getMonth() === this.month &&
         eventDate.getDate() === date
       );
     });
   }
+
   logout() {
     this.authService.logout();
   }

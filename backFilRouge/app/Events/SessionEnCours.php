@@ -8,6 +8,7 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Log;
 
 class SessionEnCours
 {
@@ -16,21 +17,29 @@ class SessionEnCours
  
     public $session;
 
+
     public function __construct(Session $session)
     {
         $this->session = $session;
     }
 
+    // public function handle()
+    // {
+        // $now = Carbon::now()->format('Y-m-d H:i');
+        // $sessionStart = $this->session->date .' '. $this->session->heure_debut;
+        // if ($now >= $sessionStart) {
+            // $this->session->status = 'en_cours';
+            // $this->session->save();
+        // }
+    // }
     public function handle()
     {
-        $now = Carbon::now()->format('Y-m-d H:i');
-        $sessionStart = $this->session->date .' '. $this->session->heure_debut;
-        if ($now >= $sessionStart) {
-            $this->session->status = 'en_cours';
-            $this->session->save();
-        }
+      
+        
+        $this->session->update(['status' => 'en_cours']);
+    
     }
- 
+    
 
     /**
      * Get the channels the event should broadcast on.

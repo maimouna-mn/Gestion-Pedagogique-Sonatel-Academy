@@ -5,17 +5,14 @@ namespace App\Listeners;
 use App\Events\SessionEnCours;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Carbon;
 
 class SessionEnCoursListener
 {
     /**
      * Create the event listener.
      */
-    protected $listen = [
-        SessionEnCours::class => [
-            SessionEnCoursListener::class,
-        ],
-    ];
+  
     public function __construct()
     {
         //
@@ -27,14 +24,17 @@ class SessionEnCoursListener
    
     public function handle(SessionEnCours $event)
     {
-        // Logique pour mettre à jour le statut de la session
         $session = $event->session;
-        $now = now();
-        $sessionStart = $session->date . ' ' . $session->heure_debut;
+        // $now = Carbon::now()->format('Y-m-d H:i');
+        // $sessionStart = $session->date . ' ' . $session->heure_debut;
 
-        if ($now >= $sessionStart) {
-            $session->status = 'en_cours';
-            $session->save();
-        }
+        // if ($now >= $sessionStart) {
+        //     $session->status = 'en_cours';
+        // }
+        // $session->status = 'en_cours';
+        //     $session->save();
+       $session->update(['status' => 'en_cours']);
+
+        
     }
 }

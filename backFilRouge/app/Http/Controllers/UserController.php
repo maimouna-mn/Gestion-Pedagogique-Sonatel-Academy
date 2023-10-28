@@ -34,15 +34,15 @@ class UserController extends Controller
 
         foreach ($etudiants as $etudiant) {
             $hashedPassword = password_hash($etudiant['password'], PASSWORD_BCRYPT);
-        
+
             $etudiantsData[] = [
                 'name' => $etudiant['name'],
                 'email' => $etudiant['email'],
-                'password' => $hashedPassword, 
+                'password' => $hashedPassword,
                 'role' => $etudiant['role']
             ];
         }
-        
+
         DB::beginTransaction();
 
         try {
@@ -56,19 +56,19 @@ class UserController extends Controller
                 ];
                 Inscriptions::create($inscriptionData);
             }
-            $classeEf=Classe::find($request->classe_id);
+            $classeEf = Classe::find($request->classe_id);
             $nouvelEffectif = $classeEf->effectif + count($etudiantsData);
             $classeEf->update(['effectif' => $nouvelEffectif]);
 
             DB::commit();
 
             return response()->json([
-                "message"=>'etudiants ajoutés avec succes',
-                "data"=>$classe
+                "message" => 'etudiants ajoutés avec succes',
+                "data" => $classe
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(["error"=>'erreur lors de l\'ajout des etudiants']);
+            return response()->json(["error" => 'erreur lors de l\'ajout des etudiants']);
         }
     }
 
@@ -79,9 +79,16 @@ class UserController extends Controller
             ->where("anneescolaire_id", 1)
             ->first();
         $eleves = Inscriptions::where("annee_classe_id", $annee->id)->get();
+        $tab=[];
+        foreach ($eleves as  $eleve) {
+         $user=User::find($eleve->user_id);
+          $tab[]=
+           $user
+          ;
+        }
         return [
             "data1" => $annee,
-            "data2" => $eleves,
+            "data2" => $tab,
         ];
     }
 
@@ -109,10 +116,11 @@ class UserController extends Controller
         $user = Auth::user();
         $token = $user->createToken("token")->plainTextToken;
         $cookie = cookie("token", $token, 24 * 60);
-
+        $inscription = Inscriptions::where("user_id", $user->id)->first();
         return response([
             "token" => $token,
             "user" => $user,
+            "inscription_id" => $inscription->id,
         ])->withCookie($cookie);
     }
 

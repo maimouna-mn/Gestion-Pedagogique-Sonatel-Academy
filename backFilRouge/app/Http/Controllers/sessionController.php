@@ -9,6 +9,7 @@ use App\Models\Annulation;
 use App\Models\Classe;
 use App\Models\Cours;
 use App\Models\coursClasse;
+use App\Models\Emargement;
 use App\Models\Inscriptions;
 use App\Models\Module;
 use App\Models\profModule;
@@ -20,6 +21,7 @@ use DateTime;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
 class sessionController extends Controller
@@ -37,13 +39,25 @@ class sessionController extends Controller
 
     public function store(Request $request)
     {
+
+
         $validatedData = $request->validate([
-            'date' => 'required|date',
-            'heure_debut' => 'required',
-            'heure_fin' => 'required|after:heure_debut',
-            'Type' => 'required|in:presentiel,enLigne',
-            'salle_id' => $request->Type == 'presentiel' ? 'required|exists:salles,id' : 'nullable',
+            'date' => ['required', 'date', 'after_or_equal:today'],
+            // La date doit être supérieure ou égale à aujourd'hui
+            'heure_debut' => ['required', 'date_format:H:i', 'after_or_equal:08:00', 'before_or_equal:16:00'],
+            // L'heure de début doit être entre 08:00 et 16:00
+            'heure_fin' => ['required', 'date_format:H:i', 'after:heure_debut'],
+            // L'heure de fin doit être postérieure à l'heure de début
+            'Type' => ['required', 'in:presentiel,enLigne'],
+            'salle_id' => $request->Type == 'presentiel' ? ['required', 'exists:salles,id'] : 'nullable',
+            'status' => 'string',
+        ], [
+            'date.after_or_equal' => 'La date doit être supérieure ou égale à aujourd\'hui.',
+            'heure_debut.after_or_equal' => 'L\'heure de début doit être entre 08:00 et 16:00.',
+            'heure_debut.before_or_equal' => 'L\'heure de début doit être entre 08:00 et 16:00.',
+            'heure_fin.after' => 'L\'heure de fin doit être postérieure à l\'heure de début.',
         ]);
+
 
         if ($validatedData['Type'] == 'presentiel') {
             $existingSession = Session::where('date', $validatedData['date'])
@@ -57,10 +71,30 @@ class sessionController extends Controller
             if ($existingSession) {
                 return response()->json(['error' => 'Une session existe déjà pour cette salle, cette date et cette heure.'], 200);
             }
+        } else if ($validatedData['Type'] == 'enLigne') {
+            $existingSession = Session::where('date', $validatedData['date'])
+                ->where(function ($query) use ($validatedData) {
+                    $query->whereBetween('heure_debut', [$validatedData['heure_debut'], $validatedData['heure_fin']])
+                        ->orWhereBetween('heure_fin', [$validatedData['heure_debut'], $validatedData['heure_fin']]);
+                })
+                ->first();
+
+            if ($existingSession) {
+                return response()->json(['error' => 'Une session existe déjà pour  cette date et cette heure.'], 200);
+            }
         }
 
         return DB::transaction(function () use ($validatedData, $request) {
-            $session = Session::create($validatedData);
+            // $session = Session::create($validatedData);
+            $session = Session::create([
+                'date' => $validatedData['date'],
+                'heure_debut' => $validatedData['heure_debut'],
+                'heure_fin' => $validatedData['heure_fin'],
+                'Type' => $validatedData['Type'],
+                'salle_id' => $validatedData['salle_id'],
+                'status' => 'en_attente',
+            ]);
+
 
             $session->sessionClasseCours()->attach($request->sessionClasseCours);
             $heureDebut = $session->heure_debut;
@@ -77,6 +111,20 @@ class sessionController extends Controller
 
             foreach ($request->sessionClasseCours as $value) {
                 $coursClasse = coursClasse::find($value['cours_classe_id']);
+                $id = $coursClasse->id;
+                $sessionId = sessionCoursClasse::where('session_id', $session->id)
+                    ->where('cours_classe_id', $id)
+                    ->first()->id;
+                $classeId = $coursClasse->annee_classe_id;
+                $classeEleves = $this->classeEleves($classeId);
+                foreach ($classeEleves['data2'] as $eleve) {
+                    $inscription_id = Inscriptions::where('user_id', $eleve->id)->first()->id;
+                    Emargement::create([
+                        'inscriptions_id' => $inscription_id,
+                        'session_cours_classe_id' => $sessionId,
+                        'presence' => 0,
+                    ]);
+                }
                 if ($coursClasse) {
                     if ($totalDuration > $coursClasse->nombreHeureR) {
                         return response()->json(['error' => 'heure de cours termine.'], 200);
@@ -87,11 +135,6 @@ class sessionController extends Controller
                     }
                 }
             }
-            // return [
-            //     "s" => Carbon::now()->format('Y-m-d H:i'),
-            //     "d" => $sessionStart = $session->date . ' ' . $session->heure_debut
-            // ];
-            event(new SessionEnCours($session));
             return new sessionResource($session);
         });
     }
@@ -127,6 +170,7 @@ class sessionController extends Controller
                         $module = $profModule->module;
 
                         $formattedSessions[] = [
+                            'session_cours_classe_id' => $session->id,
                             'id' => $sessionModel->id,
                             'date' => $sessionModel->date,
                             'heure_debut' => $sessionModel->heure_debut,
@@ -279,7 +323,9 @@ class sessionController extends Controller
     public function isSessionEnCours($session)
     {
         $session1 = Session::find($session);
-
+        //   dd('Contenu de $session1 : ' . $session1);
+        //     event(new SessionEnCours($session1));
+        //     return;
         if (!$session1) {
             return false;
         }
@@ -408,11 +454,68 @@ class sessionController extends Controller
         }
 
         return [
+            "inscription_id" => $inscription->id,
             "eleve" => $eleve,
             "sessions" => $session,
         ];
     }
 
 
+
+    public function emargement($inscriptionsId, $sessionCoursClasseId)
+    {
+        $emarge = Emargement::where('inscriptions_id', $inscriptionsId)
+            ->where('session_cours_classe_id', $sessionCoursClasseId)
+            ->where('presence', 0)
+            ->first();
+
+        if ($emarge) {
+            $emarge->update(['presence' => 1]);
+        } else {
+            return response()->json(["error" => "deja emagé"]);
+        }
+
+        return $emarge;
+    }
+
+
+    public function elevesPresentAbsent($sessionCoursClasseId)
+    {
+        $emargements = Emargement::where('session_cours_classe_id', $sessionCoursClasseId)
+            ->with('inscription')
+            ->get();
+
+        $result = [];
+
+        foreach ($emargements as $emargement) {
+            $inscription = Inscriptions::where('id', $emargement->inscriptions_id)->first();
+            $user = User::find($inscription->user_id);
+
+            $result[] = [
+                'user' => $user,
+                'presence' => $emargement->presence,
+                'session_cours_classe_id' => $sessionCoursClasseId
+            ];
+        }
+
+        return $result;
+    }
+
+
+    public function classeEleves($id)
+    {
+
+        $eleves = Inscriptions::where("annee_classe_id", $id)->get();
+        $tab = [];
+        foreach ($eleves as $eleve) {
+            $user = User::find($eleve->user_id);
+            $tab[] =
+                $user
+            ;
+        }
+        return [
+            "data2" => $tab,
+        ];
+    }
 
 }

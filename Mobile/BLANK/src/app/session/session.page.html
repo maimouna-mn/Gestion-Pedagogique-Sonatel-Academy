@@ -46,7 +46,36 @@
               <ion-input [(ngModel)]="item.details.salle"
                 [value]="item.details.salle === null ? 'EnLigne' : item.details.salle" disabled></ion-input>
               <ion-input [(ngModel)]="item.details.heure" disabled></ion-input>
-              <ion-checkbox style="margin-top:-0.5rem;" *ngIf="isCheckboxVisible(item)"></ion-checkbox>
+              <!-- *ngIf="isCheckboxVisible(item)" -->
+              <div  (click)="listeEleves(true,item.details.session_cours_classe_id)" style="height: 2rem;background-color: blue;border: 1px solid;border-radius: 50px ;">Open</div>
+              <ion-modal [isOpen]="isModalOpen">
+                <ng-template>
+                  <ion-header >
+                    <ion-toolbar>
+                      <ion-title>Liste Eleves</ion-title>
+                      <ion-buttons slot="end">
+                        <ion-button (click)="setOpen(false)">Close</ion-button>
+                      </ion-buttons>
+                    </ion-toolbar>
+                  </ion-header>
+                  <ion-content>
+                    <!-- <ion-list> -->
+                      <div *ngFor="let item1 of eleves" >
+                        <div class="bg-white w-[90%] ml-4 shadow-lg text-black rounded-lg flex font-bold p-3 mt-1 ">
+                        <ion-avatar slot="start">
+                          <ion-img [src]="item1.user.photo"></ion-img>
+                        </ion-avatar>
+                        <ion-label>
+                          <h2>{{item1.user.name}}</h2>
+                          <h2 class="text-black">Présence : {{ item1.presence === 1 ? 'Présent' : 'Absent' }}</h2>
+                        </ion-label>
+                        <div  style="margin-top:-0.5rem;" class="flex justify-end" *ngIf="emarger(item1)" (click)="emargement(item1.session_cours_classe_id)">ccc</div>
+                      </div>
+                    </div>
+                    <!-- </ion-list> -->
+                  </ion-content>
+                </ng-template>
+              </ion-modal>
             </div>
           </div>
         </div>
@@ -54,3 +83,4 @@
     </ion-row>
   </ion-grid>
 </ion-content>
+

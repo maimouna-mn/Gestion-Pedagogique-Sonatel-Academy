@@ -16,6 +16,7 @@ export class SessionPage implements OnInit {
   ngOnInit(): void {
     this.sessions()
   }
+  bool: boolean = false
 
   sessionsE!: any[]
   currentYear: number;
@@ -110,7 +111,6 @@ export class SessionPage implements OnInit {
 
   selectEvent(event: { date: string, details: any }): void {
     this.selectedEvent = event;
-    
   }
 
   sessions() {
@@ -132,6 +132,7 @@ export class SessionPage implements OnInit {
             professeur: session.professeur,
             module: session.module,
             statut: session.statut,
+            session_cours_classe_id: session.session_cours_classe_id
           }
         };
       });
@@ -147,19 +148,51 @@ export class SessionPage implements OnInit {
     });
   };
 
-
   isCheckboxVisible(item: any) {
     if (item.details.statut === 'en_cours') {
       const now = new Date();
       const heureDebut = new Date(item.date + 'T' + item.details.heureD);
-  
-      const diffMinutes = (heureDebut.getTime() - now.getTime()) / 1000 / 60;
-  
+      const diffMinutes = -((heureDebut.getTime() - now.getTime()) / 1000 / 60);
+
       return diffMinutes >= 0 && diffMinutes <= 30;
     }
     return false;
   }
-  
 
+  emarger(item: any) {
+    const userId =localStorage.getItem("id");
+    
+    if (item.user.id == userId) {
+      return true;
+    }
+    return false;
+  }
+  
+  emargement(idS: number) {
+    // if (!this.bool) {
+      console.log(idS,localStorage.getItem("inscription"));
+      
+      this.service.emargement(localStorage.getItem("inscription"), idS).subscribe((result) => {
+
+        console.log(result);
+        // this.bool = true;
+      });
+    // }
+  }
+  eleves!: any[]
+  isModalOpen = false;
+  listeEleves(isOpen: boolean, idS: number) {
+    this.isModalOpen = isOpen;
+    this.service.listeEleves(idS).subscribe((result) => {
+      this.eleves = result
+      console.log(this.eleves);
+
+    });
+  }
+
+  setOpen(isOpen: boolean) {
+    this.isModalOpen = isOpen;
+
+  }
 }
 
