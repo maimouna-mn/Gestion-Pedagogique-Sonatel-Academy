@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\SessionEnCours;
 use App\Http\Resources\sessionResource;
 use App\Models\anneeClasse;
 use App\Models\Annulation;
@@ -21,7 +20,6 @@ use DateTime;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
 class sessionController extends Controller
@@ -39,12 +37,9 @@ class sessionController extends Controller
 
     public function store(Request $request)
     {
-
-
         $validatedData = $request->validate([
             'date' => ['required', 'date', 'after_or_equal:today'],
-            // La date doit être supérieure ou égale à aujourd'hui
-            'heure_debut' => ['required', 'date_format:H:i', 'after_or_equal:08:00', 'before_or_equal:16:00'],
+            'heure_debut' => ['required', 'date_format:H:i', 'after_or_equal:08:00', 'before_or_equal:23:00'],
             // L'heure de début doit être entre 08:00 et 16:00
             'heure_fin' => ['required', 'date_format:H:i', 'after:heure_debut'],
             // L'heure de fin doit être postérieure à l'heure de début
@@ -57,7 +52,6 @@ class sessionController extends Controller
             'heure_debut.before_or_equal' => 'L\'heure de début doit être entre 08:00 et 16:00.',
             'heure_fin.after' => 'L\'heure de fin doit être postérieure à l\'heure de début.',
         ]);
-
 
         if ($validatedData['Type'] == 'presentiel') {
             $existingSession = Session::where('date', $validatedData['date'])
@@ -85,7 +79,6 @@ class sessionController extends Controller
         }
 
         return DB::transaction(function () use ($validatedData, $request) {
-            // $session = Session::create($validatedData);
             $session = Session::create([
                 'date' => $validatedData['date'],
                 'heure_debut' => $validatedData['heure_debut'],
@@ -94,7 +87,6 @@ class sessionController extends Controller
                 'salle_id' => $validatedData['salle_id'],
                 'status' => 'en_attente',
             ]);
-
 
             $session->sessionClasseCours()->attach($request->sessionClasseCours);
             $heureDebut = $session->heure_debut;
@@ -193,46 +185,7 @@ class sessionController extends Controller
         ];
     }
 
-    // public function sessionProfesseur($professeurId)
-    // {
-    //     $professeur = User::find($professeurId);
 
-    //     if (!$professeur) {
-    //         return response()->json(['message' => 'Professeur non trouvé'], 404);
-    //     }
-
-    //     $sessions = Session::whereHas('coursClasses', function ($query) use ($professeurId) {
-    //         $query->whereHas('cours.profModule.professeurs', function ($q) use ($professeurId) {
-    //             $q->where('id', $professeurId);
-    //         });
-    //     })->get();
-
-    //     $formattedSessions = [];
-
-    //     foreach ($sessions as $session) {
-    //         $coursClasse = $session->coursClasses->first();
-
-    //         $profModule = $coursClasse->cours->profModule;
-    //         $module = $profModule->module;
-
-    //         $formattedSessions[] = [
-    //             'id' => $session->id,
-    //             'date' => $session->date,
-    //             'heure_debut' => $session->heure_debut,
-    //             'statut' => $session->status,
-    //             'heure_fin' => $session->heure_fin,
-    //             'Type' => $session->Type,
-    //             'salle_id' => Salle::find($session->salle_id),
-    //             'module' => $module->libelle,
-    //             'professeur' => $professeur->name,
-    //         ];
-    //     }
-
-    //     return [
-    //         "professeur" => $professeur,
-    //         "sessions" => $formattedSessions,
-    //     ];
-    // }
     public function sessionProfesseur($professeurId)
     {
         $professeur = User::find($professeurId);
@@ -299,7 +252,6 @@ class sessionController extends Controller
             return response()->json(['error' => 'Classe non trouvée'], 404);
         }
 
-        // $anneeClasse = AnneeClasse::where("classe_id", $classe->id)->where("anneescolaire_id", 3)->first();
         $anneeClasse = AnneeClasse::where("classe_id", $classe->id)->first();
         $coursClasse = CoursClasse::where('annee_classe_id', $anneeClasse->id)->get();
         $modules = [];
@@ -323,9 +275,6 @@ class sessionController extends Controller
     public function isSessionEnCours($session)
     {
         $session1 = Session::find($session);
-        //   dd('Contenu de $session1 : ' . $session1);
-        //     event(new SessionEnCours($session1));
-        //     return;
         if (!$session1) {
             return false;
         }
@@ -354,9 +303,7 @@ class sessionController extends Controller
         $session = sessionCoursClasse::where('id', $session_cours_classe_id)->first();
 
         Annulation::where('session_cours_classe_id', $session_cours_classe_id)->delete();
-        // if ($session) {
         $session->delete();
-
         return response()->json(['message' => 'Session et enregistrements associés supprimés avec succès']);
 
     }
@@ -408,16 +355,14 @@ class sessionController extends Controller
             return response()->json(['error' => 'Session introuvable.'], Response::HTTP_NOT_FOUND);
         }
 
-        $dateFin = $session->date_fin;
-
-        if (now() >= $dateFin) {
-            $session->status = 'invalidee';
-            $session->save();
-
-            return response()->json(['message' => 'Session invalidée avec succès.'], Response::HTTP_OK);
-        } else {
-            return response()->json("Impossible d'invalider une session en cours ou avant la fin de la session.");
+        if ($this->isSessionEnCours($id)) {
+            return response()->json(["error" => "Impossible d'invalider une session en cours"]);
         }
+
+        $session->status = 'invalidee';
+        $session->save();
+        return response()->json(['message' => 'Session invalidée avec succès.'], Response::HTTP_OK);
+
     }
 
 

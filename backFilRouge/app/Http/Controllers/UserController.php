@@ -116,6 +116,22 @@ class UserController extends Controller
         $user = Auth::user();
         $token = $user->createToken("token")->plainTextToken;
         $cookie = cookie("token", $token, 24 * 60);
+        return response([
+            "token" => $token,
+            "user" => $user,
+        ])->withCookie($cookie);
+    }
+
+    public function loginEleve(Request $request)
+    {
+        if (!Auth::attempt($request->only("email", "password"))) {
+            return response([
+                "message" => "Invalid credentials"
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+        $user = Auth::user();
+        $token = $user->createToken("token")->plainTextToken;
+        $cookie = cookie("token", $token, 24 * 60);
         $inscription = Inscriptions::where("user_id", $user->id)->first();
         return response([
             "token" => $token,

@@ -1,6 +1,6 @@
 <div class="w-full relative flex ct-docs-disable-sidebar-content overflow-x-hidden ">
 
-    <nav
+  <nav
     class="block py-4 px-6 top-0 bottom-0 w-64 bg-white shadow-xl left-0 absolute flex-row flex-nowrap md:z-10 z-9999 transition-all duration-300 ease-in-out transform md:translate-x-0 -translate-x-full">
     <button
       class="md:hidden flex items-center justify-center cursor-pointer text-blueGray-700 w-6 h-10 border-l-0 border-r border-t border-b border-solid border-blueGray-100 text-xl leading-none bg-white rounded-r border border-solid border-transparent absolute top-1/2 -right-24-px focus:outline-none z-9998"><i
@@ -24,37 +24,30 @@
               class="fas fa-newspaper mr-2 text-sm text-blueGray-400"></i>Cours</a><a href="#"
             routerLink="/cours/session"
             class="text-xs uppercase py-3 font-bold block text-blueGray-800 hover:text-blueGray-500"><i
-              class="fas fa-user-circle mr-2 text-sm text-blueGray-400"></i>Session</a><a href="#"   routerLink="/user"
+              class="fas fa-user-circle mr-2 text-sm text-blueGray-400"></i>Session</a><a href="#" routerLink="/user"
             class="text-xs uppercase py-3 font-bold block text-blueGray-800 hover:text-blueGray-500"><i
               class="fas fa-paint-brush mr-2 text-sm text-blueGray-400"></i>Classes</a>
           <hr class="my-4 md:min-w-full">
           <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">Section 4
           </h6>
-          <a href="#" routerLink="/cours/notification" class="text-xs uppercase py-3 flex font-bold  text-blueGray-800 hover:text-blueGray-500" *ngIf="fonctionnalitesRp">
-           <span> Notification</span>
+          <a href="#" routerLink="/cours/notification"
+            class="text-xs uppercase py-3 flex font-bold  text-blueGray-800 hover:text-blueGray-500"
+            *ngIf="fonctionnalitesRp">
+            <span> Notification</span>
             <div class="flex">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 " style="margin-top: -0.4rem;">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-            </svg>
-            <span class="badge">5+</span>
-          </div>
-     
-         
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-6 h-6 " style="margin-top: -0.4rem;">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+              </svg>
+              <span class="badge">5+</span>
+            </div>
           </a>
-          
-          <!-- <a href="javascript:;"
-            class="text-xs uppercase py-3 font-bold block text-blueGray-800 hover:text-blueGray-500"><i
-              class="fab fa-angular mr-2 text-sm text-blueGray-400"></i>Notification</a> -->
-              <!-- <a href="javascript:;"
-            class="text-xs uppercase py-3 font-bold block text-blueGray-800 hover:text-blueGray-500"><i
-              class="fab fa-react mr-2 text-sm text-blueGray-400"></i>Page 2 for Section 4</a><a href="javascript:;"
-            class="text-xs uppercase py-3 font-bold block text-blueGray-800 hover:text-blueGray-500"><i
-              class="fab fa-vuejs mr-2 text-sm text-blueGray-400"></i>Page 3 for Section 4</a> -->
         </div>
       </div>
     </div>
-
   </nav>
+
   <div class="relative md:ml-64  bg-blue-100 w-full">
     <nav
       class="absolute top-0 left-0 w-full z-10 bg-white lg:flex-row lg:flex-nowrap lg:justify-start flex items-center py-1 px-4 lg:bg-transparent">
@@ -63,15 +56,7 @@
         <div
           class="items-center w-full lg:flex lg:w-auto flex-grow duration-300 transition-all ease-in-out lg:h-auto-important hidden">
           <div class="ml-auto mt-2" style="margin-right: -1.5rem;">
-            <!-- <button id="dropdownUserAvatarButton" data-dropdown-toggle="dropdownAvatar"
-              class="flex mx-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-              type="button"
-              onclick="document.getElementById('dropdownAvatar').classList.remove('hidden'); document.body.classList.add('overflow-hidden');">
-           
-              <img class="w-12 h-12 rounded-full"
-                src="https://demos.creative-tim.com/notus-pro-react/static/media/team-1-800x800.fa5a7ac2.jpg"
-                alt="user photo">
-            </button> -->
+
             <div class="py-2" (click)="logout()">
               <svg class="h-8 w-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                 stroke-linecap="round" stroke-linejoin="round">
@@ -79,10 +64,9 @@
                 <polyline points="16 17 21 12 16 7" />
                 <line x1="21" y1="12" x2="9" y2="12" />
               </svg>
-          
+
             </div>
 
-            <!-- Dropdown menu -->
             <div id="dropdownAvatar"
               class="z-10 hidden  bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
               <div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
@@ -110,14 +94,7 @@
               </div>
             </div>
           </div>
-          <!-- <a class="text-blueGray-500 block" href="javascript:;">
-            <div class="items-center flex">
-              <span
-                class="w-12 h-12 text-sm text-white bg-blueGray-300 inline-flex items-center justify-center rounded-full"><img
-                  alt="..." class="w-full rounded-full align-middle border-none shadow-lg"
-                  src="https://demos.creative-tim.com/notus-pro-react/static/media/team-1-800x800.fa5a7ac2.jpg"></span>
-            </div>
-          </a> -->
+
           <div class="block z-50">
             <div
               class="bg-white text-base float-left p-2 border list-none text-left rounded-lg shadow-lg min-w-48 transition-all duration-100 ease-in-out transform scale-95 opacity-0 absolute origin-top-right">
@@ -137,7 +114,6 @@
         </div>
       </div>
     </nav>
-    <!-- pb-32 -->
     <div class="relative pt-28 pb-14  h-14 bg-blue-500">
       <div class="px-4 w-full">
         <div class="flex justify-between mr-7" style="margin-top: -5rem;">
@@ -150,15 +126,7 @@
               <option value="">Filtrer</option>
               <option value="{{item.id}}" *ngFor="let item of classes">{{item.libelle}}</option>
             </select>
-            <!-- </div> -->
 
-            <!-- <div class="flex items-center mt-10 ml-2">
-              <div class="flex-1 mr-2">
-                <input placeholder="Search here" type="text"
-                  class="border-transparent shadow px-3 py-2 text-sm w-full placeholder-blueGray-200 text-blueGray-700 relative bg-white rounded-md outline-none focus:ring-lightBlue-500 focus:ring-1 focus:border-lightBlue-500 border border-solid transition duration-200">
-              </div>
-
-            </div> -->
 
           </div>
 
@@ -182,20 +150,17 @@
                 <button type="button" class="bg-blue-500 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l"
                   [class.cursor-not-allowed]="month == 0" [disabled]="month == 0 ? true : false" (click)="prevMonth()">
                   Prev
-                  <!-- ... Bouton précédent ... -->
                 </button>
 
                 <div class="border-r inline-flex h-6"></div>
                 <button type="button" class="bg-blue-500 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r"
                   [class.cursor-not-allowed]="month == 11" [disabled]="month == 11 ? true : false"
                   (click)="nextMonth()"> Next
-                  <!-- ... Bouton suivant ... -->
                 </button>
               </div>
             </div>
 
             <div class="flex flex-wrap  border-t border-l" style="height: 20rem;">
-              <!-- Afficher les jours de la semaine -->
               <div style="width: 14.28%;" class="px-2   py-2">
                 <div class="text-gray-600 text-sm uppercase tracking-wide font-bold text-center">Lundi</div>
               </div>
@@ -218,7 +183,6 @@
                 <div class="text-gray-600 text-sm uppercase tracking-wide font-bold text-center">Dimanche</div>
               </div>
 
-              <!-- Jours vides (s'il y en a) -->
               <div *ngFor="let blankday of blankdays" style="width: 14.28%; height: 120px;"
                 class="text-center border-r border-b px-4"></div>
               <div *ngFor="let date of no_of_days; let dateIndex = index"
@@ -228,12 +192,20 @@
 
                   <div (click)="showModal(date)" [textContent]="date"
                     onclick="document.getElementById('staticModal').classList.remove('hidden'); document.body.classList.add('overflow-hidden');"
-                    class="inline-flex   w-6 h-6 items-center justify-center cursor-pointer text-center leading-none rounded-full transition ease-in-out duration-100" *ngIf="fonctionnalitesRp">
+                    class="inline-flex   w-6 h-6 items-center justify-center cursor-pointer text-center leading-none rounded-full transition ease-in-out duration-100"
+                    *ngIf="fonctionnalitesRp">
                   </div>
+                </div>
+                <div class="flex">
+                  <div  [textContent]="date"
+                  class="inline-flex   w-6 h-6 items-center justify-center cursor-pointer text-center leading-none rounded-full transition ease-in-out duration-100"
+                  *ngIf="fonctionnalitesAttache">
+                 
+              </div>
                 </div>
                 <div class="shadow-lg  rounded-lg text-center" style="height: 80%; overflow-y: auto;">
                   <div *ngFor="let event of heureSession(events, year, month, date)">
-
+                
                     <div style="position: absolute; top: 0; right: 0; cursor: pointer;">
                       <svg class="h-6 w-6 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         (click)="showAllEvents(date)"
@@ -246,17 +218,30 @@
                     </div>
                     <div class="text-xs h-14 relative mt-2 truncate   rounded shadow-lg text-center" [ngClass]="{
                       'bg-blue-50': event.event_Type === 'presentiel',
-                      'bg-green-100': event.event_Type === 'enLigne',
-                  }">
-                      <div class="text-sm  font-bold" style="position: absolute; top: 0; left: 0;">
-                        {{ event.event_title }}
-                      </div>
+                      'bg-green-100': event.event_Type === 'enLigne'}">
+                           <div *ngIf="listeVisible(event)">
+                    <svg class="h-8 w-6  text-black" width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                      *ngIf="fonctionnalitesAttache"
+                      onclick="document.getElementById('default').classList.remove('hidden'); document.body.classList.add('overflow-hidden');"
+                      stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"
+                      style="margin-top: -0.5rem;" (click)="listeEleves(event.event_session_cours_classe_id)">
+                      <path stroke="none" d="M0 0h24v24H0z" />
+                      <rect width="6" height="6" x="4" y="5" rx="1" />
+                      <line x1="14" y1="7" x2="20" y2="7" />
+                      <line x1="14" y1="11" x2="20" y2="11" />
+                      <line x1="4" y1="15" x2="20" y2="15" />
+                      <line x1="4" y1="19" x2="20" y2="19" />
+                    </svg>
+                    </div>
                       <div class="text-sm font-bold "
                         style="position: absolute; bottom: 50%; right: 0;margin-bottom: 0.5rem;">
                         {{ event.event_prof }}
                       </div>
                       <div class="text-sm font-bold" style="position: absolute; bottom: 0; left: 0;">
                         {{ event.event_module }}
+                      </div>
+                      <div class="text-sm  font-bold" style="position: absolute; bottom: 0; right: 0;">
+                        {{ event.event_title }}
                       </div>
                       <div class="text-sm font-bold"
                         style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
@@ -267,9 +252,7 @@
                   </div>
                 </div>
               </div>
-
             </div>
-            <!-- </div> -->
           </div>
         </div>
       </div>
@@ -334,10 +317,10 @@
                         <td class="px-6 py-4">
                           {{ eventStatuts[i] ? eventStatuts[i] : event.event_statut }}
                         </td>
-                        <!-- modal Motif -->
                         <div id="small-modal" tabindex="-1"
                           class="fixed top-0  z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                          <div class="relative w-full max-w-md max-h-full" style="margin-left: 45rem;margin-top: 11rem;">
+                          <div class="relative w-full max-w-md max-h-full"
+                            style="margin-left: 45rem;margin-top: 11rem;">
                             <div class="relative bg-white rounded-lg shadow">
 
                               <div class="p-6 space-y-6">
@@ -363,18 +346,20 @@
 
                         <td class="flex items-center p-6 space-x-2 border-t">
                           <button type="button"
-                            onclick="document.getElementById('small-modal').classList.remove('hidden'); document.body.classList.add('overflow-hidden');"                           
+                            onclick="document.getElementById('small-modal').classList.remove('hidden'); document.body.classList.add('overflow-hidden');"
                             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                             *ngIf="fonctionnalitesProf">
                             Demande Annulation</button>
-                          <button type="button" (click)="validerSession(event.event_id,i)"
+                          <button type="button" (click)="validerSession(event.event_id, i)"
                             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                            *ngIf="fonctionnalitesAttache">
-                            Valider</button>
-                          <button type="button" (click)="invaliderSession(event.event_id,i)"
+                            *ngIf="fonctionnalitesAttache" [disabled]="!aAuMoinsUnePresence">
+                            Valider
+                          </button>
+                          <button type="button" (click)="invaliderSession(event.event_id, i)"
                             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                            *ngIf="fonctionnalitesAttache">
-                            Invalider</button>
+                            *ngIf="fonctionnalitesAttache" [disabled]="aAuMoinsUnePresence">
+                            Invalider
+                          </button>
                           <button type="button" (click)="annulerSession(event.event_id,i)"
                             class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-2 py-2 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
                             *ngIf="fonctionnalitesRp">Annuler</button>
@@ -433,24 +418,64 @@
   </div>
 </div>
 
-<!-- <button data-modal-target="small-modal" data-modal-toggle="small-modal" class="block w-full md:w-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-onclick="document.getElementById('small-modal').classList.remove('hidden'); document.body.classList.add('overflow-hidden');"
-type="button">
-  Small modal
-  </button> -->
+<div id="default" tabindex="-1" aria-hidden="true"
+  class="fixed top-0 left-0 right-0 z-50 hidden w-full  p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
+  style="margin-left: 38rem;margin-top: 3rem;">
+  <div class="relative w-full max-w-2xl max-h-full">
+    <div class="relative  rounded-lg shadow bg-blue-400">
+      <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
 
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <thead class="text-xs uppercase bg-gray-50 dark:text-gray-400">
+            <tr>
+              <th scope="col" class="px-6 py-3">
+                Name
+              </th>
+              <th scope="col" class="px-6 py-3">
+                Email
+              </th>
+              <th scope="col" class="px-6 py-3">
+                Status
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="bg-white border-b hover:bg-gray-50 text-black" *ngFor="let item1 of listes">
 
+              <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                <img class="w-10 h-10 rounded-full" [src]="item1.user.photo" alt="Jese image">
+                <div class="pl-3">
+                  <div class="text-base font-semibold">{{item1.user.name}}</div>
+                </div>
+              </th>
+              <td class="px-6 py-4">
+                {{item1.user.email}}
+              </td>
+              <td class="px-6 py-4">
+                <div class="flex items-center">
+                  <div [ngClass]="{'bg-green-500': item1.presence === 1, 'bg-red-500': item1.presence === 0}"
+                    class="h-2.5 w-2.5 rounded-full mr-2"></div>
+                  {{ item1.presence === 1 ? 'Présent' : 'Absent' }}
+                </div>
 
-
-
-
-
-
-
-
-
-
-
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+        <button data-modal-hide="default-modal" type="button"
+          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          onclick="document.getElementById('default').classList.add('hidden'); document.body.classList.remove('overflow-hidden');">I
+          accept</button>
+        <button data-modal-hide="default-modal"
+          onclick="document.getElementById('default').classList.add('hidden'); document.body.classList.remove('overflow-hidden');"
+          type="button"
+          class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Decline</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div id="staticModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true"
   class="fixed hidden   top-0 left-0 right-0  w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -547,11 +572,6 @@ type="button">
       </div>
 
     </div>
-    <!-- </div> -->
   </form>
 
-
-  <!-- </div> -->
-
-
-  <!--  -->
+  

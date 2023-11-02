@@ -104,4 +104,7 @@ export abstract class MereServiceService<T> {
     const uri = this.getUri()
     return this.http.delete<U>(`${environment.apiUrl}/${uri}/supprimer/${session_cours_classe_id}`)
   }
+  listeEleves(sessionCoursClasseId: any): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/session/present-absent/${sessionCoursClasseId}`);
+  }
 }

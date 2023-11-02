@@ -47,7 +47,7 @@ ion-app {
 .day-header {
     font-weight: bold;
     text-align: center;
-    background-color: #4f4fb4;
+    background-color: hsl(220, 88%, 52%);
     color: white;
   }
   
@@ -55,13 +55,12 @@ ion-app {
     text-align: center;
     border: 1px solid #dcdcdc;
     padding: 5px;
+    color: #ffffff;
   }
+  
   .has-event{
-    background-color: #f5b6a3; /* Couleur de fond pour les cellules avec un événement */
+    background-color: hsl(220, 88%, 52%); /* Couleur de fond pour les cellules avec un événement */
     border-radius: 80%; /* Rendre le cercle */
     color: rgb(24, 22, 22); /* Couleur du texte */
   }
 
-  
-  /* Ajoutez d'autres styles selon vos besoins */
-  

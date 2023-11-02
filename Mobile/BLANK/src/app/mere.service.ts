@@ -17,7 +17,7 @@ export class MereService {
 
 
   login(identifiant: any): Observable<any> {
-    return this.http.post<{ token: string }>(environment.apiUrl + '/login', identifiant)
+    return this.http.post<{ token: string }>(environment.apiUrl + '/loginEleve', identifiant)
       .pipe(
         map(result => {
           localStorage.setItem('token', result.token);

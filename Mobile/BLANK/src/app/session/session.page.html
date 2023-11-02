@@ -1,24 +1,20 @@
 <ion-header>
-  <ion-toolbar>
-    <div class="flex justify-between">
-      <ion-title>
-        {{getMonthName(currentMonth)}} {{currentYear}}
-      </ion-title>
-      <ion-button (click)="previousMonth()">
-        <ion-icon name="arrow-back"></ion-icon>
-
-      </ion-button>
-      <ion-button (click)="nextMonth()">
-        <ion-icon name="arrow-forward"></ion-icon>
-      </ion-button>
-
-    </div>
-  </ion-toolbar>
+  <div class="flex justify-between bg-white shadow-md text-black font-bold">
+    <ion-title>
+      {{getMonthName(currentMonth)}} {{currentYear}}
+    </ion-title>
+    <ion-button (click)="previousMonth()">
+      <ion-icon name="arrow-back"></ion-icon>
+    </ion-button>
+    <ion-button (click)="nextMonth()">
+      <ion-icon name="arrow-forward"></ion-icon>
+    </ion-button>
+  </div>
 </ion-header>
 
 <ion-content>
   <ion-grid class="shadow-lg rounded-lg p-10">
-    <ion-row class="border-b-4">
+    <ion-row class="border-b-4 ">
       <ion-col class="day-header">Lun</ion-col>
       <ion-col class="day-header">Mar</ion-col>
       <ion-col class="day-header">Mer</ion-col>
@@ -40,17 +36,23 @@
       <ion-col>
         <div *ngIf="selectedEvent">
           <div *ngFor="let item of heureSession(selectedEvent.date)">
-            <div class="bg-white rounded-lg text-black font-semibold flex shadow-lg p-2 mt-1">
-              <ion-input [(ngModel)]="item.details.professeur" disabled></ion-input>
-              <ion-input [(ngModel)]="item.details.module" disabled></ion-input>
+            <div class="bg-white rounded-lg  font-black flex shadow-lg p-2 mt-1">
+              <ion-input [(ngModel)]="item.details.professeur"></ion-input>
+              <ion-input [(ngModel)]="item.details.module"></ion-input>
+              <div class="w-[100%] ml-7">
+              <ion-input [(ngModel)]="item.details.heure" style="width: 7em;"></ion-input>
+            </div>
               <ion-input [(ngModel)]="item.details.salle"
-                [value]="item.details.salle === null ? 'EnLigne' : item.details.salle" disabled></ion-input>
-              <ion-input [(ngModel)]="item.details.heure" disabled></ion-input>
-              <!-- *ngIf="isCheckboxVisible(item)" -->
-              <div  (click)="listeEleves(true,item.details.session_cours_classe_id)" style="height: 2rem;background-color: blue;border: 1px solid;border-radius: 50px ;">Open</div>
+                [value]="item.details.salle === null ? 'EnLigne' : item.details.salle"></ion-input>
+
+              <div *ngIf="isCheckboxVisible(item)">
+                <ion-icon name="list-outline" slot="start"
+                  (click)="listeEleves(true, item.details.session_cours_classe_id)"
+                  style="color: rgb(9, 8, 8); font-size: 1.5rem; margin-top: -1rem;"></ion-icon>
+              </div>
               <ion-modal [isOpen]="isModalOpen">
                 <ng-template>
-                  <ion-header >
+                  <ion-header>
                     <ion-toolbar>
                       <ion-title>Liste Eleves</ion-title>
                       <ion-buttons slot="end">
@@ -59,20 +61,26 @@
                     </ion-toolbar>
                   </ion-header>
                   <ion-content>
-                    <!-- <ion-list> -->
-                      <div *ngFor="let item1 of eleves" >
-                        <div class="bg-white w-[90%] ml-4 shadow-lg text-black rounded-lg flex font-bold p-3 mt-1 ">
+                    <div *ngFor="let item1 of eleves">
+                      <div class="bg-white w-[90%] ml-4 shadow-lg text-black rounded-lg flex font-bold p-3 mt-1 ">
                         <ion-avatar slot="start">
-                          <ion-img [src]="item1.user.photo"></ion-img>
+                          <ion-img [src]="item1.user.photo" class="mr-4"></ion-img>
                         </ion-avatar>
-                        <ion-label>
-                          <h2>{{item1.user.name}}</h2>
-                          <h2 class="text-black">Présence : {{ item1.presence === 1 ? 'Présent' : 'Absent' }}</h2>
-                        </ion-label>
-                        <div  style="margin-top:-0.5rem;" class="flex justify-end" *ngIf="emarger(item1)" (click)="emargement(item1.session_cours_classe_id)">ccc</div>
+                        <div class="ml-3">
+                          <ion-label>
+                            <h2>{{item1.user.name}}</h2>
+                            <h2 class="text-black ml-2"> {{ item1.presence === 1 ? 'Présent' : 'Absent' }}</h2>
+                          </ion-label>
+                        </div>
+                        <div class="flex w-32 justify-end">
+                          <div >
+                            <input type="checkbox"  *ngIf="emarger(item1)" [checked]="isChecked" (click)="emargement(item1.session_cours_classe_id,true,$event)" >
+                          </div>
+                          <!-- <ion-checkbox slot="start" aria-label="Toggle task completion" *ngIf="emarger(item1)"
+                            (click)="emargement(item1.session_cours_classe_id,true)" class="white-icon"></ion-checkbox> -->
+                        </div>
                       </div>
                     </div>
-                    <!-- </ion-list> -->
                   </ion-content>
                 </ng-template>
               </ion-modal>
@@ -82,5 +90,9 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-</ion-content>
 
+  <ion-content class="ion-padding">
+    <ion-toast [isOpen]="isToastOpen" message="Vous avez deja emagé" [duration]="5000"
+      (didDismiss)="setOpen(false)"></ion-toast>
+  </ion-content>
+</ion-content>
