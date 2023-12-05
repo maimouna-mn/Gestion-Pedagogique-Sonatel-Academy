@@ -13,8 +13,18 @@ export class UserServiceService {
     return this.http.get<U>(`${environment.apiUrl}/user`)
   }
   
-  store<U>(etudiants:any,classe_id:number): Observable<U> {
-  const  body ={classe_id,etudiants}
-    return this.http.post<U>(`${environment.apiUrl}/store`,  body);
+  classeEleves<U>(id:number): Observable<U> {
+    return this.http.get<U>(`${environment.apiUrl}/user/classeEleves/${id}`)
   }
+  
+  store<U>(etudiants:any): Observable<U> {
+    const  body ={etudiants}
+      return this.http.post<U>(`${environment.apiUrl}/store`,body);
+    }
+
+    storeClasse<U>(classe: any): Observable<U> {
+  
+      return this.http.post<U>(`${environment.apiUrl}/user/storeClasse`, classe);
+    }
+  
 }

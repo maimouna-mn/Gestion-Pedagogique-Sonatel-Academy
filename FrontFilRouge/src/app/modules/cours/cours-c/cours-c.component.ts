@@ -105,7 +105,7 @@ export class CoursCComponent implements OnInit {
     this.coursService.store(this.form.value).subscribe((result: any) => {
       Swal.fire({
         title: 'Succès',
-        text: 'Les données ont été insérées avec succès.',
+        text: 'Cours ajouté avec succès.',
         icon: 'success',
         confirmButtonText: 'OK'
       })
@@ -165,17 +165,17 @@ export class CoursCComponent implements OnInit {
   //     this.listeCours = result.data
   //   })
   // }
-  listeCours1: any[] = []; // Variable pour stocker les résultats de la recherche
+  listeCours1: any[] = []; 
 
 
   noResults: boolean = false;
 
   filtreCoursModule(e: Event) {
     const input = e.target as HTMLInputElement;
-    const searchTerm = input.value;
-
-    if (searchTerm) {
-      const filteredCourses = this.listeCours.filter(course => course.moduleProf.module === searchTerm);
+    const searchTerm = input.value.trim(); // Trim to handle spaces
+  
+    if (searchTerm.length >= 2) {
+      const filteredCourses = this.listeCours.filter(course => course.moduleProf.module.includes(searchTerm));
       if (filteredCourses.length > 0) {
         this.listeCours1 = filteredCourses;
         this.noResults = false;
@@ -188,7 +188,7 @@ export class CoursCComponent implements OnInit {
       this.noResults = false;
     }
   }
-
+  
 
 
   filtreCoursEtat() {
@@ -219,4 +219,6 @@ export class CoursCComponent implements OnInit {
       this.detailcours1 = result.data2
     })
   }
+
+
 }

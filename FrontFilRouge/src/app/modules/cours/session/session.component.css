@@ -14,3 +14,12 @@ span.badge {
     height: 1.5rem;
     font-size: 10px;
   }
+
+  .cancelled-session {
+    text-decoration: line-through;
+  }
+  
+  .cancelled-session-overlay {
+    pointer-events: none; /* Allows clicking through the overlay */
+  }
+  

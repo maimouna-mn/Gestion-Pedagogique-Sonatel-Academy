@@ -1,3 +1,87 @@
+<div class="absolute flex flex-col items-center  w-full h-full bg-black bg-opacity-50 z-50" *ngIf="json.length != 0">
+  <!-- <div class=" bg-blue-500 rounded-lg shadow text-white "> -->
+  <div class="w-[70%] h-[60%] ml-44 rounded-lg shadow-lg mt-6 bg-blue-500 ">
+    <div class="relative overflow-x-auto overflow-y-auto  w-full h-[88%]   mt-5  ">
+      <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase ">
+          <tr>
+            <th scope="col" class="px-6 py-3">
+              Prenom
+            </th>
+            <th scope="col" class="px-6 py-3">
+              Email
+            </th>
+            <!-- <th scope="col" class="px-6 py-3">
+              Role
+            </th> -->
+            <th scope="col" class="px-6 py-3">
+              Classe
+            </th>
+            <th scope="col" class="px-6 py-3">
+              Supprimer
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="bg-white border-b dark:bg-white dark:border-gray-700" *ngFor="let item of json,let i = index">
+            <th scope="row" class="px-6 py-4 font-medium ">
+              <input value="{{item.name}}" type="text" id="first_name"
+                class="bg-white border border-gray-300 border-none outline-none  text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="John" required>
+            </th>
+            <td class="px-6 py-4">
+              <input value="{{item.email}}" type="text" id="first_name"
+                class="bg-white border border-gray-300 text-gray-900 text-sm border-none outline-none rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="John" required>
+            </td>
+            <!-- <td class="px-6 py-4"> -->
+              <!-- <input value="{{item.role}}" type="text" id="first_name"
+                class="bg-white border border-gray-300 text-gray-900 text-sm border-none outline-none  rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="John" hidden> -->
+
+            <!-- </td> -->
+            <td class="px-6 py-4">
+              <input value="{{item.classe}}" type="text" id="first_name"
+                class="bg-white border border-gray-300 text-gray-900 text-sm border-none outline-none  rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="John" required>
+
+            </td>
+            <td class="px-6 py-4 font-medium text-red-600 dark:text-red-500 hover:underline" (click)="supprimer(i)">
+              Supprimer </td>
+          </tr>
+        </tbody>
+
+      </table>
+    </div>
+
+    <div class="flex justify-end items-center w-full mt-1 ">
+      <button type="button"
+        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+        (click)="viderJson()">Annuler</button>
+      <button type="button"
+        class="text-white bg-green-500 focus:ring-4  font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+        (click)="addStudents()">Ajouter </button>
+    </div>
+  </div>
+
+<!-- </div> -->
+</div>
+<div class="absolute w-full h-full bg-blue-50 bg-opacity-50 z-50 flex justify-center items-center" *ngIf="loader">
+
+  <div role="status">
+    <svg aria-hidden="true" class="w-12 h-12 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+      viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+        fill="currentColor" />
+      <path
+        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+        fill="currentFill" />
+    </svg>
+    <span class="sr-only">Loading...</span>
+  </div>
+
+</div>
 <div class="w-full relative flex ct-docs-disable-sidebar-content overflow-x-hidden">
   <nav
     class="block py-4 px-6 top-0 bottom-0 w-64 bg-white shadow-xl left-0 absolute flex-row flex-nowrap md:z-10 z-9999 transition-all duration-300 ease-in-out transform md:translate-x-0 -translate-x-full">
@@ -16,30 +100,34 @@
             alt="..." class="max-w-full rounded"><span>Orange Digital Center</span></a>
         <div class="md:flex-col md:min-w-full flex flex-col list-none">
           <hr class="my-4 md:min-w-full">
-          <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">Section 3
+          <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">Section 1
           </h6>
           <a href="#" routerLink="/cours"
             class="text-xs uppercase py-3 font-bold block text-blueGray-800 hover:text-blueGray-500"><i
               class="fas fa-newspaper mr-2 text-sm text-blueGray-400"></i>Cours</a><a href="#"
             routerLink="/cours/session"
             class="text-xs uppercase py-3 font-bold block text-blueGray-800 hover:text-blueGray-500"><i
-              class="fas fa-user-circle mr-2 text-sm text-blueGray-400"></i>Session</a><a href="#"   routerLink="/user"
+              class="fas fa-user-circle mr-2 text-sm text-blueGray-400"></i>Session</a><a href="#" routerLink="/user"
             class="text-xs uppercase py-3 font-bold block text-blueGray-800 hover:text-blueGray-500"><i
               class="fas fa-paint-brush mr-2 text-sm text-blueGray-400"></i>Classes</a>
           <hr class="my-4 md:min-w-full">
-          <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">Section 4
+          <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">Section 1
           </h6>
-          <a href="#" routerLink="/cours/notification" class="text-xs uppercase py-3 flex font-bold  text-blueGray-800 hover:text-blueGray-500" *ngIf="fonctionnalitesRp">
+          <a href="#" routerLink="/cours/notification"
+            class="text-xs uppercase py-3 flex font-bold  text-blueGray-800 hover:text-blueGray-500"
+            *ngIf="fonctionnalitesRp">
             <span> Notification</span>
-             <div class="flex">
-             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 " style="margin-top: -0.4rem;">
-               <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-             </svg>
-             <span class="badge">5+</span>
-           </div>
-      
-          
-           </a>
+            <div class="flex">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-6 h-6 " style="margin-top: -0.4rem;">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+              </svg>
+              <span class="badge">1+</span>
+            </div>
+
+
+          </a>
         </div>
       </div>
     </div>
@@ -59,7 +147,7 @@
             <div class="items-center flex"><span
                 class="w-12 h-12 text-sm text-white bg-blueGray-300 inline-flex items-center justify-center rounded-full"><img
                   alt="..." class="w-full rounded-full align-middle border-none shadow-lg"
-                  src="https://demos.creative-tim.com/notus-pro-react/static/media/team-1-800x800.fa5a7ac2.jpg"></span>
+                  src="./assets/WhatsApp Image 2023-11-06 at 23.44.37.jpeg"></span>
             </div>
           </a>
           <div class="block z-50">
@@ -85,34 +173,53 @@
       <div class="px-4 w-full">
         <div class="flex justify-between mr-7" style="margin-top: -5rem;">
           <div class="text-white font-bold mt-12 text-2xl">
-            <h1>Liste Classes</h1>
+            <h1>Classes</h1>
           </div>
-          <input type="file" id="fileInput" class="custom-file-input" (change)="handleFileInput($event)" accept=".csv" style="display: none;">
-          <label for="fileInput" class="custom-file-label flex items-center justify-center text-lg font-bold">
-            Sélectionnez un fichier CSV
-          </label>
-          
+          <div
+            class="flex mt-2 transition-all hover:bg-pink-500/10 active:bg-pink-500/30 bg-pink-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+            style=" padding: 10px; border: 0.5px solid #ccc; border-radius: 10px;margin-right: 3rem;">
+            <input type="file" id="fileInput" class="custom-file-input " (change)="handleFileInput($event)"
+              accept=".csv" style="display: none;">
+            <label for="fileInput"
+              class="custom-file-label flex items-center justify-center text-lg text-white font-bold bg-blue-500">
+              Sélectionnez un fichier CSV
+            </label>
+
+          </div>
         </div>
       </div>
     </div>
+
     <div class="px-4 md:px-6 mx-auto w-full mt-2 ">
       <div class="flex flex-wrap ">
         <div class="w-full flex items-center justify-center  h-full px-4" style="height: 43.5rem;">
-          <div
-            class="relative mt-3 flex flex-col min-w-0 break-words w-[98%] mb-8 shadow-lg rounded-lg bg-blueGray-800"
+          <div class="relative mt-3 flex flex-col min-w-0 break-words w-[85%] mb-8 shadow-lg rounded-lg bg-blueGray-800"
             style="height: 40rem;">
             <!-- ---------------------------------------------------------------------------- -->
             <div class=" ">
               <form enctype="multipart/form-data">
-                <div class="rounded-t bg-transparent " >
-                  <div class="flex flex-wrap  items-center">
-                    <div class="relative w-full  max-w-full flex-grow flex-1">
-                      <div class="w-full flex flex-wrap  h-full card-container px-4" style="height: 35rem;">
-                        <div class="relative flex flex-wrap card mb-1 mt-1" *ngFor="let item of classes">
-                          <div class="w-full md:w-1/2  lg:w-1/3 px-8 " >
+                <div class="rounded-t bg-transparent">
+                  <div class="flex flex-wrap  items-center ">
+                    <div class="relative w-full  max-w-full flex-grow flex-1 ">
+                      <div class=" flex justify-end">
+                    
+                      <div class="w-14 h-14 bg-blue-500 flex items-center justify-center rounded-full cursor-pointer">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      onclick="document.getElementById('my-modal').classList.remove('hidden'); document.body.classList.add('overflow-hidden');"
+                      >
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
+                        </path>
+                      </svg>
+                    </div>
+                    </div>
+                      <div class="w-full flex flex-wrap  h-full card-container" style="height: 35rem;">
+                        <div class="relative flex flex-wrap card mb-1 " *ngFor="let item of classes">
+                          <div class="w-full md:w-1/2  lg:w-1/3 px-8 ">
                             <div
-                              class="hover:scale-105 hover:shadow-xl  transition relative mt-6 flex w-80 flex-col rounded-xl bg-blue-50 bg-clip-border text-gray-700 h-[85%] shadow-md" >
-                              <div class="p-2">
+                              class="hover:scale-105 hover:shadow-xl ml-2  transition relative mt-8 flex  flex-col rounded-xl bg-white bg-clip-border text-gray-700 h-[85%] shadow-md"
+                              style="width: 22rem;">
+                              <div class="p-4">
 
                                 <div class="flex justify-between ">
                                   <h5
@@ -120,7 +227,7 @@
                                     {{item.niveau}}
                                   </h5>
                                   <div class="w-10 h-10 mx-2 rounded-full bg-red-600 flex items-center justify-center"
-                                    style="margin-top: -0.5rem;margin-left: -9rem;" >
+                                    style="margin-top: -0.5rem;margin-left: -9rem; ">
 
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                       stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-white">
@@ -132,37 +239,33 @@
                                 <div class="professeur-list  " style="max-height: 60px;margin-top: -1rem; ">
                                   <div class="flex items-center justify-center " style="flex-wrap:wrap">
                                     <div
-                                      class="block card font-sans  mt-3 font-bold text-5xl content-center leading-relaxed text-inherit antialiased">
+                                      class="block card font-sans  mt-5 font-bold text-5xl content-center leading-relaxed text-inherit antialiased">
                                       {{item.libelle}}
                                     </div>
                                   </div>
                                 </div>
                               </div>
                               <div class="p-6 pt-12 flex justify-between">
-                                <button (click)="addStudents(item.id)"
+                                <button (click)="listeElevesClasses(item.id)"
+                                  onclick="document.getElementById('static-modal').classList.remove('hidden'); document.body.classList.add('overflow-hidden');"
                                   class="flex select-none items-center gap-2 rounded-lg py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-pink-500 transition-all hover:bg-pink-500/10 active:bg-pink-500/30 bg-pink-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                                  type="button" >
-                                  Ajouter
+                                  type="button"
+                                  onclick="document.getElementById('static-modal').classList.remove('hidden'); document.body.classList.add('overflow-hidden');">
+                                  Liste Etudiants
                                 </button>
                                 <p
                                   class="block font-sans font-bold leading-relaxed text-2xl  text-blue-500 antialiased">
-                                  {{item.effectif}} Eleves
+                                  {{item.effectif}} Etudiant
                                 </p>
                               </div>
                             </div>
-                            
+
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <!-- <div class="text-center mt-10">
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                      (click)="previousPage()" [disabled]="page === 1">Précédent</button>
-                    <span class="mx-2">{{ page }}</span>
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                      (click)="nextPage()" [disabled]="page === totalPages">Suivant</button>
-                  </div> -->
+
                 </div>
               </form>
             </div>
@@ -202,3 +305,127 @@
     </div>
   </div>
 </div>
+
+
+
+
+
+
+ <div id="static-modal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true"
+  class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full h-screen bg-black bg-opacity-40">
+  <div class="relative p-4 w-full max-w-4xl mx-auto"> 
+    <div class="relative bg-blue-500 rounded-lg shadow text-white ">
+      <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+        <h3 class="text-xl font-semibold">
+          Liste Eleves
+        </h3>
+        <button type="button"
+          class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center">
+          <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+          </svg>
+          <span class="sr-only">Fermer</span>
+        </button>
+      </div>
+      <div class="relative overflow-x-auto overflow-y-auto  shadow-md sm:rounded-lg" style="height: 35rem;">
+      
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+            <tr>
+
+              <th scope="col" class="px-6 py-3">
+                Photo
+              </th>
+              <th scope="col" class="px-6 py-3">
+                Name
+              </th>
+              <th scope="col" class="px-6 py-3">
+                Email
+              </th>
+              <th scope="col" class="px-6 py-3">
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody style="max-height: 300px; overflow-y: auto;">
+            <tr class="bg-white border-b  hover:bg-gray-50" *ngFor="let item of eleves">
+              <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                <img class="w-10 h-10 rounded-full" src="https://png.pngtree.com/element_our/20200610/ourmid/pngtree-character-default-avatar-image_2237203.jpg" alt="Jese image">
+              </th>
+              <td class="px-6 py-4">
+                {{item.name}}
+              </td>
+              <td class="px-6 py-4">
+                {{item.email}}
+              </td>
+              <td class="px-6 py-4">
+                <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editer</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="text-red-600 flex items-center justify-center w-full h-full" *ngIf="eleves.length === 0">
+          <span class="font-bold  text-lg">Pas encore d'élève inscrit</span>
+      </div>
+      </div>
+
+      <div class="flex items-center justify-end p-4 md:p-5 border-t border-gray-200 rounded-b">
+        <button data-modal-hide="static-modal" type="button"
+          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+          Enregistrer
+        </button>
+        <button data-modal-hide="static-modal" type="button"
+          class="ms-3 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900"
+          onclick="document.getElementById('static-modal').classList.add('hidden'); document.body.classList.add('overflow-hidden');">
+          Fermer
+        </button>
+      </div>
+    </div>
+  </div>
+</div> 
+
+
+<div id="my-modal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true"
+class="overflow-y-auto overflow-x-hidden  hidden inset-0 fixed  z-50 bg-black bg-opacity-40 w-full h-full" >
+
+    <div class="w-full h-full flex justify-center items-center">
+        <div class="text-center relative p-6 border h-80 w-96 shadow-xl rounded-lg bg-white">
+            <h3 class="text-lg leading-6 font-semibold text-gray-500  shadow-sm rounded mb-4 border ">Ajouter une Classe</h3>
+
+            <form  [formGroup]="form">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="libelle">
+                        Libellé
+                    </label>
+                    <input class="shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" id="libelle" type="text" formControlName="libelle" placeholder="Libellé de la classe">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="niveau">
+                        Niveau
+                    </label>
+                    <select class="shadow-sm border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" formControlName="niveau" id="niveau">
+                        <option value="Niveau Primaire">Niveau Primaire</option>
+                        <option value="Niveau Secondaire">Niveau Secondaire</option>
+                    </select>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2" type="button"
+                    onclick="document.getElementById('my-modal').classList.add('hidden'); document.body.classList.add('overflow-hidden');" (click)="addClasse()"
+                    >
+                        Ajouter
+                    </button>
+                    <button class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2" type="button"
+                    onclick="document.getElementById('my-modal').classList.add('hidden'); document.body.classList.add('overflow-hidden');"
+                    >
+                        Annuler
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+

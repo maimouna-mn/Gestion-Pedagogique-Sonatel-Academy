@@ -17,6 +17,7 @@ use App\Models\Session;
 use App\Models\sessionCoursClasse;
 use App\Models\User;
 use DateTime;
+use Exception;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -37,99 +38,114 @@ class sessionController extends Controller
 
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'date' => ['required', 'date', 'after_or_equal:today'],
-            'heure_debut' => ['required', 'date_format:H:i', 'after_or_equal:08:00', 'before_or_equal:23:00'],
-            // L'heure de début doit être entre 08:00 et 16:00
-            'heure_fin' => ['required', 'date_format:H:i', 'after:heure_debut'],
-            // L'heure de fin doit être postérieure à l'heure de début
-            'Type' => ['required', 'in:presentiel,enLigne'],
-            'salle_id' => $request->Type == 'presentiel' ? ['required', 'exists:salles,id'] : 'nullable',
-            'status' => 'string',
-        ], [
-            'date.after_or_equal' => 'La date doit être supérieure ou égale à aujourd\'hui.',
-            'heure_debut.after_or_equal' => 'L\'heure de début doit être entre 08:00 et 16:00.',
-            'heure_debut.before_or_equal' => 'L\'heure de début doit être entre 08:00 et 16:00.',
-            'heure_fin.after' => 'L\'heure de fin doit être postérieure à l\'heure de début.',
-        ]);
-
-        if ($validatedData['Type'] == 'presentiel') {
-            $existingSession = Session::where('date', $validatedData['date'])
-                ->where('salle_id', $validatedData['salle_id'])
-                ->where(function ($query) use ($validatedData) {
-                    $query->whereBetween('heure_debut', [$validatedData['heure_debut'], $validatedData['heure_fin']])
-                        ->orWhereBetween('heure_fin', [$validatedData['heure_debut'], $validatedData['heure_fin']]);
-                })
-                ->first();
-
-            if ($existingSession) {
-                return response()->json(['error' => 'Une session existe déjà pour cette salle, cette date et cette heure.'], 200);
-            }
-        } else if ($validatedData['Type'] == 'enLigne') {
-            $existingSession = Session::where('date', $validatedData['date'])
-                ->where(function ($query) use ($validatedData) {
-                    $query->whereBetween('heure_debut', [$validatedData['heure_debut'], $validatedData['heure_fin']])
-                        ->orWhereBetween('heure_fin', [$validatedData['heure_debut'], $validatedData['heure_fin']]);
-                })
-                ->first();
-
-            if ($existingSession) {
-                return response()->json(['error' => 'Une session existe déjà pour  cette date et cette heure.'], 200);
-            }
-        }
-
-        return DB::transaction(function () use ($validatedData, $request) {
-            $session = Session::create([
-                'date' => $validatedData['date'],
-                'heure_debut' => $validatedData['heure_debut'],
-                'heure_fin' => $validatedData['heure_fin'],
-                'Type' => $validatedData['Type'],
-                'salle_id' => $validatedData['salle_id'],
-                'status' => 'en_attente',
+        try {
+            $validatedData = $request->validate([
+                'date' => ['required', 'date', 'after_or_equal:today'],
+                'heure_debut' => ['required', 'date_format:H:i', 'after_or_equal:08:00', 'before_or_equal:16:00'],
+                // L'heure de début doit être entre 08:00 et 16:00
+                'heure_fin' => ['required', 'date_format:H:i', 'after:heure_debut'],
+                // L'heure de fin doit être postérieure à l'heure de début
+                'Type' => ['required', 'in:presentiel,enLigne'],
+                'salle_id' => $request->Type == 'presentiel' ? ['required', 'exists:salles,id'] : 'nullable',
+                'status' => 'string',
+            ], [
+                'date.after_or_equal' => 'La date doit être supérieure ou égale à aujourd\'hui.',
+                'heure_debut.after_or_equal' => 'L\'heure de début doit être entre 08:00 et 16:00.',
+                'heure_debut.before_or_equal' => 'L\'heure de début doit être entre 08:00 et 16:00.',
+                'heure_fin.after' => 'L\'heure de fin doit être superieure à l\'heure de début.',
             ]);
 
-            $session->sessionClasseCours()->attach($request->sessionClasseCours);
-            $heureDebut = $session->heure_debut;
-            $heureFin = $session->heure_fin;
-            $dateTimeDebut = DateTime::createFromFormat('H:i', $heureDebut);
-            $dateTimeFin = DateTime::createFromFormat('H:i', $heureFin);
+            if ($validatedData['Type'] == 'presentiel') {
+                $existingSession = Session::where('date', $validatedData['date'])
+                    ->where('salle_id', $validatedData['salle_id'])
+                    ->where(function ($query) use ($validatedData) {
+                        $query->whereBetween('heure_debut', [$validatedData['heure_debut'], $validatedData['heure_fin']])
+                            ->orWhereBetween('heure_fin', [$validatedData['heure_debut'], $validatedData['heure_fin']]);
+                    })
+                    ->first();
 
-            if ($dateTimeDebut && $dateTimeFin) {
-                $interval = $dateTimeDebut->diff($dateTimeFin);
-                $hours = $interval->h;
-                $minutes = $interval->i;
-                $totalDuration = $hours + ($minutes / 60);
-            }
-
-            foreach ($request->sessionClasseCours as $value) {
-                $coursClasse = coursClasse::find($value['cours_classe_id']);
-                $id = $coursClasse->id;
-                $sessionId = sessionCoursClasse::where('session_id', $session->id)
-                    ->where('cours_classe_id', $id)
-                    ->first()->id;
-                $classeId = $coursClasse->annee_classe_id;
-                $classeEleves = $this->classeEleves($classeId);
-                foreach ($classeEleves['data2'] as $eleve) {
-                    $inscription_id = Inscriptions::where('user_id', $eleve->id)->first()->id;
-                    Emargement::create([
-                        'inscriptions_id' => $inscription_id,
-                        'session_cours_classe_id' => $sessionId,
-                        'presence' => 0,
-                    ]);
+                if ($existingSession) {
+                    return response()->json(['error' => 'Une session existe déjà pour cette salle, cette date et cette heure.'], 200);
                 }
-                if ($coursClasse) {
-                    if ($totalDuration > $coursClasse->nombreHeureR) {
-                        return response()->json(['error' => 'heure de cours termine.'], 200);
-                    }
-                    $coursClasse->decrement('nombreHeureR', $totalDuration);
-                    if ($coursClasse->nombreHeureR === 0) {
-                        $coursClasse->update(['Termine' => true]);
-                    }
+            } else if ($validatedData['Type'] == 'enLigne') {
+                $existingSession = Session::where('date', $validatedData['date'])
+                    ->where(function ($query) use ($validatedData) {
+                        $query->whereBetween('heure_debut', [$validatedData['heure_debut'], $validatedData['heure_fin']])
+                            ->orWhereBetween('heure_fin', [$validatedData['heure_debut'], $validatedData['heure_fin']]);
+                    })
+                    ->first();
+
+                if ($existingSession) {
+                    return response()->json(['error' => 'Une session existe déjà pour  cette date et cette heure.'], 200);
                 }
             }
-            return new sessionResource($session);
-        });
+
+            return DB::transaction(function () use ($validatedData, $request) {
+                $session = Session::create([
+                    'date' => $validatedData['date'],
+                    'heure_debut' => $validatedData['heure_debut'],
+                    'heure_fin' => $validatedData['heure_fin'],
+                    'Type' => $validatedData['Type'],
+                    'salle_id' => $validatedData['salle_id'],
+                    'status' => 'en_attente',
+                ]);
+
+                $session->sessionClasseCours()->attach($request->sessionClasseCours);
+                $heureDebut = $session->heure_debut;
+                $heureFin = $session->heure_fin;
+                $dateTimeDebut = DateTime::createFromFormat('H:i', $heureDebut);
+                $dateTimeFin = DateTime::createFromFormat('H:i', $heureFin);
+
+                if ($dateTimeDebut && $dateTimeFin) {
+                    $interval = $dateTimeDebut->diff($dateTimeFin);
+                    $hours = $interval->h;
+                    $minutes = $interval->i;
+                    $totalDuration = $hours + ($minutes / 60);
+                }
+
+                foreach ($request->sessionClasseCours as $value) {
+                    $coursClasse = coursClasse::find($value['cours_classe_id']);
+                    $profModule = $coursClasse->cours->profModule;
+                    $data = [];
+                    $data[] = [
+                        "module" => $profModule->module->libelle,
+                        "prof" => $profModule->professeurs->name
+                    ];
+
+                    $id = $coursClasse->id;
+                    $sessionId = sessionCoursClasse::where('session_id', $session->id)
+                        ->where('cours_classe_id', $id)
+                        ->first()->id;
+                    $classeId = $coursClasse->annee_classe_id;
+                    $classeEleves = $this->classeEleves($classeId);
+                    foreach ($classeEleves['data2'] as $eleve) {
+                        $inscription_id = Inscriptions::where('user_id', $eleve->id)->first()->id;
+                        Emargement::create([
+                            'inscriptions_id' => $inscription_id,
+                            'session_cours_classe_id' => $sessionId,
+                            'presence' => 0,
+                        ]);
+                    }
+                    if ($coursClasse) {
+                        if ($totalDuration > $coursClasse->nombreHeureR) {
+                            return response()->json(['error' => 'heure de cours termine.'], 200);
+                        }
+                        $coursClasse->decrement('nombreHeureR', $totalDuration);
+                        if ($coursClasse->nombreHeureR === 0) {
+                            $coursClasse->update(['Termine' => true]);
+                        }
+                    }
+                }
+                return $data = [
+                    "data" => new sessionResource($session),
+                    "data1" => $data
+                ];
+            });
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()]);
+        }
     }
+
     public function sessionClasse($classeId)
     {
         $classe = Classe::find($classeId);
@@ -301,10 +317,12 @@ class sessionController extends Controller
     public function SupprimerSession(Request $request, $session_cours_classe_id)
     {
         $session = sessionCoursClasse::where('id', $session_cours_classe_id)->first();
+        $ses = Session::find($session->session_id);
 
+        $ses->status = 'annulee';
+        $ses->save();
         Annulation::where('session_cours_classe_id', $session_cours_classe_id)->delete();
-        $session->delete();
-        return response()->json(['message' => 'Session et enregistrements associés supprimés avec succès']);
+        return response()->json(['message' => 'Session annulé avec succès']);
 
     }
 
@@ -464,3 +482,39 @@ class sessionController extends Controller
     }
 
 }
+
+
+// {
+//     "session_cours_classe_id": 143,
+//     "id": 128,
+//     "date": "2023-10-31",
+//     "heure_debut": "08:35:00",
+//     "statut": "en_attente",
+//     "heure_fin": "09:36:00",
+//     "Type": "presentiel",
+//     "salle_id": {
+//         "id": 1,
+//         "libelle": "Salle A",
+//         "numero": "101",
+//         "nombrePlaces": "50",
+//         "created_at": null,
+//         "updated_at": null
+//     },
+//     "module": "Angular",
+//     "professeur": "Mr Sy"
+// },
+
+// "data": {
+//     "date": "2024-11-21",
+//     "heure_debut": "12:00",
+//     "heure_fin": "13:00",
+//     "Type": "presentiel",
+//     "salle": {
+//         "id": 1,
+//         "libelle": "Salle A",
+//         "numero": "101",
+//         "nombrePlaces": "50",
+//         "created_at": null,
+//         "updated_at": null
+//     }
+// }

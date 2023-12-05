@@ -17,7 +17,7 @@
             alt="..." class="max-w-full rounded"><span>Orange Digital Center</span></a>
         <div class="md:flex-col md:min-w-full flex flex-col list-none">
           <hr class="my-4 md:min-w-full">
-          <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">Section 3
+          <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">Section 1
           </h6>
           <a href="#" routerLink="/cours"
             class="text-xs uppercase py-3 font-bold block text-blueGray-800 hover:text-blueGray-500"><i
@@ -28,7 +28,7 @@
             class="text-xs uppercase py-3 font-bold block text-blueGray-800 hover:text-blueGray-500"><i
               class="fas fa-paint-brush mr-2 text-sm text-blueGray-400"></i>Classes</a>
           <hr class="my-4 md:min-w-full">
-          <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">Section 4
+          <h6 class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">Section 2
           </h6>
           <a href="#" routerLink="/cours/notification"
             class="text-xs uppercase py-3 flex font-bold  text-blueGray-800 hover:text-blueGray-500"
@@ -40,7 +40,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round"
                   d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
               </svg>
-              <span class="badge">5+</span>
+              <span class="badge">1+</span>
             </div>
           </a>
         </div>
@@ -77,17 +77,17 @@
           </div>
 
           <div class="flex w-1/2">
-        
+
             <input class="block w-2/5  h-10 border rounded-md mt-10 mr-5" placeholder="Search here"
-              (change)="filtreCoursModule($event)" *ngIf="fonctionnalitesProf">
-       
+              (input)="filtreCoursModule($event)">
+
             <select class="block w-2/5  h-10 border rounded-md mt-10 mr-5" [(ngModel)]="etat"
               (click)="filtreCoursEtat()" *ngIf="fonctionnalitesRp || fonctionnalitesAttache">
               <option value="">Filtrer</option>
               <option value="0">Encours</option>
               <option value="1">Termine</option>
             </select>
-         
+
 
           </div>
 
@@ -99,10 +99,11 @@
 
         <div class="w-full  h-full px-4" style="height: 43.5rem;">
 
-          <div class="relative  mt-3 flex flex-col min-w-0 break-words w-full mb-8 shadow-lg rounded-lg bg-blueGray-800"
+          <div
+            class="relative  mt-3 ml-16 flex flex-col min-w-0 break-words w-[85%] mb-8 shadow-lg rounded-lg bg-blueGray-800"
             style="height: 42rem;">
             <div class="flex justify-end  ">
-
+              <!-- <div class="mt-6 mr-2">add Cours</div> -->
               <button class="z-50 w-16 h-16 my-1 mr-1 rounded-full bg-blue-500 flex items-center justify-center "
                 onclick="document.getElementById('extralarge-modal').classList.remove('hidden'); document.body.classList.add('overflow-hidden');"
                 *ngIf="fonctionnalitesRp">
@@ -113,10 +114,10 @@
                 </svg></button>
 
             </div>
-            <div class="rounded-t bg-transparent " style="margin-top: -1rem;">
+            <div class="rounded-t bg-transparent ml-5" style="margin-top: -2rem;">
               <div class="flex flex-wrap  items-center">
                 <div class="relative w-full  max-w-full flex-grow flex-1">
-                  <div class="w-full h-full card-container px-4" style="height: 37rem;">
+                  <div class="w-full h-full card-container px-4" style="height: 35rem;">
                     <div *ngIf="noResults; else resultList"
                       class="flex justify-center items-center w-full text-red-500 text-2xl font-bold ">
                       <p>Aucun résultat trouvé.</p>
@@ -127,7 +128,8 @@
                         <!-- ---------------------------------------------------------------------------- -->
                         <div class="w-full md:w-1/2 lg:w-1/3 px-2 ">
                           <div
-                            class="hover:scale-105 hover:shadow-xl transition relative  flex w-96 flex-col rounded-xl  bg-white bg-clip-border text-gray-700 shadow-md">
+                            class="hover:scale-105 hover:shadow-xl transition relative ml-5 flex flex-col rounded-xl  bg-white bg-clip-border text-gray-700 shadow-md"
+                            style="width: 22rem;">
                             <div class="p-6">
                               <div class="flex justify-between ">
                                 <h5
@@ -146,7 +148,7 @@
 
                                 </div>
                                 <div class="w-10 h-10 mx-2 rounded-full bg-red-600 flex items-center justify-center"
-                                  style="margin-top: -0.5rem;margin-left: -9rem;" (click)="delete(item.id)">
+                                  style="margin-top: -0.5rem;margin-left: -8rem;" (click)="delete(item.id)">
 
                                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-white">
@@ -155,7 +157,7 @@
                                   </svg>
                                 </div>
                               </div>
-                              <div class="professeur-list  " style="max-height: 60px;margin-top: -1rem; ">
+                              <div class="professeur-list  " style="max-height: 60px;margin-bottom:-1rem; ">
                                 <div class="flex items-center justify-center " style="flex-wrap:wrap">
                                   <div
                                     class="block card font-sans font-bold text-5xl content-center leading-relaxed text-inherit antialiased">
@@ -164,7 +166,7 @@
 
                                 </div>
                               </div>
-                              <div class=" " style=" overflow-y: auto;margin-top: 1rem;">
+                              <div class=" mt-8" style=" overflow-y: auto;">
                                 <div class="flex items-center justify-center ">
                                   <div
                                     class="block  font-sans font-bold text-xl content-center leading-relaxed text-inherit antialiased">
@@ -185,7 +187,7 @@
                               </button>
                               <p class="block font-sans font-bold leading-relaxed text-2xl  text-blue-500 antialiased">
                                 <!-- {{item.heures_global}}h -->
-                                <!-- {{ formaterHeures(item.heures_global) }} -->
+                                {{ formaterHeures(item.heures_global) }}
                               </p>
                             </div>
                           </div>
@@ -195,7 +197,7 @@
                   </div>
                 </div>
               </div>
-              <div class="text-center mt-10">
+              <div class="text-center mt-28">
                 <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                   (click)="previousPage()" [disabled]="page === 1">Précédent</button>
                 <span class="mx-2">{{ page }}</span>
@@ -240,16 +242,11 @@
   </div>
 </div>
 
-<div id="extralarge-modal"
-  class="fixed  z-50  w-2/3 hidden   p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
-  style="left: 23rem;top: 8rem;">
+<div id="extralarge-modal" tabindex="-1" aria-hidden="true"
+  class="fixed top-0 left-0 hidden z-50   w-full  p-4 overflow-x-hidden overflow-y-auto md:inset-0  max-h-full   h-screen bg-black bg-opacity-40">
   <form [formGroup]="form">
-    <div class="relative  rounded-lg shadow bg-blue-100">
-      <div class="flex items-center justify-between p-5 border-b rounded-t ">
-        <h3 class="text-xl font-medium text-gray-900 dark:text-white">
-          Extra Large modal
-        </h3>
-      </div>
+    <div class="relative  rounded-lg shadow bg-blue-100 " style="width: 49rem; margin-top: 12rem;margin-left: 34rem;">
+
       <div class="p-6 space-y-6">
         <div class="min-h-1/2 p-2 flex items-center justify-center">
           <div class="container max-w-screen-lg mx-auto">
@@ -265,28 +262,33 @@
                           <div>
                             <label for="module">Module</label>
                             <select formControlName="module" id="module"
-                              class="h-10 border mt-1 rounded-md px-4 w-full bg-gray-50" (change)="filterProfessors()">
+                              class=" h-10 border mt-1 rounded-md px-4 w-full bg-gray-50" (change)="filterProfessors()">
                               <option *ngFor="let item of moduleProf" value="{{item.id}}">{{item.libelle}}</option>
                             </select>
                           </div>
                           <div>
                             <label for="professor">Professeur</label>
                             <select formControlName="prof_module_id" id="professor"
-                              class="h-10 border mt-1 rounded-md px-4 w-full bg-gray-50">
+                              class="select-custom h-10 border mt-1 rounded-md px-4 w-full bg-gray-50">
                               <option *ngFor="let professor of filterProf" value="{{professor.pivot.id}}">
                                 {{professor.name}}</option>
                             </select>
                           </div>
                         </div>
                         <div class="flex items-center justify-between">
-                          <select class="block  h-10 border w-full bg-gray-50 rounded-md mt-10 mr-5"
-                            formControlName="semestre_id" (click)="allSemestre()">
+                          <div class=" w-[92%] mt-5"> 
+                          <label for="semestre "  >Semestre</label>
+                          <select class="select-custom block rounded-md w-full mr-5 bg-gray-50" formControlName="semestre_id"
+                            (click)="allSemestre()">
                             <option value="{{item.id}}" *ngFor="let item of semestres">{{item.libelle}}</option>
                           </select>
+
+                          </div>
                           <div class="w-full flex justify-center">
                             <button
-                              class="text-white-600 bg-blue-700 rounded-lg  mt-10 mr-5 text-sm px-5 py-2.5 text-center dark:bg-blue-600 hover:text-blue-800"
+                              class="text-white-600 rounded-lg mt-10 mr-5 text-sm px-5 py-2.5 font-semibold text-center bg-gray-300 hover:bg-gray-300"
                               (click)="ajouterLigne()">Ajouter une classe</button>
+
                           </div>
                         </div>
 
@@ -297,16 +299,18 @@
                             <div class="flex justify-between mt-2"
                               *ngFor="let classe of classes.controls; let i = index" [formGroupName]="i">
                               <!-- Move "heures_global" here, inside the FormArray -->
-                              <div class=" w-[45%]">
+                              <div class=" w-[51%]">
                                 <select formControlName="classe_id"
-                                  class="h-10 border  rounded-md px-4 w-[95%] bg-gray-50">
-                                  <option value="{{item.id}}" *ngFor="let item of Classes">{{item.libelle}}</option>
+                                  class="h-10 border  rounded-md px-4 w-[95%] bg-gray-50" >
+                                  <option value="{{item.id}}" *ngFor="let item of Classes" >{{item.libelle}}</option>
                                 </select>
-                                <button class="ml-2 text-red-600 hover:text-red-800"
-                                  (click)="removeClassField(i)">X</button>
+
                               </div>
                               <input type="number" formControlName="heures_global"
-                                class="h-10 border w-[48%] rounded-md px-4 bg-gray-50" value="" placeholder="0" />
+                                class="h-10 border w-[48%] rounded-md px-4 bg-gray-50" value="" placeholder="nombre d'heures" />
+
+                              <button class="ml-1 text-red-600 hover:text-red-800"
+                                (click)="removeClassField(i)">X</button>
                             </div>
 
                           </div>
@@ -326,11 +330,10 @@
       <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
         <button data-modal-hide="extralarge-modal" type="submit" (click)="add()"
           onclick="document.getElementById('extralarge-modal').classList.add('hidden'); document.body.classList.remove('overflow-hidden');"
-          class="text-white  bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">I
-          accept</button>
+          class="text-white  bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Enregistrer</button>
         <button data-modal-hide="extralarge-modal" type="button"
           onclick="document.getElementById('extralarge-modal').classList.add('hidden'); document.body.classList.remove('overflow-hidden');"
-          class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Decline</button>
+          class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Fermer</button>
       </div>
     </div>
   </form>
@@ -347,33 +350,25 @@
 </div>
 
 
-<!-- Main modal -->
+
+
 <div id="defaultModal" tabindex="-1" aria-hidden="true"
-  class="fixed hidden shadow-lg top-0 left-0 right-0 z-50  w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
-  <div class="relative  max-w-7xl max-h-full">
-    <!-- Modal content -->
-    <div class="relative bg-white rounded-lg shadow-lg mt-56 " style="margin-left: 40rem;">
-      <!-- Modal header -->
-      <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-        <h3 class="text-2xl font-semibold text-gray-900 ">
-          Cours Details
-        </h3>
-        <button type="button"
-          class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-          data-modal-hide="defaultModal">
-          <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-          </svg>
-          <span class="sr-only">Close modal</span>
+  class="fixed hidden shadow-lg top-0 left-0 right-0 z-50  w-full p-4 overflow-x-hidden overflow-y-auto bg-black bg-opacity-50 h-full">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalTitle" class="modal-title">Detail cours</h3>
+        <button type="button" class="close" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <!-- Modal body -->
-      <div class="p-6 space-y-4" id="modal-content">
-        <div *ngFor="let item of detailcours1" class="text-lg leading-tight text-gray-900 ">
-          <p><span class="font-semibold text-2xl">Professeur:</span> {{ item.Professeur }}</p>
-          <p><span class="font-semibold text-2xl">Module:</span> {{ item.Module }}</p>
+      <div class="modal-body" id="modalDescription">
+        <div *ngFor="let item of detailcours1" class="course-detail">
+          <p><strong>Professeur:</strong> {{ item.Professeur }}</p>
+          <p><strong>Module:</strong> {{ item.Module }}</p>
+
         </div>
+
         <div class="text-base leading-relaxed text-gray-900">
           <p><span class="font-semibold text-2xl">Classes:</span></p>
           <ul *ngFor="let item of detailcours" class="list-disc list-inside  ">
@@ -385,17 +380,11 @@
           </ul>
         </div>
       </div>
-
-      <!-- Modal footer -->
-      <div class="flex items-center p-4 space-x-4 border-t border-gray-200 rounded-b dark:border-gray-600">
-        <button data-modal-hide="defaultModal"
-          onclick="document.getElementById('defaultModal').classList.add('hidden'); document.body.classList.remove('overflow-hidden');"
-          type="button"
-          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-base px-6 py-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">I
-          accept</button>
-        <button data-modal-hide="defaultModal" type="button"
-          onclick="document.getElementById('defaultModal').classList.add('hidden'); document.body.classList.remove('overflow-hidden');"
-          class="text-gray-600 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-base px-6 py-3 hover:text-gray-900 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Decline</button>
+      <div class="modal-footer">
+        <button class="btn btn-primary"
+          onclick="document.getElementById('defaultModal').classList.add('hidden'); document.body.classList.remove('overflow-hidden');">Accepter</button>
+        <button class="btn btn-secondary"
+          onclick="document.getElementById('defaultModal').classList.add('hidden'); document.body.classList.remove('overflow-hidden');">Fermer</button>
       </div>
     </div>
   </div>

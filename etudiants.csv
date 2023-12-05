@@ -1,2 +1,3 @@
-name,email,password,role
-Diogual Ndiaye,diogual@example1.com,motdepasse,etudiant
+name,email,password,role,classe
+Diogual Ndiaye,diogual@eddxample1.com,motdepasse,etudiant,Classe A
+John Doe,john.doe@exampddle2.com,password123,etudiant,Classe B

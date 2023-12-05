@@ -90,8 +90,6 @@ class coursController extends Controller
         return response()->json(['message' => 'Cours supprimé avec succès'], 200);
     }
 
-
-
     public function filtreCours(Request $request, $id)
     {
         $coursS = Cours::where("semestre_id", $id)->with('moduleProf')->get();
@@ -109,6 +107,7 @@ class coursController extends Controller
     //     $cours = Cours::where("libelle", $code)->get();
     //     return coursResource::collection($cours);
     // }
+
     public function recherche(Request $request, $code)
     {
         $courses = Cours::whereHas('module', function ($query) use ($code) {
@@ -163,6 +162,7 @@ class coursController extends Controller
         ];
 
         $classesDetails = [];
+        // return $cours;
 
         foreach ($cours->classes as $classe) {
             $heures = $classe->pivot->heures_global;
@@ -174,8 +174,6 @@ class coursController extends Controller
                 'HeuresR' => $heuresR,
             ];
         }
-
-        // $coursDetails['Classes'] = $classesDetails;
 
         return response()->json(["data1" => $classesDetails, "data2" => $coursDetails]);
     }
@@ -225,6 +223,6 @@ class coursController extends Controller
 
         return response()->json(['data' => $result]);
     }
- 
+
 
 }

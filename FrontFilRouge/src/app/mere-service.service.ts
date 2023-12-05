@@ -33,11 +33,13 @@ export abstract class MereServiceService<T> {
     return this.http.post<U>(`${environment.apiUrl}/${uri}`, produit);
   }
 
+
   filtre<U>(id: number): Observable<U> {
     const uri = this.getUri()
 
     return this.http.get<U>(`${environment.apiUrl}/${uri}/filtre/${id}`)
   }
+  
   profSessions<U>(professeurId: any): Observable<U> {
     const uri = this.getUri()
 
@@ -102,8 +104,9 @@ export abstract class MereServiceService<T> {
   // SupprimerSession(Request $request, $session_cours_classe_id)
   SupprimerSession<U>(session_cours_classe_id: number): Observable<U> {
     const uri = this.getUri()
-    return this.http.delete<U>(`${environment.apiUrl}/${uri}/supprimer/${session_cours_classe_id}`)
+    return this.http.get<U>(`${environment.apiUrl}/${uri}/supprimer/${session_cours_classe_id}`)
   }
+
   listeEleves(sessionCoursClasseId: any): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/session/present-absent/${sessionCoursClasseId}`);
   }

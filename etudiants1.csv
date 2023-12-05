@@ -1,11 +1,13 @@
-name,email,password,role
-John Doe,johndoe@example.com,123456,etudiant
-Jane Smith,janesmith@example.com,123456,etudiant
-Michael Johnson,michaeljohnson@example.com,123456,etudiant
-Emily Brown,emilybrown@example.com,123456,etudiant
-David Wilson,davidwilson@example.com,123456,etudiant
-Olivia Lee,olivialee@example.com,123456,etudiant
-James Miller,jamesmiller@example.com,123456,etudiant
-Sophia Davis,sophiadavis@example.com,123456,etudiant
-Daniel Garcia,danielgarcia@example.com,123456,etudiant
-Emma Martinez,emmartinez@example.com,123456,etudiant
+name,email,password,classe
+Diogual1 Ndiaye,1diogual@eddxample1.com, motdepasse, Classe A
+John Doe1,1john.doe@exampddle2.com, password123, Classe B
+Alice Johnson1,1alice.johnson@example3.com, pass123, Classe C
+Bob Smith1,1bob.smith@example4.com, secretword, Classe D
+Emma White1,1emma.white@example5.com, mypassword, Classe A
+David Miller1,1david.miller@example6.com, 123456, Classe A
+Olivia Davis1,1olivia.davis@example7.com, qwerty, Classe B
+Michael Brown1,1michael.brown@example8.com, ilovecoding, Classe B
+Sophia Wilson1,1sophia.wilson@example9.com, letmein, Classe A
+Ethan Taylor1,1ethan.taylor@example10.com, password1, Classe A
+Ava Martinez1,1ava.martinez@example11.com, 987654, Classe B
+Logan Anderson1,1logan.anderson@example12.com, mypass, Classe B

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserServiceService } from './user-service.service';
 import Swal from 'sweetalert2';
 import { AuthServiceService } from '../../auth/auth-service.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-etudiant',
@@ -12,23 +13,30 @@ export class EtudiantComponent implements OnInit {
   fonctionnalitesRp!: boolean;
   fonctionnalitesProf!: boolean;
   fonctionnalitesAttache!: boolean;
-  constructor(private userService: UserServiceService,private authService: AuthServiceService) {
+  form!: FormGroup
+  constructor(private userService: UserServiceService, private authService: AuthServiceService, private fb: FormBuilder) {
+    this.form = this.fb.group({
+      libelle: [''],
+      niveau: [''],
+      effectif: [0],
+    });
     this.fonctionnalitesRp = this.authService.isRp();
     this.fonctionnalitesProf = this.authService.isProf();
     this.fonctionnalitesAttache = this.authService.isAttache();
-   }
+  }
   ngOnInit(): void {
     this.all()
-    
+
   }
 
   classes!: any[]
   fileToUpload: File | null = null;
-  json!: any
+  json: any[] = []
+  loader: boolean = false;
 
   all() {
     this.userService.all().subscribe((result: any) => {
-      console.log(result);
+      console.log(result.data1);
       this.classes = result.data1
     })
   }
@@ -87,30 +95,71 @@ export class EtudiantComponent implements OnInit {
 
 
 
-  addStudents(id: number) {
-    this.userService.store(this.json, id).subscribe((result: any) => {
-      if (result.message) {
-        console.log(result);
-        const selectedClasse = this.classes.find(classe => classe.id === +id);
-        selectedClasse.effectif = selectedClasse.effectif + +this.json.length
-        Swal.fire({
-          title: 'Succès',
-          text: 'Les données ont été insérées avec succès.',
-          icon: 'success',
-          confirmButtonText: 'OK'
-        })
-      }else if(result.error){
+  addStudents() {
+    this.loader = true
+    this.userService.store(this.json).subscribe({
+      next: (result: any) => {
+        if (result.data1) {
+          console.log(result);
+          this.classes = result.data1
+
+          Swal.fire({
+            title: 'Succès',
+            text: 'Les éleves ont été insérés avec succès.',
+            icon: 'success',
+            confirmButtonText: 'OK'
+          })
+        } else if (result.error) {
+          console.log(result.error);
+
           Swal.fire({
             title: 'Erreur',
             text: "Eleve(s) deja inséré(s).",
             icon: 'error',
             confirmButtonText: 'OK'
           });
+        }
+      },
+      error: (errors: any) => {
+        console.log(errors);
+        this.loader = false
+      },
+      complete: () => {
+        this.loader = false
+        this.json = []
       }
-
     });
-    
+
   }
 
+  eleves: any[]=[]
+  listeElevesClasses(id: number) {
+    this.userService.classeEleves(id).subscribe((result: any) => {
+      console.log(result);
+      this.eleves = result.data2
+    })
+  }
 
+  viderJson() {
+    this.json = [];
+  }
+  supprimer(index: number): void {
+    // Supprime l'élément à l'index spécifié
+    this.json.splice(index, 1);
+  }
+
+  addClasse() {
+    console.log(this.form.value);
+    this.userService.storeClasse(this.form.value).subscribe((result) => {
+      console.log(result);
+      Swal.fire({
+        title: 'Succès',
+        text: 'Classe ajoutee avec succès.',
+        icon: 'success',
+        confirmButtonText: 'OK'
+      })
+      this.classes.unshift(result)
+
+    })
+  }
 }

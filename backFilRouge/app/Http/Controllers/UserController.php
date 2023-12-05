@@ -19,72 +19,234 @@ class UserController extends Controller
     {
         $etudiants = User::where('role', 'etudiant')->get();
 
-        $classes = Classe::all();
+        $classes = Classe::orderBy('id', 'desc')->get();
         return [
             "data" => $etudiants,
             "data1" => $classes
         ];
     }
 
+    // public function store(Request $request)
+    // {
+    //     $etudiants = $request->etudiants;
+
+    //     $etudiantsData = [];
+
+    //     foreach ($etudiants as $etudiant) {
+    //         $hashedPassword = password_hash($etudiant['password'], PASSWORD_BCRYPT);
+
+    //         $etudiantsData[] = [
+    //             'name' => $etudiant['name'],
+    //             'email' => $etudiant['email'],
+    //             'password' => $hashedPassword,
+    //             'role' => $etudiant['role']
+    //         ];
+    //     }
+
+    //     DB::beginTransaction();
+
+    //     try {
+    //         User::insert($etudiantsData);
+    //         $classe = anneeClasse::where('classe_id', $request->classe_id)->first();
+
+    //         foreach ($etudiantsData as $etudiantData) {
+    //             $inscriptionData = [
+    //                 'annee_classe_id' => $classe->id,
+    //                 'user_id' => User::where('email', $etudiantData['email'])->first()->id
+    //             ];
+    //             Inscriptions::create($inscriptionData);
+    //         }
+    //         $classeEf = Classe::find($request->classe_id);
+    //         $nouvelEffectif = $classeEf->effectif + count($etudiantsData);
+    //         $classeEf->update(['effectif' => $nouvelEffectif]);
+
+    //         DB::commit();
+
+    //         return response()->json([
+    //             "message" => 'etudiants ajoutés avec succes',
+    //             "data" => $classe
+    //         ]);
+    //     } catch (\Exception $e) {
+    //         DB::rollBack();
+    //         return response()->json(["error" => 'erreur lors de l\'ajout des etudiants']);
+    //     }
+    // }
+
+
+    // public function store(Request $request)
+    // {
+    //     $etudiants = $request->etudiants;
+
+    //     $etudiantsData = [];
+
+    //     foreach ($etudiants as $etudiant) {
+    //         $hashedPassword = password_hash($etudiant['password'], PASSWORD_BCRYPT);
+
+    //         $etudiantsData[] = [
+    //             'name' => $etudiant['name'],
+    //             'email' => $etudiant['email'],
+    //             'password' => $hashedPassword,
+    //             'role' => $etudiant['role']
+    //         ];
+    //     }
+
+    //     DB::beginTransaction();
+
+    //     try {
+    //         User::insert($etudiantsData);
+    //         $classe_id = Classe::where('libelle', $request->libelle)->first()->id;
+    //         $classe = anneeClasse::where('classe_id', $classe_id)->first();
+
+    //         foreach ($etudiantsData as $etudiantData) {
+    //             $inscriptionData = [
+    //                 'annee_classe_id' => $classe->id,
+    //                 'user_id' => User::where('email', $etudiantData['email'])->first()->id
+    //             ];
+
+    //             Inscriptions::create($inscriptionData);
+    //         }
+
+    //         $classeEf = Classe::find($classe_id);
+    //         $nouvelEffectif = $classeEf->effectif + count($etudiantsData);
+    //         $classeEf->update(['effectif' => $nouvelEffectif]);
+
+    //         DB::commit();
+
+    //         return response()->json([
+    //             "message" => 'etudiants ajoutés avec succes',
+    //             "data" => $classe
+    //         ]);
+
+    //     } catch (\Exception $e) {
+    //         DB::rollBack();
+    //         return response()->json(["error" => 'erreur lors de l\'ajout des etudiants']);
+    //     }
+    // }
+    // public function store(Request $request)
+    // {
+    //     $classesData = $request->classes;
+
+    //     DB::beginTransaction();
+
+    //     try {
+    //         foreach ($classesData as $classData) {
+    //             $etudiants = $classData['etudiants'];
+    //             $classeLibelle = $classData['libelle'];
+
+    //             $etudiantsData = [];
+
+    //             foreach ($etudiants as $etudiant) {
+    //                 $hashedPassword = password_hash($etudiant['password'], PASSWORD_BCRYPT);
+
+    //                 $etudiantsData[] = [
+    //                     'name' => $etudiant['name'],
+    //                     'email' => $etudiant['email'],
+    //                     'password' => $hashedPassword,
+    //                     'role' => $etudiant['role']
+    //                 ];
+    //             }
+
+    //             User::insert($etudiantsData);
+
+    //             $classe_id = Classe::where('libelle', $classeLibelle)->first()->id;
+    //             $classe = anneeClasse::where('classe_id', $classe_id)->first();
+
+    //             foreach ($etudiantsData as $etudiantData) {
+    //                 $inscriptionData = [
+    //                     'annee_classe_id' => $classe->id,
+    //                     'user_id' => User::where('email', $etudiantData['email'])->first()->id
+    //                 ];
+
+    //                 Inscriptions::create($inscriptionData);
+    //             }
+
+    //             $classeEf = Classe::find($classe_id);
+    //             $nouvelEffectif = $classeEf->effectif + count($etudiantsData);
+    //             $classeEf->update(['effectif' => $nouvelEffectif]);
+    //         }
+
+    //         DB::commit();
+
+    //         return response()->json([
+    //             "message" => 'Étudiants ajoutés avec succès',
+    //             "data" => $classesData
+    //         ]);
+
+    //     } catch (\Exception $e) {
+    //         DB::rollBack();
+    //         return response()->json(["error" => 'Erreur lors de l\'ajout des étudiants']);
+    //     }
+    // }
     public function store(Request $request)
     {
         $etudiants = $request->etudiants;
 
-        $etudiantsData = [];
-
-        foreach ($etudiants as $etudiant) {
-            $hashedPassword = password_hash($etudiant['password'], PASSWORD_BCRYPT);
-
-            $etudiantsData[] = [
-                'name' => $etudiant['name'],
-                'email' => $etudiant['email'],
-                'password' => $hashedPassword,
-                'role' => $etudiant['role']
-            ];
-        }
-
         DB::beginTransaction();
-
+        $classes = [];
         try {
-            User::insert($etudiantsData);
-            $classe = anneeClasse::where('classe_id', $request->classe_id)->first();
+            foreach ($etudiants as $etudiant) {
+                $hashedPassword = password_hash($etudiant['password'], PASSWORD_BCRYPT);
 
-            foreach ($etudiantsData as $etudiantData) {
+                $etudiantData = [
+                    'name' => $etudiant['name'],
+                    'email' => $etudiant['email'],
+                    'password' => $hashedPassword,
+                    'role' => 'etudiant'
+                ];
+
+                User::create($etudiantData);
+
+                $classeLibelle = $etudiant['classe'];
+
+                $classe_id = Classe::where('libelle', $classeLibelle)->first()->id;
+
+                $classe = anneeClasse::where('classe_id', $classe_id)->first();
+                if (!$classe) {
+                    return response()->json("classe");
+                }
                 $inscriptionData = [
                     'annee_classe_id' => $classe->id,
-                    'user_id' => User::where('email', $etudiantData['email'])->first()->id
+                    'user_id' => User::where('email', $etudiant['email'])->first()->id,
+                    // 'classe' => $classeLibelle
                 ];
+
                 Inscriptions::create($inscriptionData);
+
+                $classeEf = Classe::find($classe_id);
+                $nouvelEffectif = $classeEf->effectif + 1;
+                $classeEf->update(['effectif' => $nouvelEffectif]);
+                $classes[] = [$classeEf];
             }
-            $classeEf = Classe::find($request->classe_id);
-            $nouvelEffectif = $classeEf->effectif + count($etudiantsData);
-            $classeEf->update(['effectif' => $nouvelEffectif]);
 
             DB::commit();
 
             return response()->json([
-                "message" => 'etudiants ajoutés avec succes',
-                "data" => $classe
+                "message" => 'Étudiants ajoutés avec succès',
+                "data" => $etudiants,
+                "data1" => Classe::orderBy('id', 'desc')->get()
             ]);
+
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(["error" => 'erreur lors de l\'ajout des etudiants']);
+            return response()->json(["error" => 'Erreur lors de l\'ajout des étudiants']);
         }
     }
 
 
+    // UPDATE `classes` SET `effectif` = 0;
+
     public function classeEleves($id)
     {
         $annee = anneeClasse::where('classe_id', $id)
-            ->where("anneescolaire_id", 1)
+            ->where("anneescolaire_id", 2)
             ->first();
         $eleves = Inscriptions::where("annee_classe_id", $annee->id)->get();
-        $tab=[];
-        foreach ($eleves as  $eleve) {
-         $user=User::find($eleve->user_id);
-          $tab[]=
-           $user
-          ;
+        $tab = [];
+        foreach ($eleves as $eleve) {
+            $user = User::find($eleve->user_id);
+            $tab[] =
+                $user
+            ;
         }
         return [
             "data1" => $annee,
@@ -154,4 +316,32 @@ class UserController extends Controller
             "message" => "success"
         ]);
     }
+    public function storeClasse(Request $request)
+    {
+        // Validation des données
+        $validatedData = $request->validate([
+            'libelle' => 'required|max:255',
+            'niveau' => 'required|max:255',
+        ]);
+
+        $classe = new Classe();
+        $classe->libelle = $validatedData['libelle'];
+        $classe->niveau = $validatedData['niveau'];
+        $classe->effectif = 0;
+
+        $classe->save();
+
+        
+        $anneeClasse = new anneeClasse();
+        $anneeClasse->classe_id = $classe->id;
+        $anneeClasse->anneescolaire_id = 2;
+
+        $anneeClasse->save();
+
+        // Retourner la classe et l'anneeClasse créées
+        return response()->json($classe);
+    }
 }
+
+
+

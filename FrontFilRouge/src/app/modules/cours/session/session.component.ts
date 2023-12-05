@@ -14,7 +14,7 @@ export class SessionComponent implements OnInit {
   month!: number;
   year!: number;
   no_of_days: number[] = [];
-
+  selectedEvents!: any
   blankdays: number[] = [];
   MONTH_NAMES = ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'];
 
@@ -97,7 +97,9 @@ export class SessionComponent implements OnInit {
       })
     );
   }
-
+  removeClassField(index: number) {
+    this.sessionClasseCours.removeAt(index);
+  }
   index() {
     this.sessionService.all().subscribe((result: any) => {
       this.salles = result.data1
@@ -146,9 +148,10 @@ export class SessionComponent implements OnInit {
     const sessionClasseCours = this.form.get('sessionClasseCours') as FormArray;
     sessionClasseCours.push(newFormGroup);
     this.sessionService.store(this.form.value).subscribe((result: any) => {
+      console.log(result);
 
 
-      if (result.data) {
+      if (result.data && result.data1) {
         this.form.reset()
         const session = result.data;
         const heureDebutParts = session.heure_debut.split(':');
@@ -158,10 +161,10 @@ export class SessionComponent implements OnInit {
 
         this.events.unshift({
           event_date: new Date(session.date),
-          event_title: session.libelle,
+          event_title: session.salle ? session.salle.libelle : 'En ligne',
           event_Type: session.Type,
-          event_prof: session.professeur,
-          event_module: session.module,
+          event_prof: result.data1[0].prof,
+          event_module:  result.data1[0].module,
           event_heure: `${heureDebut}-${heureFin}`
         });
 
@@ -192,6 +195,7 @@ export class SessionComponent implements OnInit {
   }
 
   heureSession(events: any[], year: any, month: any, date: any) {
+    
     const filteredEvents = events.filter((event) => {
       const eventDate = new Date(event.event_date);
       return (
@@ -218,11 +222,9 @@ export class SessionComponent implements OnInit {
     this.authService.logout();
   }
 
-  selectedEvents!: any
   showAllEvents(date: any) {
     const selectedEvents = this.getAllEvents(date);
     this.selectedEvents = selectedEvents;
-
   }
 
   filtreCours() {
@@ -293,7 +295,7 @@ export class SessionComponent implements OnInit {
       console.log(result);
       if (result.message) {
         this.eventStatuts[i] = 'validee';
-      }else if(result.error){
+      } else if (result.error) {
         Swal.fire({
           title: 'Erreur',
           text: "impossible de valider une session en cours",
@@ -308,7 +310,7 @@ export class SessionComponent implements OnInit {
     this.sessionService.invalider(id).subscribe((result: any) => {
       if (result.message) {
         this.eventStatuts[i] = 'invalidee';
-      }else if(result.error){
+      } else if (result.error) {
         Swal.fire({
           title: 'Erreur',
           text: "impossible de invalider une session en cours",

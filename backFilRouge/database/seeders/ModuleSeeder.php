@@ -14,11 +14,23 @@ class ModuleSeeder extends Seeder
     public function run(): void
     {
         DB::table('modules')->insert([
-            'libelle' => 'Angular',
+            'libelle' => 'Anglais',
         ]);
 
         DB::table('modules')->insert([
-            'libelle' => 'Laravel',
+            'libelle' => 'ReactJs',
+        ]);
+        DB::table('modules')->insert([
+            'libelle' => 'Excel',
+        ]);
+        DB::table('modules')->insert([
+            'libelle' => 'Flutter',
+        ]);
+        DB::table('modules')->insert([
+            'libelle' => 'JavaScript',
+        ]);
+        DB::table('modules')->insert([
+            'libelle' => 'Ph',
         ]);
     }
 }
